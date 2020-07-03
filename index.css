@@ -1,3 +1,25 @@
 #form {
 	text-align: center;
 }
+
+.albumCover {
+	width: 100%;
+	border-radius: 5px;
+	margin-bottom: 1rem;
+}
+				
+.songContainer {
+	text-align: left;
+	font-family: Helvetica;
+	color: #616161;
+	font-size: .8rem;
+	margin: 1rem;
+	width: 15rem;
+	display: inline-flex;
+	flex-direction: column;
+}
+
+.songTitle {
+	font-size: 1.2rem;
+	margin-bottom: .3rem;
+}
