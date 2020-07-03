@@ -38,42 +38,17 @@ $(document).ready(function (){
 				searchResultsContainer.append(songContainer);
 				searchResultsContainer.style.textAlign = "center";
 			}
-
-			// albumcover/song container CSS styling
-			$(".albumCover").css({
-				width: "100%",
-				borderRadius: "5px",
-				marginBottom: "1rem"
-			});
-
-			$(".songContainer").css({
-				textAlign: "left",
-				fontFamily: "Helvetica",
-				color: "#616161",
-				fontSize: ".8rem",
-				margin: "1rem",
-				width: "15rem",
-				display: "inline-flex",
-				flexDirection: "column"
-			});
-
-			$(".songTitle").css ({
-				fontSize: "1.2rem",
-				marginBottom: ".3rem"
-			});
+			myAudio.src = response.data[currentSongNumber].preview; // set audio src to first track
 		});
 	});
 
 	// play a song with a button click event
-	let playButton = document.getElementById("playButton");
 	let myAudio = new Audio();
 	let currentSongNumber = 0;
+	let playButton = document.getElementById("playButton");
 
 	playButton.addEventListener("click", function () {
-		$.ajax(settings).done(function (response) {
-			myAudio.src = response.data[currentSongNumber].preview;
-			myAudio.play();
-		});
+		myAudio.play();
 	});
 
 	// go to next song with a button click event
@@ -81,15 +56,13 @@ $(document).ready(function (){
 
 	nextButton.addEventListener("click", function () {
 		$.ajax(settings).done(function (response) {
-			if (currentSongNumber !== response.data.length - 1) {
+			if (currentSongNumber !== response.data.length - 1) { // if not at last song...
 				currentSongNumber += 1;
-				myAudio.src = response.data[currentSongNumber].preview;
-				myAudio.play();
-			} else {
+			} else { //if at last song, start from beginning...
 				currentSongNumber = 0;
-				myAudio.src = response.data[currentSongNumber].preview;
-				myAudio.play();
 			}
+			myAudio.src = response.data[currentSongNumber].preview;
+			myAudio.play();
 		});
 	});
 
@@ -100,14 +73,33 @@ $(document).ready(function (){
 		$.ajax(settings).done(function (response) {
 			if (currentSongNumber > 0) {
 				currentSongNumber -= 1;
-				myAudio.src = response.data[currentSongNumber].preview;
-				myAudio.play();
 			} else {
 				currentSongNumber = response.data.length - 1;
 			}
+			myAudio.src = response.data[currentSongNumber].preview;
+			myAudio.play();
 		});
 	});
 
+	// pause song with a button click event
+	let pauseButton = document.getElementById("pauseButton");
+
+	pauseButton.addEventListener("click", function () {
+		myAudio.pause();
+	});
+
+	// automatically go to the next song when current song ends
+	myAudio.onended = function () {
+		$.ajax(settings).done(function (response) {
+			if (currentSongNumber !== response.data.length - 1) { 
+				currentSongNumber += 1;
+			} else { 
+				currentSongNumber = 0;
+			}
+			myAudio.src = response.data[currentSongNumber].preview;
+			myAudio.play();
+		});
+	}
 
 });
 
