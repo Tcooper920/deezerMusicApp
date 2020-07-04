@@ -1,5 +1,129 @@
-#form {
-	text-align: center;
+* {
+	margin: 0;
+	padding: 0;
+	font-family: 'Varela Round', sans-serif;
+}
+
+/* disable browser default styling */
+input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}
+
+/* fontawesome icon class for audio buttons */
+.fa-input {
+  font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+}
+
+/* placeholder text styling */
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgb(109, 127, 158);
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: rgb(109, 127, 158);
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: rgb(109, 127, 158);
+}
+
+.formsWrapper {
+	background-color: #86e4cf;
+	padding-top: 2rem;
+	padding-bottom: 2rem;
+}
+
+.form {
+	background-color: white;
+	padding: 1rem;
+	display: flex;
+	flex-direction: column;
+	width: 70%;
+	max-width: 45rem;
+	margin: 0 auto;
+	border: 0;
+	-webkit-box-shadow: 0px 0px 9px 1px #71d0bb;
+-moz-box-shadow: 0px 0px 9px 1px #71d0bb;
+box-shadow: 0px 0px 9px 1px #71d0bb;
+border-radius: 10px 10px 10px 10px;
+-moz-border-radius: 10px 10px 10px 10px;
+-webkit-border-radius: 10px 10px 10px 10px;
+}
+
+.textFieldContainer {
+	display: flex;
+}
+
+.button {
+	flex: 1;
+	margin: .25rem;
+	padding: .5rem;
+	border: 0;
+	background-color: #259af7;
+	color: white;
+	font-weight: bold;
+	font-size: .8rem;
+	cursor: pointer;
+	border-bottom: 2px solid #2d8cd6;
+	    border-radius: 5px 5px 5px 5px;
+-moz-border-radius: 5px 5px 5px 5px;
+-webkit-border-radius: 5px 5px 5px 5px;
+}
+
+.button:hover {
+	background-color: #2d8cd6;
+}
+
+#artistName {
+	color: rgb(109, 127, 158);
+	flex: 3;
+	font-size: 1rem;
+	padding-left: 1rem;
+	padding-top: .5rem;
+	padding-bottom: .5rem;
+	margin-top: .5rem;
+	margin-left: .25rem;
+	margin-right: 0;
+	margin-bottom: .5rem;
+	border: 0;
+    background-color: rgb(232, 240, 254);
+    border-radius: 5px 0px 0px 5px;
+-moz-border-radius: 5px 0px 0px 5px;
+-webkit-border-radius: 5px 0px 0px 5px;
+}
+
+#searchButton {
+	margin-top: .5rem;
+	margin-bottom: .5rem;
+	margin-left: 0;
+	    border-radius: 0px 5px 5px 0px;
+    -moz-border-radius: 0px 5px 5px 0px;
+    -webkit-border-radius: 0px 5px 5px 0px;
+}
+
+.jukeboxForm {
+	margin-top: 2rem;
+}
+
+#currentSongField {
+	flex: 1;
+	color: rgb(109, 127, 158);
+	font-size: 1rem;
+	padding-left: 1rem;
+	padding-top: .5rem;
+	padding-bottom: .5rem;
+	margin-top: .5rem;
+	margin-left: .25rem;
+	margin-right: .25rem;
+	margin-bottom: .5rem;
+	border: 0;
+    background-color: rgb(232, 240, 254);
+    border-radius: 5px 5px 5px 5px;
+-moz-border-radius: 5px 5px 5px 5px;
+-webkit-border-radius: 5px 5px 5px 5px;
 }
 
 .albumCover {
@@ -23,3 +147,13 @@
 	font-size: 1.2rem;
 	margin-bottom: .3rem;
 }
+
+#audioControlContainer {
+	display: flex;
+}
+
+#searchResultsContainer {
+	background-color: white;
+	padding-top: 1.5rem;
+}
+
