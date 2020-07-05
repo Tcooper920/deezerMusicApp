@@ -34,6 +34,9 @@ input {
 	background-color: #86e4cf;
 	padding-top: 2rem;
 	padding-bottom: 2rem;
+	border-radius: 0px 0px 70px 70px;
+-moz-border-radius: 0px 0px 70px 70px;
+-webkit-border-radius: 0px 0px 70px 70px;
 }
 
 .form {
@@ -75,6 +78,12 @@ border-radius: 10px 10px 10px 10px;
 
 .button:hover {
 	background-color: #2d8cd6;
+}
+
+/* this class is added with js for active buttons (play/stop) */
+.activeButton {
+	background-color: #2579bb;
+	border-color: #2579bb;
 }
 
 #artistName {
@@ -126,6 +135,26 @@ border-radius: 10px 10px 10px 10px;
 -webkit-border-radius: 5px 5px 5px 5px;
 }
 
+#audioControlContainer {
+	display: flex;
+}
+
+#previousButton:active {
+	background-color: #2579bb;
+}
+
+#nextButton:active {
+	background-color: #2579bb;
+}
+
+
+/* dynamically generated content styling (albums section) **********************************************************/
+
+#searchResultsContainer {
+	background-color: white;
+	padding-top: 1.5rem;
+}
+
 .albumCover {
 	width: 100%;
 	border-radius: 5px;
@@ -148,12 +177,21 @@ border-radius: 10px 10px 10px 10px;
 	margin-bottom: .3rem;
 }
 
-#audioControlContainer {
-	display: flex;
-}
+/* media queries ******************************************************************************************************/
 
-#searchResultsContainer {
-	background-color: white;
-	padding-top: 1.5rem;
-}
+@media screen and (max-width: 500px) {
+	.textFieldContainer {
+		display: block;
+		padding-left: .25rem;
+		padding-right: .25rem;
+	}
 
+	#artistName, #searchButton, #currentSongField {
+		width: 100%;
+		margin-left: 0;
+		margin-right: 0;
+		border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+	}
+}

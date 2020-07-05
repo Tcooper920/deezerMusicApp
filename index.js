@@ -13,11 +13,15 @@ $(document).ready(function (){
 		}
 	}
 
+	let myAudio = new Audio();
+	let currentSongNumber = 0;
+
 	// search for an artist with a button click event
 	let searchButton = document.getElementById("searchButton");
 
 	searchButton.addEventListener("click", function () {
-
+		
+		currentSongNumber = 0;
 		let artistName = document.getElementById("artistName").value;
 		settings.url = "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + artistName;
 		
@@ -39,16 +43,18 @@ $(document).ready(function (){
 				searchResultsContainer.style.textAlign = "center";
 			}
 			myAudio.src = response.data[currentSongNumber].preview; // set audio src to first track
+			$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title); // show current song
+			$(".button").removeClass("activeButton");
 		});
 	});
 
 	// play a song with a button click event
-	let myAudio = new Audio();
-	let currentSongNumber = 0;
 	let playButton = document.getElementById("playButton");
 
 	playButton.addEventListener("click", function () {
 		myAudio.play();
+		$(".button").removeClass("activeButton"); // reset button colors and make play button dark
+		$("#playButton").addClass("activeButton");
 	});
 
 	// go to next song with a button click event
@@ -63,6 +69,9 @@ $(document).ready(function (){
 			}
 			myAudio.src = response.data[currentSongNumber].preview;
 			myAudio.play();
+			$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title);
+			$(".button").removeClass("activeButton");
+			$("#playButton").addClass("activeButton");
 		});
 	});
 
@@ -78,6 +87,9 @@ $(document).ready(function (){
 			}
 			myAudio.src = response.data[currentSongNumber].preview;
 			myAudio.play();
+			$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title);
+			$(".button").removeClass("activeButton");
+			$("#playButton").addClass("activeButton");
 		});
 	});
 
@@ -86,6 +98,8 @@ $(document).ready(function (){
 
 	pauseButton.addEventListener("click", function () {
 		myAudio.pause();
+		$(".button").removeClass("activeButton");
+		$("#pauseButton").addClass("activeButton");
 	});
 
 	// automatically go to the next song when current song ends
@@ -98,6 +112,9 @@ $(document).ready(function (){
 			}
 			myAudio.src = response.data[currentSongNumber].preview;
 			myAudio.play();
+			$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title);
+			$(".button").removeClass("activeButton");
+			$("#playButton").addClass("activeButton");
 		});
 	}
 
