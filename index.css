@@ -177,6 +177,10 @@ border-radius: 10px 10px 10px 10px;
 	margin-bottom: .3rem;
 }
 
+.activeSongContainer {
+	color: #58a593;
+}
+
 /* media queries ******************************************************************************************************/
 
 @media screen and (max-width: 500px) {
