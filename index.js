@@ -15,6 +15,14 @@ $(document).ready(function (){
 
 	let myAudio = new Audio();
 	let currentSongNumber = 0;
+	let currentSongContainer = document.getElementsByClassName("songContainer");
+
+	// remove active song container style
+	const removeActiveSongContainerStyling = () => {
+		for (let i = 0; i < currentSongContainer.length; i++) {
+			currentSongContainer[i].classList.remove("activeSongContainer");
+		}
+	}
 
 	// search for an artist with a button click event
 	let searchButton = document.getElementById("searchButton");
@@ -55,6 +63,8 @@ $(document).ready(function (){
 		myAudio.play();
 		$(".button").removeClass("activeButton"); // reset button colors and make play button dark
 		$("#playButton").addClass("activeButton");
+		removeActiveSongContainerStyling();
+		currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 	});
 
 	// go to next song with a button click event
@@ -64,7 +74,7 @@ $(document).ready(function (){
 		$.ajax(settings).done(function (response) {
 			if (currentSongNumber !== response.data.length - 1) { // if not at last song...
 				currentSongNumber += 1;
-			} else { //if at last song, start from beginning...
+			} else { // if at last song, start from beginning...
 				currentSongNumber = 0;
 			}
 			myAudio.src = response.data[currentSongNumber].preview;
@@ -72,6 +82,8 @@ $(document).ready(function (){
 			$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title);
 			$(".button").removeClass("activeButton");
 			$("#playButton").addClass("activeButton");
+			removeActiveSongContainerStyling();
+			currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 		});
 	});
 
@@ -90,6 +102,8 @@ $(document).ready(function (){
 			$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title);
 			$(".button").removeClass("activeButton");
 			$("#playButton").addClass("activeButton");
+			removeActiveSongContainerStyling();
+			currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 		});
 	});
 
@@ -115,8 +129,9 @@ $(document).ready(function (){
 			$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title);
 			$(".button").removeClass("activeButton");
 			$("#playButton").addClass("activeButton");
+			removeActiveSongContainerStyling();
+			currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 		});
 	}
-
 });
 
