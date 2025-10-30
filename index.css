@@ -1,33 +1,36 @@
 * {
 	margin: 0;
 	padding: 0;
-	font-family: 'Varela Round', sans-serif;
+	font-family: "Varela Round", sans-serif;
 }
 
 /* disable browser default styling */
 input {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
+	-webkit-appearance: none;
+	-moz-appearance: none;
+	appearance: none;
 }
 
 /* fontawesome icon class for audio buttons */
 .fa-input {
-  font-family: FontAwesome, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	font-family: FontAwesome, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
 /* placeholder text styling */
-::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: rgb(109, 127, 158);
-  opacity: 1; /* Firefox */
+::placeholder {
+	/* Chrome, Firefox, Opera, Safari 10.1+ */
+	color: rgb(109, 127, 158);
+	opacity: 1; /* Firefox */
 }
 
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: rgb(109, 127, 158);
+:-ms-input-placeholder {
+	/* Internet Explorer 10-11 */
+	color: rgb(109, 127, 158);
 }
 
-::-ms-input-placeholder { /* Microsoft Edge */
-  color: rgb(109, 127, 158);
+::-ms-input-placeholder {
+	/* Microsoft Edge */
+	color: rgb(109, 127, 158);
 }
 
 .formsWrapper {
@@ -35,8 +38,8 @@ input {
 	padding-top: 2rem;
 	padding-bottom: 2rem;
 	border-radius: 0px 0px 70px 70px;
--moz-border-radius: 0px 0px 70px 70px;
--webkit-border-radius: 0px 0px 70px 70px;
+	-moz-border-radius: 0px 0px 70px 70px;
+	-webkit-border-radius: 0px 0px 70px 70px;
 }
 
 .form {
@@ -49,11 +52,11 @@ input {
 	margin: 0 auto;
 	border: 0;
 	-webkit-box-shadow: 0px 0px 9px 1px #71d0bb;
--moz-box-shadow: 0px 0px 9px 1px #71d0bb;
-box-shadow: 0px 0px 9px 1px #71d0bb;
-border-radius: 10px 10px 10px 10px;
--moz-border-radius: 10px 10px 10px 10px;
--webkit-border-radius: 10px 10px 10px 10px;
+	-moz-box-shadow: 0px 0px 9px 1px #71d0bb;
+	box-shadow: 0px 0px 9px 1px #71d0bb;
+	border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
 }
 
 .textFieldContainer {
@@ -62,18 +65,18 @@ border-radius: 10px 10px 10px 10px;
 
 .button {
 	flex: 1;
-	margin: .25rem;
-	padding: .5rem;
+	margin: 0.25rem;
+	padding: 0.5rem;
 	border: 0;
 	background-color: #259af7;
 	color: white;
 	font-weight: bold;
-	font-size: .8rem;
+	font-size: 0.8rem;
 	cursor: pointer;
 	border-bottom: 2px solid #2d8cd6;
-	    border-radius: 5px 5px 5px 5px;
--moz-border-radius: 5px 5px 5px 5px;
--webkit-border-radius: 5px 5px 5px 5px;
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
 }
 
 .button:hover {
@@ -91,26 +94,26 @@ border-radius: 10px 10px 10px 10px;
 	flex: 3;
 	font-size: 1rem;
 	padding-left: 1rem;
-	padding-top: .5rem;
-	padding-bottom: .5rem;
-	margin-top: .5rem;
-	margin-left: .25rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	margin-top: 0.5rem;
+	margin-left: 0.25rem;
 	margin-right: 0;
-	margin-bottom: .5rem;
+	margin-bottom: 0.5rem;
 	border: 0;
-    background-color: rgb(232, 240, 254);
-    border-radius: 5px 0px 0px 5px;
--moz-border-radius: 5px 0px 0px 5px;
--webkit-border-radius: 5px 0px 0px 5px;
+	background-color: rgb(232, 240, 254);
+	border-radius: 5px 0px 0px 5px;
+	-moz-border-radius: 5px 0px 0px 5px;
+	-webkit-border-radius: 5px 0px 0px 5px;
 }
 
 #searchButton {
-	margin-top: .5rem;
-	margin-bottom: .5rem;
+	margin-top: 0.5rem;
+	margin-bottom: 0.5rem;
 	margin-left: 0;
-	    border-radius: 0px 5px 5px 0px;
-    -moz-border-radius: 0px 5px 5px 0px;
-    -webkit-border-radius: 0px 5px 5px 0px;
+	border-radius: 0px 5px 5px 0px;
+	-moz-border-radius: 0px 5px 5px 0px;
+	-webkit-border-radius: 0px 5px 5px 0px;
 }
 
 .jukeboxForm {
@@ -122,17 +125,17 @@ border-radius: 10px 10px 10px 10px;
 	color: rgb(109, 127, 158);
 	font-size: 1rem;
 	padding-left: 1rem;
-	padding-top: .5rem;
-	padding-bottom: .5rem;
-	margin-top: .5rem;
-	margin-left: .25rem;
-	margin-right: .25rem;
-	margin-bottom: .5rem;
+	padding-top: 0.5rem;
+	padding-bottom: 0.5rem;
+	margin-top: 0.5rem;
+	margin-left: 0.25rem;
+	margin-right: 0.25rem;
+	margin-bottom: 0.5rem;
 	border: 0;
-    background-color: rgb(232, 240, 254);
-    border-radius: 5px 5px 5px 5px;
--moz-border-radius: 5px 5px 5px 5px;
--webkit-border-radius: 5px 5px 5px 5px;
+	background-color: rgb(232, 240, 254);
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
 }
 
 #audioControlContainer {
@@ -147,7 +150,6 @@ border-radius: 10px 10px 10px 10px;
 	background-color: #2579bb;
 }
 
-
 /* dynamically generated content styling (albums section) **********************************************************/
 
 #searchResultsContainer {
@@ -160,25 +162,39 @@ border-radius: 10px 10px 10px 10px;
 	border-radius: 5px;
 	margin-bottom: 1rem;
 }
-				
+
 .songContainer {
 	text-align: left;
 	font-family: Helvetica;
 	color: #616161;
-	font-size: .8rem;
-	margin: 1rem;
+	font-size: 0.8rem;
+	padding: 1rem;
 	width: 15rem;
 	display: inline-flex;
 	flex-direction: column;
 }
 
+.songContainer:hover {
+	color: black;
+	background-color: #e6e6e6;
+	border-radius: 5px;
+	cursor: pointer;
+}
+
 .songTitle {
 	font-size: 1.2rem;
-	margin-bottom: .3rem;
+	margin-bottom: 0.3rem;
 }
 
 .activeSongContainer {
 	color: #58a593;
+	outline: 0.2rem solid #58a593;
+	border-radius: 5px;
+}
+
+.activeSongContainer:hover {
+	color: #58a593;
+	background-color: white;
 }
 
 /* media queries ******************************************************************************************************/
@@ -186,16 +202,18 @@ border-radius: 10px 10px 10px 10px;
 @media screen and (max-width: 500px) {
 	.textFieldContainer {
 		display: block;
-		padding-left: .25rem;
-		padding-right: .25rem;
+		padding-left: 0.25rem;
+		padding-right: 0.25rem;
 	}
 
-	#artistName, #searchButton, #currentSongField {
+	#artistName,
+	#searchButton,
+	#currentSongField {
 		width: 100%;
 		margin-left: 0;
 		margin-right: 0;
 		border-radius: 5px 5px 5px 5px;
-	-moz-border-radius: 5px 5px 5px 5px;
-	-webkit-border-radius: 5px 5px 5px 5px;
+		-moz-border-radius: 5px 5px 5px 5px;
+		-webkit-border-radius: 5px 5px 5px 5px;
 	}
 }

@@ -1,1 +1,19 @@
 config.js
+
+# ignore mac system files
+.DS_store
+
+# ignore video folder with files typically exceeding 100MB (too large for gitHub)
+videos/*
+
+_notes/*
+
+*/_notes/dwsync.xml
+
+*/dwsync.xml
+
+*dwsync.xml
+
+dwsync.xml
+
+.vscode
