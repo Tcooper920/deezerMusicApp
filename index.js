@@ -12,15 +12,19 @@ var settings = {
 
 let myAudio = new Audio();
 let currentSongNumber = 0;
-let currentSongContainer = document.getElementsByClassName("songContainer");
 let arrayOfAllDisplayedSongs = [];
+let currentSongContainer = document.getElementsByClassName("songContainer");
+const playButton = document.getElementById("playButton");
+const pauseButton = document.getElementById("pauseButton");
+const nextButton = document.getElementById("nextButton");
+const previousButton = document.getElementById("previousButton");
 
-// Remove active song container style
-const removeActiveSongContainerStyling = () => {
-	for (let i = 0; i < currentSongContainer.length; i++) {
-		currentSongContainer[i].classList.remove("activeSongContainer");
-	}
-};
+function removeActiveSongContainerStyling() {
+	currentSongContainerArray = [...currentSongContainer];
+	currentSongContainerArray.forEach((song) => {
+		song.classList.remove("activeSongContainer");
+	});
+}
 
 // Search for an artist with a button click event
 let searchButton = document.getElementById("searchButton");
@@ -36,15 +40,17 @@ searchButton.addEventListener("click", function () {
 		searchResultsContainer.innerHTML = ""; // clear previous search results
 
 		for (let i = 0; i < response.data.length; i++) {
-			let songContainer = document.createElement("DIV");
+			const songContainer = document.createElement("DIV");
 			songContainer.setAttribute("tabindex", 0);
 			songContainer.classList.add("songContainer");
-			let albumImage = "<img class='albumCover' src='" + response.data[i].album.cover_big + "'/>";
-			songContainer.innerHTML = albumImage;
-			songContainer.innerHTML += "<strong>Track: " + (i + 1) + "</strong>";
-			songContainer.innerHTML += "<strong class='songTitle'>" + response.data[i].title + "</strong>";
-			songContainer.innerHTML += "Album: " + response.data[i].album.title;
-			songContainer.innerHTML += "<br>By: " + response.data[i].artist.name;
+			const albumImage = "<img class='albumCover' src='" + response.data[i].album.cover_big + "'/>";
+
+			songContainer.innerHTML = `
+				${albumImage}
+		    	<strong>Track: ${i + 1}</strong><br>
+				<strong class='songTitle'>${response.data[i].title}</strong><br>
+				Album: ${response.data[i].album.title}<br>
+				By: ${response.data[i].artist.name}`;
 			searchResultsContainer.append(songContainer);
 			searchResultsContainer.style.textAlign = "center";
 		}
@@ -52,12 +58,9 @@ searchButton.addEventListener("click", function () {
 		$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title); // show current song
 		$(".button").removeClass("activeButton");
 	});
-	arrayOfAllDisplayedSongs = [...document.getElementsByClassName("songContainer")];
 });
 
 // Play a song with a button click event
-let playButton = document.getElementById("playButton");
-
 playButton.addEventListener("click", function () {
 	myAudio.play();
 	$(".button").removeClass("activeButton"); // reset button colors and make play button dark
@@ -67,8 +70,6 @@ playButton.addEventListener("click", function () {
 });
 
 // Go to next song with a button click event
-let nextButton = document.getElementById("nextButton");
-
 nextButton.addEventListener("click", function () {
 	$.ajax(settings).done(function (response) {
 		if (currentSongNumber !== response.data.length - 1) {
@@ -89,8 +90,6 @@ nextButton.addEventListener("click", function () {
 });
 
 // Go back to previous song with a button click event
-let previousButton = document.getElementById("previousButton");
-
 previousButton.addEventListener("click", function () {
 	$.ajax(settings).done(function (response) {
 		if (currentSongNumber > 0) {
@@ -109,8 +108,6 @@ previousButton.addEventListener("click", function () {
 });
 
 // Pause song with a button click event
-let pauseButton = document.getElementById("pauseButton");
-
 pauseButton.addEventListener("click", function () {
 	myAudio.pause();
 	$(".button").removeClass("activeButton");
