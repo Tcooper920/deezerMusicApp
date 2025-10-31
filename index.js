@@ -29,15 +29,19 @@ function removeActiveSongContainerStyling() {
 // Search for an artist with a button click event
 let searchButton = document.getElementById("searchButton");
 
-searchButton.addEventListener("click", function () {
+searchButton.addEventListener("click", async () => {
 	currentSongNumber = 0;
 	let artistName = document.getElementById("artistName").value;
-	settings.url = "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + artistName;
+	settings.url = "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + encodeURIComponent(artistName);
 
-	$.ajax(settings).done(function (response) {
-		// Display album cover, album name, and song
-		let searchResultsContainer = document.getElementById("searchResultsContainer");
-		searchResultsContainer.innerHTML = ""; // clear previous search results
+	// Display album cover, album name, and song
+	const searchResultsContainer = document.getElementById("searchResultsContainer");
+	const dataResponse = await fetch(settings.url, settings);
+	const response = await dataResponse.json();
+
+	if (artistName !== "") {
+		// clear previous search results
+		searchResultsContainer.innerText = "";
 
 		for (let i = 0; i < response.data.length; i++) {
 			const songContainer = document.createElement("DIV");
@@ -48,16 +52,15 @@ searchButton.addEventListener("click", function () {
 			songContainer.innerHTML = `
 				${albumImage}
 		    	<strong>Track: ${i + 1}</strong><br>
-				<strong class='songTitle'>${response.data[i].title}</strong><br>
+				<strong class='songTitle'>${response.data[i].title}</strong>
 				Album: ${response.data[i].album.title}<br>
 				By: ${response.data[i].artist.name}`;
 			searchResultsContainer.append(songContainer);
-			searchResultsContainer.style.textAlign = "center";
 		}
 		myAudio.src = response.data[currentSongNumber].preview; // set audio src to first track
 		$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title); // show current song
 		$(".button").removeClass("activeButton");
-	});
+	}
 });
 
 // Play a song with a button click event
