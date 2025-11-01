@@ -134,7 +134,7 @@ document.addEventListener("keydown", selectAndPlayClickedSong);
 
 function selectAndPlayClickedSong(event) {
 	// If songs haven't been fetched, do not continue...
-	if (!cachedSongs.length) {
+	if (!cachedSongs) {
 		return;
 	}
 	if (
