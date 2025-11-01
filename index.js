@@ -53,8 +53,13 @@ searchButton.addEventListener("click", async () => {
 				By: ${cachedSongs[i].artist.name}`;
 			searchResultsContainer.append(songContainer);
 		}
+
+		if (myAudio.paused) {
+			await myAudio.play();
+		} else {
+			myAudio.pause();
+		}
 		playSongAtIndex(currentSongNumber);
-		myAudio.pause();
 		setPlayingState(false);
 	}
 });
