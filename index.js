@@ -62,8 +62,7 @@ searchButton.addEventListener("click", async () => {
 		}
 		myAudio.src = cachedSongs[currentSongNumber].preview; // set audio src to first track
 		currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`; // show current song
-		pauseButton.classList.add("activeButton");
-		playButton.classList.remove("activeButton");
+		setPlayingState(false);
 	}
 });
 
@@ -74,8 +73,7 @@ playButton.addEventListener("click", () => {
 		return;
 	}
 	myAudio.play();
-	pauseButton.classList.remove("activeButton"); // reset button colors and make play button dark
-	playButton.classList.add("activeButton");
+	setPlayingState(true);
 	removeActiveSongContainerStyling();
 	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 });
@@ -96,8 +94,7 @@ nextButton.addEventListener("click", () => {
 	myAudio.src = cachedSongs[currentSongNumber].preview;
 	myAudio.play();
 	currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`;
-	pauseButton.classList.remove("activeButton");
-	playButton.classList.add("activeButton");
+	setPlayingState(true);
 	removeActiveSongContainerStyling();
 	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 });
@@ -108,28 +105,24 @@ previousButton.addEventListener("click", () => {
 	if (!cachedSongs.length) {
 		return;
 	}
-	if (currentSongContainer.length !== 0) {
-		if (currentSongNumber > 0) {
-			currentSongNumber -= 1;
-		} else {
-			currentSongNumber = cachedSongs.length - 1;
-		}
-		myAudio.src = cachedSongs[currentSongNumber].preview;
-		myAudio.play();
-		currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`;
-		pauseButton.classList.remove("activeButton");
-		playButton.classList.add("activeButton");
-		removeActiveSongContainerStyling();
-		currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
+	if (currentSongNumber > 0) {
+		currentSongNumber -= 1;
+	} else {
+		currentSongNumber = cachedSongs.length - 1;
 	}
+	myAudio.src = cachedSongs[currentSongNumber].preview;
+	myAudio.play();
+	currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`;
+	setPlayingState(true);
+	removeActiveSongContainerStyling();
+	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 });
 
 // Pause song with a button click event
 pauseButton.addEventListener("click", () => {
 	if (currentSongContainer.length !== 0) {
 		myAudio.pause();
-		playButton.classList.remove("activeButton");
-		pauseButton.classList.add("activeButton");
+		setPlayingState(false);
 	}
 });
 
@@ -147,8 +140,7 @@ myAudio.onended = () => {
 	myAudio.src = cachedSongs[currentSongNumber].preview;
 	myAudio.play();
 	currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`;
-	pauseButton.classList.remove("activeButton");
-	playButton.classList.add("activeButton");
+	setPlayingState(true);
 	removeActiveSongContainerStyling();
 	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 };
@@ -167,15 +159,20 @@ function selectAndPlayClickedSong(event) {
 		(event.type === "click" || (event.type === "keydown" && event.key === "Enter"))
 	) {
 		arrayOfAllDisplayedSongs = [...document.getElementsByClassName("songContainer")];
-		indexOfClickedSong = arrayOfAllDisplayedSongs.indexOf(event.target.closest(".songContainer"));
+		const indexOfClickedSong = arrayOfAllDisplayedSongs.indexOf(event.target.closest(".songContainer"));
 		currentSongNumber = indexOfClickedSong;
 
 		myAudio.src = cachedSongs[currentSongNumber].preview; // set audio src to first track
 		currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`; // show current song
 		myAudio.play();
-		pauseButton.classList.remove("activeButton"); // reset button colors and make play button dark
-		playButton.classList.add("activeButton");
+		setPlayingState(true);
 		removeActiveSongContainerStyling();
 		arrayOfAllDisplayedSongs[indexOfClickedSong].classList.add("activeSongContainer");
 	}
+}
+
+// Helper function to set play/pause button styling
+function setPlayingState(isPlaying) {
+	playButton.classList.toggle("activeButton", isPlaying);
+	pauseButton.classList.toggle("activeButton", !isPlaying);
 }
