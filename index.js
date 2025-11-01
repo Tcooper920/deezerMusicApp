@@ -54,15 +54,12 @@ searchButton.addEventListener("click", async () => {
 			searchResultsContainer.append(songContainer);
 		}
 
+		currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`; // show current song
+		removeActiveSongContainerStyling(); // Remove active song styling
 		currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
-
-		if (myAudio.paused) {
-			await myAudio.play();
-		} else {
-			myAudio.pause();
-		}
-		playSongAtIndex(currentSongNumber);
-		setPlayingState(false);
+		myAudio.src = cachedSongs[currentSongNumber].preview; // set audio src to first track
+		myAudio.pause(); // Pause audio
+		setPlayingState(false); // Highlight pause button
 	}
 });
 
