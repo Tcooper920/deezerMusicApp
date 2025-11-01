@@ -14,6 +14,7 @@ let myAudio = new Audio();
 let currentSongNumber = 0;
 let arrayOfAllDisplayedSongs = [];
 let searchButton = document.getElementById("searchButton");
+const currentSongField = document.getElementById("currentSongField");
 let currentSongContainer = document.getElementsByClassName("songContainer");
 const playButton = document.getElementById("playButton");
 const pauseButton = document.getElementById("pauseButton");
@@ -45,7 +46,7 @@ searchButton.addEventListener("click", async () => {
 			const songContainer = document.createElement("DIV");
 			songContainer.setAttribute("tabindex", 0);
 			songContainer.classList.add("songContainer");
-			const albumImage = "<img class='albumCover' src='" + response.data[i].album.cover_big + "'/>";
+			const albumImage = `<img class="albumCover" src="${response.data[i].album.cover_big}"/>`;
 
 			songContainer.innerHTML = `
 				${albumImage}
@@ -56,9 +57,9 @@ searchButton.addEventListener("click", async () => {
 			searchResultsContainer.append(songContainer);
 		}
 		myAudio.src = response.data[currentSongNumber].preview; // set audio src to first track
-		$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title); // show current song
-		$("#pauseButton").addClass("activeButton");
-		$("#playButton").removeClass("activeButton");
+		currentSongField.value = `Track ${currentSongNumber + 1}: ${response.data[currentSongNumber].title}`; // show current song
+		pauseButton.classList.add("activeButton");
+		playButton.classList.remove("activeButton");
 	}
 });
 
@@ -66,8 +67,8 @@ searchButton.addEventListener("click", async () => {
 playButton.addEventListener("click", () => {
 	if (currentSongContainer.length !== 0) {
 		myAudio.play();
-		$("#pauseButton").removeClass("activeButton"); // reset button colors and make play button dark
-		$("#playButton").addClass("activeButton");
+		pauseButton.classList.remove("activeButton"); // reset button colors and make play button dark
+		playButton.classList.add("activeButton");
 		removeActiveSongContainerStyling();
 		currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 	}
@@ -88,9 +89,9 @@ nextButton.addEventListener("click", async () => {
 		}
 		myAudio.src = response.data[currentSongNumber].preview;
 		myAudio.play();
-		$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title);
-		$("#pauseButton").removeClass("activeButton");
-		$("#playButton").addClass("activeButton");
+		currentSongField.value = `Track ${currentSongNumber + 1}: ${response.data[currentSongNumber].title}`;
+		pauseButton.classList.remove("activeButton");
+		playButton.classList.add("activeButton");
 		removeActiveSongContainerStyling();
 		currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 	}
@@ -109,9 +110,9 @@ previousButton.addEventListener("click", async () => {
 		}
 		myAudio.src = response.data[currentSongNumber].preview;
 		myAudio.play();
-		$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title);
-		$("#pauseButton").removeClass("activeButton");
-		$("#playButton").addClass("activeButton");
+		currentSongField.value = `Track ${currentSongNumber + 1}: ${response.data[currentSongNumber].title}`;
+		pauseButton.classList.remove("activeButton");
+		playButton.classList.add("activeButton");
 		removeActiveSongContainerStyling();
 		currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 	}
@@ -121,8 +122,8 @@ previousButton.addEventListener("click", async () => {
 pauseButton.addEventListener("click", () => {
 	if (currentSongContainer.length !== 0) {
 		myAudio.pause();
-		$("#playButton").removeClass("activeButton");
-		$("#pauseButton").addClass("activeButton");
+		playButton.classList.remove("activeButton");
+		pauseButton.classList.add("activeButton");
 	}
 });
 
@@ -138,9 +139,9 @@ myAudio.onended = async () => {
 	}
 	myAudio.src = response.data[currentSongNumber].preview;
 	myAudio.play();
-	$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title);
-	$("#pauseButton").removeClass("activeButton");
-	$("#playButton").addClass("activeButton");
+	currentSongField.value = `Track ${currentSongNumber + 1}: ${response.data[currentSongNumber].title}`;
+	pauseButton.classList.remove("activeButton");
+	playButton.classList.add("activeButton");
 	removeActiveSongContainerStyling();
 	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 };
@@ -161,10 +162,10 @@ async function selectAndPlayClickedSong(event) {
 
 		currentSongNumber = indexOfClickedSong;
 		myAudio.src = response.data[currentSongNumber].preview; // set audio src to first track
-		$("#currentSongField").val("Track " + (currentSongNumber + 1) + ": " + response.data[currentSongNumber].title); // show current song
+		currentSongField.value = `Track ${currentSongNumber + 1}: ${response.data[currentSongNumber].title}`; // show current song
 		myAudio.play();
-		$("#pauseButton").removeClass("activeButton"); // reset button colors and make play button dark
-		$("#playButton").addClass("activeButton");
+		pauseButton.classList.remove("activeButton"); // reset button colors and make play button dark
+		playButton.classList.add("activeButton");
 		removeActiveSongContainerStyling();
 		arrayOfAllDisplayedSongs[indexOfClickedSong].classList.add("activeSongContainer");
 	}

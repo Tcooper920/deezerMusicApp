@@ -1,42 +1,44 @@
 <DOCTYPE! html>
-<html>
-<head>
-	<title></title>
-	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet"> <!-- Google font used -->
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css"> <!-- fontawesome icons-->
-	<link rel="stylesheet" type="text/css" href="index.css">
-	<meta name="image" property="og:image" content="/images/deezer_music_player_social_media_preview.jpg">
-</head>
-<body>
+	<html>
+		<head>
+			<title></title>
+			<meta charset="UTF-8" />
+			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+			<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet" />
+			<!-- Google font used -->
+			<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+			<!-- fontawesome icons-->
+			<link rel="stylesheet" type="text/css" href="index.css" />
+			<meta name="image" property="og:image" content="/images/deezer_music_player_social_media_preview.jpg" />
+		</head>
+		<body>
+			<div class="formsWrapper">
+				<div class="form searchForm">
+					<!--search field-->
+					<div class="textFieldContainer">
+						<input id="artistName" type="text" placeholder="Search for an Artist/Album" />
+						<input class="button" id="searchButton" type="button" value="Search" />
+					</div>
+				</div>
 
-<div class="formsWrapper">
-<div class="form searchForm"> <!--search field-->
-	<div class="textFieldContainer">
-		<input id="artistName" type="text" placeholder="Search for an Artist/Album">
-		<input class="button" id="searchButton" type="button" value="Search">
-	</div>
-</div>
+				<div class="form jukeboxForm">
+					<!--jukebox-->
+					<div class="textFieldContainer">
+						<input id="currentSongField" type="text" placeholder="Play a Song" disabled="disabled" />
+					</div>
+					<div id="audioControlContainer">
+						<input class="button fa-input" id="previousButton" type="button" value="&#xf04a;" />
+						<input class="button fa-input" id="pauseButton" type="button" value="&#xf04c;" />
+						<input class="button fa-input" id="playButton" type="button" value="&#xf04b;" />
+						<input class="button fa-input" id="nextButton" type="button" value="&#xf04e;" />
+					</div>
+				</div>
+			</div>
 
-<div class="form jukeboxForm"> <!--jukebox-->
-	<div class="textFieldContainer">
-		<input id="currentSongField" type="text" placeholder="Play a Song" disabled="disabled">
-	</div>
-	<div id="audioControlContainer">
-		<input class="button fa-input" id="previousButton" type="button" value="&#xf04a;">
-		<input class="button fa-input" id="pauseButton" type="button" value="&#xf04c;">
-		<input class="button fa-input" id="playButton" type="button" value="&#xf04b;">
-		<input class="button fa-input" id="nextButton" type="button" value="&#xf04e;">
-	</div>
-</div>
-</div>
+			<div id="searchResultsContainer"></div>
 
-<div id="searchResultsContainer"></div>
-
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> <!-- JQuery -->
-<script type="text/javascript" src="config.js"></script>
-<script type="text/javascript" src="index.js"></script>
-</body>
-</html>
-
+			<script type="text/javascript" src="config.js"></script>
+			<script type="text/javascript" src="index.js"></script>
+		</body>
+	</html>
+</DOCTYPE!>
