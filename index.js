@@ -10,7 +10,7 @@ var settings = {
 	},
 };
 
-let myAudio = new Audio();
+const myAudio = new Audio();
 let currentSongNumber = 0;
 let arrayOfAllDisplayedSongs = [];
 let cachedSongs = [];
@@ -21,13 +21,6 @@ const playButton = document.getElementById("playButton");
 const pauseButton = document.getElementById("pauseButton");
 const nextButton = document.getElementById("nextButton");
 const previousButton = document.getElementById("previousButton");
-
-function removeActiveSongContainerStyling() {
-	let currentSongContainerArray = [...currentSongContainer];
-	currentSongContainerArray.forEach((song) => {
-		song.classList.remove("activeSongContainer");
-	});
-}
 
 // Search for an artist with a button click event
 searchButton.addEventListener("click", async () => {
@@ -60,8 +53,8 @@ searchButton.addEventListener("click", async () => {
 				By: ${cachedSongs[i].artist.name}`;
 			searchResultsContainer.append(songContainer);
 		}
-		myAudio.src = cachedSongs[currentSongNumber].preview; // set audio src to first track
-		currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`; // show current song
+		playSongAtIndex(currentSongNumber);
+		myAudio.pause();
 		setPlayingState(false);
 	}
 });
@@ -72,10 +65,8 @@ playButton.addEventListener("click", () => {
 	if (!cachedSongs.length) {
 		return;
 	}
-	myAudio.play();
+	playSongAtIndex(currentSongNumber);
 	setPlayingState(true);
-	removeActiveSongContainerStyling();
-	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 });
 
 // Go to next song with a button click event
@@ -91,12 +82,8 @@ nextButton.addEventListener("click", () => {
 		// If at last song, start from beginning...
 		currentSongNumber = 0;
 	}
-	myAudio.src = cachedSongs[currentSongNumber].preview;
-	myAudio.play();
-	currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`;
+	playSongAtIndex(currentSongNumber);
 	setPlayingState(true);
-	removeActiveSongContainerStyling();
-	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 });
 
 // Go back to previous song with a button click event
@@ -110,12 +97,8 @@ previousButton.addEventListener("click", () => {
 	} else {
 		currentSongNumber = cachedSongs.length - 1;
 	}
-	myAudio.src = cachedSongs[currentSongNumber].preview;
-	myAudio.play();
-	currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`;
+	playSongAtIndex(currentSongNumber);
 	setPlayingState(true);
-	removeActiveSongContainerStyling();
-	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 });
 
 // Pause song with a button click event
@@ -137,12 +120,8 @@ myAudio.onended = () => {
 	} else {
 		currentSongNumber = 0;
 	}
-	myAudio.src = cachedSongs[currentSongNumber].preview;
-	myAudio.play();
-	currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`;
+	playSongAtIndex(currentSongNumber);
 	setPlayingState(true);
-	removeActiveSongContainerStyling();
-	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 };
 
 // Play song when user clicks an album song thumbnail
@@ -161,12 +140,8 @@ function selectAndPlayClickedSong(event) {
 		arrayOfAllDisplayedSongs = [...document.getElementsByClassName("songContainer")];
 		const indexOfClickedSong = arrayOfAllDisplayedSongs.indexOf(event.target.closest(".songContainer"));
 		currentSongNumber = indexOfClickedSong;
-
-		myAudio.src = cachedSongs[currentSongNumber].preview; // set audio src to first track
-		currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`; // show current song
-		myAudio.play();
+		playSongAtIndex(currentSongNumber);
 		setPlayingState(true);
-		removeActiveSongContainerStyling();
 		arrayOfAllDisplayedSongs[indexOfClickedSong].classList.add("activeSongContainer");
 	}
 }
@@ -175,4 +150,21 @@ function selectAndPlayClickedSong(event) {
 function setPlayingState(isPlaying) {
 	playButton.classList.toggle("activeButton", isPlaying);
 	pauseButton.classList.toggle("activeButton", !isPlaying);
+}
+
+// Remove active song styling
+function removeActiveSongContainerStyling() {
+	let currentSongContainerArray = [...currentSongContainer];
+	currentSongContainerArray.forEach((song) => {
+		song.classList.remove("activeSongContainer");
+	});
+}
+
+// Helper function to select song, display song name, and play song
+function playSongAtIndex(currentSongNumber) {
+	currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`; // show current song
+	removeActiveSongContainerStyling(); // Remove active song styling
+	currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
+	myAudio.src = cachedSongs[currentSongNumber].preview; // set audio src to first track
+	myAudio.play(); // Play audio
 }
