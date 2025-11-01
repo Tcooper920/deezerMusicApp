@@ -13,16 +13,16 @@ var settings = {
 let myAudio = new Audio();
 let currentSongNumber = 0;
 let arrayOfAllDisplayedSongs = [];
-let searchButton = document.getElementById("searchButton");
+const searchButton = document.getElementById("searchButton");
 const currentSongField = document.getElementById("currentSongField");
-let currentSongContainer = document.getElementsByClassName("songContainer");
+const currentSongContainer = document.getElementsByClassName("songContainer");
 const playButton = document.getElementById("playButton");
 const pauseButton = document.getElementById("pauseButton");
 const nextButton = document.getElementById("nextButton");
 const previousButton = document.getElementById("previousButton");
 
 function removeActiveSongContainerStyling() {
-	currentSongContainerArray = [...currentSongContainer];
+	let currentSongContainerArray = [...currentSongContainer];
 	currentSongContainerArray.forEach((song) => {
 		song.classList.remove("activeSongContainer");
 	});
@@ -31,7 +31,9 @@ function removeActiveSongContainerStyling() {
 // Search for an artist with a button click event
 searchButton.addEventListener("click", async () => {
 	currentSongNumber = 0;
-	let artistName = document.getElementById("artistName").value;
+	let artistName = document.getElementById("artistName").value.trim(); // Trim user input
+
+	document.getElementById("artistName").value = artistName; // Show trimmed artist name in text field
 	settings.url = "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + encodeURIComponent(artistName);
 
 	// Display album cover, album name, and song
