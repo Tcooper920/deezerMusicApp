@@ -55,12 +55,11 @@ searchButton.addEventListener("click", async () => {
 		}
 
 		if (myAudio.paused) {
-			await myAudio.play();
+			await playSongAtIndex(currentSongNumber);
 		} else {
 			myAudio.pause();
+			setPlayingState(false);
 		}
-		playSongAtIndex(currentSongNumber);
-		setPlayingState(false);
 	}
 });
 
