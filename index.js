@@ -54,12 +54,15 @@ searchButton.addEventListener("click", async () => {
 			searchResultsContainer.append(songContainer);
 		}
 
+		currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
+
 		if (myAudio.paused) {
-			await playSongAtIndex(currentSongNumber);
+			await myAudio.play();
 		} else {
 			myAudio.pause();
-			setPlayingState(false);
 		}
+		playSongAtIndex(currentSongNumber);
+		setPlayingState(false);
 	}
 });
 
