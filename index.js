@@ -13,6 +13,7 @@ var settings = {
 let myAudio = new Audio();
 let currentSongNumber = 0;
 let arrayOfAllDisplayedSongs = [];
+let cachedSongs = [];
 const searchButton = document.getElementById("searchButton");
 const currentSongField = document.getElementById("currentSongField");
 const currentSongContainer = document.getElementsByClassName("songContainer");
@@ -40,26 +41,27 @@ searchButton.addEventListener("click", async () => {
 	const searchResultsContainer = document.getElementById("searchResultsContainer");
 	const dataResponse = await fetch(settings.url, settings);
 	const response = await dataResponse.json();
+	cachedSongs = response.data; // store locally
 
 	if (artistName !== "") {
 		searchResultsContainer.innerText = ""; // clear previous search results
 
-		for (let i = 0; i < response.data.length; i++) {
+		for (let i = 0; i < cachedSongs.length; i++) {
 			const songContainer = document.createElement("DIV");
 			songContainer.setAttribute("tabindex", 0);
 			songContainer.classList.add("songContainer");
-			const albumImage = `<img class="albumCover" src="${response.data[i].album.cover_big}"/>`;
+			const albumImage = `<img class="albumCover" src="${cachedSongs[i].album.cover_big}"/>`;
 
 			songContainer.innerHTML = `
 				${albumImage}
 		    	<strong>Track: ${i + 1}</strong><br>
-				<strong class='songTitle'>${response.data[i].title}</strong>
-				Album: ${response.data[i].album.title}<br>
-				By: ${response.data[i].artist.name}`;
+				<strong class='songTitle'>${cachedSongs[i].title}</strong>
+				Album: ${cachedSongs[i].album.title}<br>
+				By: ${cachedSongs[i].artist.name}`;
 			searchResultsContainer.append(songContainer);
 		}
-		myAudio.src = response.data[currentSongNumber].preview; // set audio src to first track
-		currentSongField.value = `Track ${currentSongNumber + 1}: ${response.data[currentSongNumber].title}`; // show current song
+		myAudio.src = cachedSongs[currentSongNumber].preview; // set audio src to first track
+		currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`; // show current song
 		pauseButton.classList.add("activeButton");
 		playButton.classList.remove("activeButton");
 	}
@@ -67,52 +69,54 @@ searchButton.addEventListener("click", async () => {
 
 // Play a song with a button click event
 playButton.addEventListener("click", () => {
-	if (currentSongContainer.length !== 0) {
-		myAudio.play();
-		pauseButton.classList.remove("activeButton"); // reset button colors and make play button dark
-		playButton.classList.add("activeButton");
-		removeActiveSongContainerStyling();
-		currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
+	// If songs haven't been fetched, do not continue...
+	if (!cachedSongs.length) {
+		return;
 	}
+	myAudio.play();
+	pauseButton.classList.remove("activeButton"); // reset button colors and make play button dark
+	playButton.classList.add("activeButton");
+	removeActiveSongContainerStyling();
+	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 });
 
 // Go to next song with a button click event
-nextButton.addEventListener("click", async () => {
-	const dataResponse = await fetch(settings.url, settings);
-	const response = await dataResponse.json();
-
-	if (currentSongContainer.length !== 0) {
-		if (currentSongNumber !== response.data.length - 1) {
-			// If not at last song...
-			currentSongNumber += 1;
-		} else {
-			// If at last song, start from beginning...
-			currentSongNumber = 0;
-		}
-		myAudio.src = response.data[currentSongNumber].preview;
-		myAudio.play();
-		currentSongField.value = `Track ${currentSongNumber + 1}: ${response.data[currentSongNumber].title}`;
-		pauseButton.classList.remove("activeButton");
-		playButton.classList.add("activeButton");
-		removeActiveSongContainerStyling();
-		currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
+nextButton.addEventListener("click", () => {
+	// If songs haven't been fetched, do not continue...
+	if (!cachedSongs.length) {
+		return;
 	}
+	if (currentSongNumber !== cachedSongs.length - 1) {
+		// If not at last song...
+		currentSongNumber += 1;
+	} else {
+		// If at last song, start from beginning...
+		currentSongNumber = 0;
+	}
+	myAudio.src = cachedSongs[currentSongNumber].preview;
+	myAudio.play();
+	currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`;
+	pauseButton.classList.remove("activeButton");
+	playButton.classList.add("activeButton");
+	removeActiveSongContainerStyling();
+	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 });
 
 // Go back to previous song with a button click event
-previousButton.addEventListener("click", async () => {
-	const dataResponse = await fetch(settings.url, settings);
-	const response = await dataResponse.json();
-
+previousButton.addEventListener("click", () => {
+	// If songs haven't been fetched, do not continue...
+	if (!cachedSongs.length) {
+		return;
+	}
 	if (currentSongContainer.length !== 0) {
 		if (currentSongNumber > 0) {
 			currentSongNumber -= 1;
 		} else {
-			currentSongNumber = response.data.length - 1;
+			currentSongNumber = cachedSongs.length - 1;
 		}
-		myAudio.src = response.data[currentSongNumber].preview;
+		myAudio.src = cachedSongs[currentSongNumber].preview;
 		myAudio.play();
-		currentSongField.value = `Track ${currentSongNumber + 1}: ${response.data[currentSongNumber].title}`;
+		currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`;
 		pauseButton.classList.remove("activeButton");
 		playButton.classList.add("activeButton");
 		removeActiveSongContainerStyling();
@@ -130,18 +134,19 @@ pauseButton.addEventListener("click", () => {
 });
 
 // Automatically go to the next song when current song ends
-myAudio.onended = async () => {
-	const dataResponse = await fetch(settings.url, settings);
-	const response = await dataResponse.json();
-
-	if (currentSongNumber !== response.data.length - 1) {
+myAudio.onended = () => {
+	// If songs haven't been fetched, do not continue...
+	if (!cachedSongs.length) {
+		return;
+	}
+	if (currentSongNumber !== cachedSongs.length - 1) {
 		currentSongNumber += 1;
 	} else {
 		currentSongNumber = 0;
 	}
-	myAudio.src = response.data[currentSongNumber].preview;
+	myAudio.src = cachedSongs[currentSongNumber].preview;
 	myAudio.play();
-	currentSongField.value = `Track ${currentSongNumber + 1}: ${response.data[currentSongNumber].title}`;
+	currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`;
 	pauseButton.classList.remove("activeButton");
 	playButton.classList.add("activeButton");
 	removeActiveSongContainerStyling();
@@ -152,19 +157,21 @@ myAudio.onended = async () => {
 document.addEventListener("click", selectAndPlayClickedSong);
 document.addEventListener("keydown", selectAndPlayClickedSong);
 
-async function selectAndPlayClickedSong(event) {
+function selectAndPlayClickedSong(event) {
+	// If songs haven't been fetched, do not continue...
+	if (!cachedSongs.length) {
+		return;
+	}
 	if (
 		event.target.closest(".songContainer") &&
 		(event.type === "click" || (event.type === "keydown" && event.key === "Enter"))
 	) {
 		arrayOfAllDisplayedSongs = [...document.getElementsByClassName("songContainer")];
 		indexOfClickedSong = arrayOfAllDisplayedSongs.indexOf(event.target.closest(".songContainer"));
-		const dataResponse = await fetch(settings.url, settings);
-		const response = await dataResponse.json();
-
 		currentSongNumber = indexOfClickedSong;
-		myAudio.src = response.data[currentSongNumber].preview; // set audio src to first track
-		currentSongField.value = `Track ${currentSongNumber + 1}: ${response.data[currentSongNumber].title}`; // show current song
+
+		myAudio.src = cachedSongs[currentSongNumber].preview; // set audio src to first track
+		currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`; // show current song
 		myAudio.play();
 		pauseButton.classList.remove("activeButton"); // reset button colors and make play button dark
 		playButton.classList.add("activeButton");
