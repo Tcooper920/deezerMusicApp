@@ -192,6 +192,8 @@ input {
 	color: #58a593;
 	outline: 0.2rem solid #58a593;
 	border-radius: 5px;
+	position: relative;
+	z-index: 999;
 }
 
 .activeSongContainer:hover {
