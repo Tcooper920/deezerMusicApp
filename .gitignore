@@ -1,7 +1,8 @@
-config.js
-
 # ignore mac system files
 .DS_store
+
+# ignore config files with API keys
+config.php
 
 # ignore video folder with files typically exceeding 100MB (too large for gitHub)
 videos/*
