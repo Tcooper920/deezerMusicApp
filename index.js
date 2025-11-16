@@ -1,15 +1,3 @@
-/* https://rapidapi.com/deezerdevs/api/deezer-1?endpoint=53aa5085e4b07e1f4ebeb429 */
-var settings = {
-	async: true,
-	crossDomain: true,
-	url: "https://deezerdevs-deezer.p.rapidapi.com/search?q=",
-	method: "GET",
-	headers: {
-		"x-rapidapi-host": "deezerdevs-deezer.p.rapidapi.com",
-		"x-rapidapi-key": myKey,
-	},
-};
-
 const myAudio = new Audio();
 let currentSongNumber = 0;
 let arrayOfAllDisplayedSongs = [];
@@ -26,15 +14,14 @@ const previousButton = document.getElementById("previousButton");
 searchButton.addEventListener("click", async () => {
 	currentSongNumber = 0;
 	let artistName = document.getElementById("artistName").value.trim(); // Trim user input
-
 	document.getElementById("artistName").value = artistName; // Show trimmed artist name in text field
-	settings.url = "https://deezerdevs-deezer.p.rapidapi.com/search?q=" + encodeURIComponent(artistName);
+	const result = await fetch(`getData.php?q=${encodeURIComponent(artistName)}`);
+	const apiDataReturned = await result.json();
+	// console.log(apiDataReturned);
 
 	// Display album cover, album name, and song
 	const searchResultsContainer = document.getElementById("searchResultsContainer");
-	const dataResponse = await fetch(settings.url, settings);
-	const response = await dataResponse.json();
-	cachedSongs = response.data; // store locally
+	cachedSongs = apiDataReturned.data; // store locally
 
 	if (artistName !== "") {
 		searchResultsContainer.innerText = ""; // clear previous search results
