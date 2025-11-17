@@ -17,7 +17,6 @@ searchButton.addEventListener("click", async () => {
 	document.getElementById("artistName").value = artistName; // Show trimmed artist name in text field
 	const result = await fetch(`getData.php?q=${encodeURIComponent(artistName)}`);
 	const apiDataReturned = await result.json();
-	// console.log(apiDataReturned);
 
 	// Display album cover, album name, and song
 	const searchResultsContainer = document.getElementById("searchResultsContainer");
@@ -34,10 +33,12 @@ searchButton.addEventListener("click", async () => {
 
 			songContainer.innerHTML = `
 				${albumImage}
-		    	<strong>Track: ${i + 1}</strong><br>
-				<strong class='songTitle'>${cachedSongs[i].title}</strong>
-				Album: ${cachedSongs[i].album.title}<br>
-				By: ${cachedSongs[i].artist.name}`;
+				<p>
+					<strong class='trackNumber'>Track: ${i + 1}</strong><br>
+					<strong class='songTitle'>${cachedSongs[i].title}</strong><br>
+					<span>Album: ${cachedSongs[i].album.title}</span><br>
+					<span>By: ${cachedSongs[i].artist.name}</span>
+				</p>`;
 			searchResultsContainer.append(songContainer);
 		}
 
