@@ -17,7 +17,7 @@
 					<!--search field-->
 					<div class="textFieldContainer">
 						<input id="artistName" type="text" placeholder="Search for an Artist/Album" />
-						<input class="button" id="searchButton" type="button" value="Search" />
+						<input class="button activeButton" id="searchButton" type="button" value="Search" />
 					</div>
 				</div>
 
@@ -34,10 +34,34 @@
 						/>
 					</div>
 					<div id="audioControlContainer">
-						<input class="button fa-input" id="previousButton" type="button" value="&#xf04a;" />
-						<input class="button fa-input" id="pauseButton" type="button" value="&#xf04c;" />
-						<input class="button fa-input" id="playButton" type="button" value="&#xf04b;" />
-						<input class="button fa-input" id="nextButton" type="button" value="&#xf04e;" />
+						<input
+							class="button secondary-button fa-input"
+							id="previousButton"
+							type="button"
+							value="&#xf04a;"
+							aria-label="Previous song"
+						/>
+						<input
+							class="button secondary-button fa-input"
+							id="pauseButton"
+							type="button"
+							value="&#xf04c;"
+							aria-label="Pause song"
+						/>
+						<input
+							class="button secondary-button fa-input"
+							id="playButton"
+							type="button"
+							value="&#xf04b;"
+							aria-label="Play song"
+						/>
+						<input
+							class="button secondary-button fa-input"
+							id="nextButton"
+							type="button"
+							value="&#xf04e;"
+							aria-label="Next song"
+						/>
 					</div>
 				</div>
 			</div>
@@ -47,4 +71,4 @@
 			<script type="text/javascript" src="index.js"></script>
 		</body>
 	</html>
-</DOCTYPE!>
+
