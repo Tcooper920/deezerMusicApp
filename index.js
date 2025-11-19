@@ -2,6 +2,7 @@ const myAudio = new Audio();
 let currentSongNumber = 0;
 let arrayOfAllDisplayedSongs = [];
 let cachedSongs = [];
+let artistName = "";
 const searchButton = document.getElementById("searchButton");
 const currentSongField = document.getElementById("currentSongField");
 const currentSongContainer = document.getElementsByClassName("songContainer");
@@ -13,7 +14,7 @@ const previousButton = document.getElementById("previousButton");
 // Search for an artist with a button click event
 searchButton.addEventListener("click", async () => {
 	currentSongNumber = 0;
-	let artistName = document.getElementById("artistName").value.trim(); // Trim user input
+	artistName = document.getElementById("artistName").value.trim(); // Trim user input
 	document.getElementById("artistName").value = artistName; // Show trimmed artist name in text field
 	const result = await fetch(`getData.php?q=${encodeURIComponent(artistName)}`);
 	const apiDataReturned = await result.json();
@@ -54,7 +55,7 @@ searchButton.addEventListener("click", async () => {
 // Play a song with a button click event
 playButton.addEventListener("click", () => {
 	// If songs haven't been fetched, do not continue...
-	if (!cachedSongs.length) {
+	if (!cachedSongs) {
 		return;
 	}
 	playSongAtIndex(currentSongNumber);
@@ -64,7 +65,7 @@ playButton.addEventListener("click", () => {
 // Go to next song with a button click event
 nextButton.addEventListener("click", () => {
 	// If songs haven't been fetched, do not continue...
-	if (!cachedSongs.length) {
+	if (!cachedSongs) {
 		return;
 	}
 	if (currentSongNumber !== cachedSongs.length - 1) {
@@ -81,7 +82,7 @@ nextButton.addEventListener("click", () => {
 // Go back to previous song with a button click event
 previousButton.addEventListener("click", () => {
 	// If songs haven't been fetched, do not continue...
-	if (!cachedSongs.length) {
+	if (!cachedSongs) {
 		return;
 	}
 	if (currentSongNumber > 0) {
@@ -104,7 +105,7 @@ pauseButton.addEventListener("click", () => {
 // Automatically go to the next song when current song ends
 myAudio.onended = () => {
 	// If songs haven't been fetched, do not continue...
-	if (!cachedSongs.length) {
+	if (!cachedSongs) {
 		return;
 	}
 	if (currentSongNumber !== cachedSongs.length - 1) {
