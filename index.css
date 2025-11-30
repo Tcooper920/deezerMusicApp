@@ -48,6 +48,10 @@ input {
 	border-radius: 0px 0px 70px 70px;
 	-moz-border-radius: 0px 0px 70px 70px;
 	-webkit-border-radius: 0px 0px 70px 70px;
+	background-size: cover;
+	background-position: center;
+	background-blend-mode: multiply;
+	transition: background-image 1s;
 }
 
 .form {
@@ -59,9 +63,9 @@ input {
 	max-width: 45rem;
 	margin: 0 auto;
 	border: 0;
-	-webkit-box-shadow: 0px 0px 9px 1px #71d0bb;
-	-moz-box-shadow: 0px 0px 9px 1px #262626;
-	box-shadow: 0px 0px 9px 1px #262626;
+	-webkit-box-shadow: 0px 0px 9px 1px #26262680;
+	-moz-box-shadow: 0px 0px 9px 1px #26262680;
+	box-shadow: 0px 0px 9px 1px #26262680;
 	border-radius: 10px 10px 10px 10px;
 	-moz-border-radius: 10px 10px 10px 10px;
 	-webkit-border-radius: 10px 10px 10px 10px;
