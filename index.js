@@ -3,6 +3,7 @@ let currentSongNumber = 0;
 let arrayOfAllDisplayedSongs = [];
 let cachedSongs = [];
 let artistName = "";
+const formBackgroundImage = document.getElementsByClassName("formsWrapper")[0];
 const searchButton = document.getElementById("searchButton");
 const currentSongField = document.getElementById("currentSongField");
 const currentSongContainer = document.getElementsByClassName("songContainer");
@@ -22,6 +23,8 @@ searchButton.addEventListener("click", async () => {
 	// Display album cover, album name, and song
 	const searchResultsContainer = document.getElementById("searchResultsContainer");
 	cachedSongs = apiDataReturned.data; // store locally
+
+	changeFormBackgroundToAlbumCover(cachedSongs[0].album.cover_big);
 
 	if (artistName !== "") {
 		searchResultsContainer.innerText = ""; // clear previous search results
@@ -163,4 +166,11 @@ function playSongAtIndex(currentSongNumber) {
 	currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
 	myAudio.src = cachedSongs[currentSongNumber].preview; // set audio src to first track
 	myAudio.play(); // Play audio
+	changeFormBackgroundToAlbumCover(cachedSongs[currentSongNumber].album.cover_big);
+}
+
+// Change form background to album cover for current song that is playing
+function changeFormBackgroundToAlbumCover(thisAlbumCover) {
+	formBackgroundImage.style.backgroundImage = `url("${thisAlbumCover}")`;
+	formBackgroundImage.style.backgroundColor = "#6b6b6b";
 }
