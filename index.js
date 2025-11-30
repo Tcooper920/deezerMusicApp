@@ -155,6 +155,9 @@ function removeActiveSongContainerStyling() {
 
 // Helper function to select song, display song name, and play song
 function playSongAtIndex(currentSongNumber) {
+	if (!currentSongField.value) {
+		return;
+	}
 	currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`; // show current song
 	removeActiveSongContainerStyling(); // Remove active song styling
 	currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
