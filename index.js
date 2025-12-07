@@ -11,6 +11,7 @@ const playButton = document.getElementById("playButton");
 const pauseButton = document.getElementById("pauseButton");
 const nextButton = document.getElementById("nextButton");
 const previousButton = document.getElementById("previousButton");
+let customPlayList = [];
 
 // Search for an artist with a button click event
 searchButton.addEventListener("click", async () => {
@@ -42,7 +43,8 @@ searchButton.addEventListener("click", async () => {
 					<strong class='songTitle'>${cachedSongs[i].title}</strong><br>
 					<span>Album: ${cachedSongs[i].album.title}</span><br>
 					<span>By: ${cachedSongs[i].artist.name}</span>
-				</p>`;
+				</p>
+				<button class='addToPlayListBtn'>+ Add to playlist</button>`;
 			searchResultsContainer.append(songContainer);
 		}
 
@@ -129,6 +131,10 @@ function selectAndPlayClickedSong(event) {
 	if (!cachedSongs) {
 		return;
 	}
+	// If user is clicking "Add to playlist" button, don't play the song...
+	if (event.target.classList.contains("addToPlayListBtn")) {
+		return;
+	}
 	if (
 		event.target.closest(".songContainer") &&
 		(event.type === "click" || (event.type === "keydown" && event.key === "Enter"))
@@ -174,3 +180,17 @@ function changeFormBackgroundToAlbumCover(thisAlbumCover) {
 	formBackgroundImage.style.backgroundImage = `url("${thisAlbumCover}")`;
 	formBackgroundImage.style.backgroundColor = "#6b6b6b";
 }
+
+// Adding songs to a custom playlist
+document.addEventListener("click", (event) => {
+	if (event.target.classList.contains("addToPlayListBtn")) {
+		const allButtonsOnPage = document.querySelectorAll(".addToPlayListBtn");
+		const indexOfButtonClicked = [...allButtonsOnPage].indexOf(event.target);
+
+		// Push selected song to custom playlist array if song hasn't been added already
+		if (!customPlayList.includes(cachedSongs[indexOfButtonClicked])) {
+			customPlayList.push(cachedSongs[indexOfButtonClicked]);
+			console.log(customPlayList);
+		}
+	}
+});

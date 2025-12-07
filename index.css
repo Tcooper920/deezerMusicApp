@@ -90,6 +90,34 @@ input {
 	-webkit-border-radius: 5px 5px 5px 5px;
 }
 
+.songContainer:hover:has(.addToPlayListBtn:hover) {
+	background-color: white;
+}
+
+.addToPlayListBtn {
+	width: fit-content;
+	padding: 0.25rem 0.5rem 0.2rem 0.5rem;
+	margin-top: 1rem;
+	color: #58a593;
+	border: 0.15rem solid #58a593;
+	background-color: white;
+	cursor: pointer;
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+}
+
+.addToPlayListBtn:hover {
+	background-color: #58a593;
+	color: white;
+}
+
+.addToPlayListBtn:active {
+	background-color: #306c5e;
+	border-color: #306c5e;
+	color: white;
+}
+
 .secondary-button {
 	color: #58a593;
 	border: 0.15rem solid #58a593;
