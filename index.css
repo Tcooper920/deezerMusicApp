@@ -197,11 +197,14 @@ input {
 	background-color: #2579bb;
 }
 
+.buttonContainer {
+	padding-top: 25rem;
+}
+
 /* dynamically generated content styling (albums section) **********************************************************/
 
 #searchResultsContainer {
 	background-color: white;
-	padding-top: 25rem;
 	padding-bottom: 5rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
