@@ -51,8 +51,10 @@ function printSongListToPage(arrayOfSongs) {
 					<strong class='songTitle'>${arrayOfSongs[i].title}</strong><br>
 					<span>Album: ${arrayOfSongs[i].album.title}</span><br>
 					<span>By: ${arrayOfSongs[i].artist.name}</span>
-				</p>
-				<button class='addToPlayListBtn'>+ Add to playlist</button>`;
+				</p>`;
+			if (isUserViewingCustomPlayList === false) {
+				songContainer.innerHTML += `<button class='addToPlayListBtn'>+ Add to playlist</button>`;
+			}
 			searchResultsContainer.append(songContainer);
 		}
 
@@ -68,63 +70,60 @@ function printSongListToPage(arrayOfSongs) {
 // Play a song with a button click event
 playButton.addEventListener("click", () => {
 	// If songs haven't been fetched, do not continue...
-	if (!cachedSongs && !customPlayList) {
-		return;
+	if (currentSongContainer.length !== 0) {
+		playSongAtIndex(currentSongNumber);
+		setPlayingState(true);
 	}
-	playSongAtIndex(currentSongNumber);
-	setPlayingState(true);
 });
 
 // Go to next song with a button click event
 nextButton.addEventListener("click", () => {
 	// If songs haven't been fetched, do not continue...
-	if (!cachedSongs && !customPlayList) {
-		return;
-	}
-	if (isUserViewingCustomPlayList === false) {
-		if (currentSongNumber !== cachedSongs.length - 1) {
-			// If not at last song...
-			currentSongNumber += 1;
-		} else {
-			// If at last song, start from beginning...
-			currentSongNumber = 0;
+	if (currentSongContainer.length !== 0) {
+		if (isUserViewingCustomPlayList === false) {
+			if (currentSongNumber !== cachedSongs.length - 1) {
+				// If not at last song...
+				currentSongNumber += 1;
+			} else {
+				// If at last song, start from beginning...
+				currentSongNumber = 0;
+			}
 		}
-	}
-	if (isUserViewingCustomPlayList === true) {
-		if (currentSongNumber !== customPlayList.length - 1) {
-			// If not at last song...
-			currentSongNumber += 1;
-		} else {
-			// If at last song, start from beginning...
-			currentSongNumber = 0;
+		if (isUserViewingCustomPlayList === true) {
+			if (currentSongNumber !== customPlayList.length - 1) {
+				// If not at last song...
+				currentSongNumber += 1;
+			} else {
+				// If at last song, start from beginning...
+				currentSongNumber = 0;
+			}
 		}
+		playSongAtIndex(currentSongNumber);
+		setPlayingState(true);
 	}
-	playSongAtIndex(currentSongNumber);
-	setPlayingState(true);
 });
 
 // Go back to previous song with a button click event
 previousButton.addEventListener("click", () => {
 	// If songs haven't been fetched, do not continue...
-	if (!cachedSongs && !customPlayList) {
-		return;
-	}
-	if (isUserViewingCustomPlayList === false) {
-		if (currentSongNumber > 0) {
-			currentSongNumber -= 1;
-		} else {
-			currentSongNumber = cachedSongs.length - 1;
+	if (currentSongContainer.length !== 0) {
+		if (isUserViewingCustomPlayList === false) {
+			if (currentSongNumber > 0) {
+				currentSongNumber -= 1;
+			} else {
+				currentSongNumber = cachedSongs.length - 1;
+			}
 		}
-	}
-	if (isUserViewingCustomPlayList === true) {
-		if (currentSongNumber > 0) {
-			currentSongNumber -= 1;
-		} else {
-			currentSongNumber = customPlayList.length - 1;
+		if (isUserViewingCustomPlayList === true) {
+			if (currentSongNumber > 0) {
+				currentSongNumber -= 1;
+			} else {
+				currentSongNumber = customPlayList.length - 1;
+			}
 		}
+		playSongAtIndex(currentSongNumber);
+		setPlayingState(true);
 	}
-	playSongAtIndex(currentSongNumber);
-	setPlayingState(true);
 });
 
 // Pause song with a button click event
@@ -237,7 +236,6 @@ document.addEventListener("click", (event) => {
 		// Push selected song to custom playlist array if song hasn't been added already
 		if (!customPlayList.includes(cachedSongs[indexOfButtonClicked])) {
 			customPlayList.push(cachedSongs[indexOfButtonClicked]);
-			console.log(customPlayList);
 		}
 	}
 });
