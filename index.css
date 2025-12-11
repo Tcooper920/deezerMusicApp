@@ -20,6 +20,10 @@ input {
 	font-family: FontAwesome, "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 
+.fa.fa-check {
+	margin-left: 0.5rem;
+}
+
 /* placeholder text styling */
 ::placeholder {
 	/* Chrome, Firefox, Opera, Safari 10.1+ */
