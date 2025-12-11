@@ -53,7 +53,12 @@ function printSongListToPage(arrayOfSongs) {
 					<span>By: ${arrayOfSongs[i].artist.name}</span>
 				</p>`;
 			if (isUserViewingCustomPlayList === false) {
-				songContainer.innerHTML += `<button class='addToPlayListBtn'>+ Add to playlist</button>`;
+				// If song is already added to playlist, show the checkmark. Otherwise, show the standard button.
+				if (!customPlayList.includes(arrayOfSongs[i])) {
+					songContainer.innerHTML += `<button class='addToPlayListBtn'>+ Add to playlist</button>`;
+				} else {
+					songContainer.innerHTML += `<button class="addToPlayListBtn activeButton">Added<span><i class="fa fa-check"></i></span></button>`;
+				}
 			}
 			searchResultsContainer.append(songContainer);
 		}
@@ -237,6 +242,11 @@ document.addEventListener("click", (event) => {
 		if (!customPlayList.includes(cachedSongs[indexOfButtonClicked])) {
 			customPlayList.push(cachedSongs[indexOfButtonClicked]);
 		}
+		event.target.innerText = `Added`;
+		event.target.classList.add("activeButton");
+		const checkMarkIcon = document.createElement("span");
+		checkMarkIcon.innerHTML = `<i class="fa fa-check"></i>`;
+		event.target.append(checkMarkIcon);
 	}
 });
 
