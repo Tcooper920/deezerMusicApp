@@ -31,6 +31,8 @@ searchButton.addEventListener("click", async () => {
 
 	// Display album cover, album name, and song
 	printSongListToPage(cachedSongs);
+
+	setPlaylistButtonState(true);
 });
 
 // Print list of songs to page
@@ -195,6 +197,12 @@ function setPlayingState(isPlaying) {
 	pauseButton.classList.toggle("activeButton", !isPlaying);
 }
 
+// Helper function to set "Search results" and "Custom playlist" button styling
+function setPlaylistButtonState(isActive) {
+	searchPlayListButton.classList.toggle("activeButton", isActive);
+	customPlayListButton.classList.toggle("activeButton", !isActive);
+}
+
 // Remove active song styling
 function removeActiveSongContainerStyling() {
 	let currentSongContainerArray = [...currentSongContainer];
@@ -257,6 +265,7 @@ searchPlayListButton.addEventListener("click", () => {
 		currentSongNumber = 0;
 		changeFormBackgroundToAlbumCover(cachedSongs[0].album.cover_big);
 		printSongListToPage(cachedSongs);
+		setPlaylistButtonState(true);
 	}
 });
 
@@ -267,5 +276,6 @@ customPlayListButton.addEventListener("click", () => {
 		currentSongNumber = 0;
 		changeFormBackgroundToAlbumCover(customPlayList[0].album.cover_big);
 		printSongListToPage(customPlayList);
+		setPlaylistButtonState(false);
 	}
 });
