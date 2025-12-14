@@ -31,7 +31,7 @@ searchButton.addEventListener("click", async () => {
 
 	// Display album cover, album name, and song
 	printSongListToPage(cachedSongs);
-
+	removeActiveSongContainerStyling();
 	setPlaylistButtonState(true);
 });
 
@@ -245,6 +245,7 @@ searchPlayListButton.addEventListener("click", () => {
 		printSongListToPage(cachedSongs);
 		setPlaylistButtonState(true);
 	}
+	removeActiveSongContainerStyling();
 });
 
 // Show custom playlist songs
@@ -256,4 +257,5 @@ customPlayListButton.addEventListener("click", () => {
 		printSongListToPage(customPlayList);
 		setPlaylistButtonState(false);
 	}
+	removeActiveSongContainerStyling();
 });
