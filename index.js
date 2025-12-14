@@ -85,52 +85,30 @@ playButton.addEventListener("click", () => {
 
 // Go to next song with a button click event
 nextButton.addEventListener("click", () => {
-	// If songs haven't been fetched, do not continue...
-	if (currentSongContainer.length !== 0) {
-		if (isUserViewingCustomPlayList === false) {
-			if (currentSongNumber !== cachedSongs.length - 1) {
-				// If not at last song...
-				currentSongNumber += 1;
-			} else {
-				// If at last song, start from beginning...
-				currentSongNumber = 0;
-			}
-		}
-		if (isUserViewingCustomPlayList === true) {
-			if (currentSongNumber !== customPlayList.length - 1) {
-				// If not at last song...
-				currentSongNumber += 1;
-			} else {
-				// If at last song, start from beginning...
-				currentSongNumber = 0;
-			}
-		}
-		playSongAtIndex(currentSongNumber);
-		setPlayingState(true);
+	if (!currentSongContainer.length) {
+		return;
 	}
+
+	const playlistType = isUserViewingCustomPlayList ? customPlayList : cachedSongs;
+
+	currentSongNumber = currentSongNumber < playlistType.length - 1 ? currentSongNumber + 1 : 0;
+
+	playSongAtIndex(currentSongNumber);
+	setPlayingState(true);
 });
 
 // Go back to previous song with a button click event
 previousButton.addEventListener("click", () => {
-	// If songs haven't been fetched, do not continue...
-	if (currentSongContainer.length !== 0) {
-		if (isUserViewingCustomPlayList === false) {
-			if (currentSongNumber > 0) {
-				currentSongNumber -= 1;
-			} else {
-				currentSongNumber = cachedSongs.length - 1;
-			}
-		}
-		if (isUserViewingCustomPlayList === true) {
-			if (currentSongNumber > 0) {
-				currentSongNumber -= 1;
-			} else {
-				currentSongNumber = customPlayList.length - 1;
-			}
-		}
-		playSongAtIndex(currentSongNumber);
-		setPlayingState(true);
+	if (!currentSongContainer.length) {
+		return;
 	}
+
+	const playlistType = isUserViewingCustomPlayList ? customPlayList : cachedSongs;
+
+	currentSongNumber = currentSongNumber > 0 ? currentSongNumber - 1 : playlistType.length - 1;
+
+	playSongAtIndex(currentSongNumber);
+	setPlayingState(true);
 });
 
 // Pause song with a button click event
