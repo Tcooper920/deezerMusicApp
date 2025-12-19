@@ -18,9 +18,12 @@ let isUserViewingCustomPlayList = false;
 
 // Search for an artist with a button click event and print song list to page
 searchButton.addEventListener("click", async () => {
+	artistName = document.getElementById("artistName").value.trim(); // Trim user input
+	if (artistName === "") {
+		return;
+	}
 	isUserViewingCustomPlayList = false;
 	currentSongNumber = 0;
-	artistName = document.getElementById("artistName").value.trim(); // Trim user input
 	document.getElementById("artistName").value = artistName; // Show trimmed artist name in text field
 	const result = await fetch(`getData.php?q=${encodeURIComponent(artistName)}`);
 	const apiDataReturned = await result.json();
@@ -37,20 +40,22 @@ searchButton.addEventListener("click", async () => {
 	printSongListToPage(cachedSongs);
 	removeActiveSongContainerStyling();
 	setPlaylistButtonState(true);
+
+	// Highlight first song in list
+	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 });
 
 // Print list of songs to page
 function printSongListToPage(arrayOfSongs) {
-	if (artistName !== "") {
-		searchResultsContainer.innerText = "";
+	searchResultsContainer.innerText = "";
 
-		for (let i = 0; i < arrayOfSongs.length; i++) {
-			const songContainer = document.createElement("DIV");
-			songContainer.setAttribute("tabindex", 0);
-			songContainer.classList.add("songContainer");
-			const albumImage = `<img class="albumCover" src="${arrayOfSongs[i].album.cover_big}"/>`;
+	for (let i = 0; i < arrayOfSongs.length; i++) {
+		const songContainer = document.createElement("DIV");
+		songContainer.setAttribute("tabindex", 0);
+		songContainer.classList.add("songContainer");
+		const albumImage = `<img class="albumCover" src="${arrayOfSongs[i].album.cover_big}"/>`;
 
-			songContainer.innerHTML = `
+		songContainer.innerHTML = `
 				${albumImage}
 				<p>
 					<strong class='trackNumber'>Track: ${i + 1}</strong><br>
@@ -58,24 +63,23 @@ function printSongListToPage(arrayOfSongs) {
 					<span>Album: ${arrayOfSongs[i].album.title}</span><br>
 					<span>By: ${arrayOfSongs[i].artist.name}</span>
 				</p>`;
-			if (isUserViewingCustomPlayList === false) {
-				// If song is already added to playlist, show the checkmark. Otherwise, show the standard button.
-				if (!customPlayList.some((song) => song.id === arrayOfSongs[i].id)) {
-					songContainer.innerHTML += `<button class='addToPlayListBtn'>+ Add to playlist</button>`;
-				} else {
-					songContainer.innerHTML += `<button class="addToPlayListBtn activeButton">Added<span><i class="fa fa-check"></i></span></button>`;
-				}
+		if (isUserViewingCustomPlayList === false) {
+			// If song is already added to playlist, show the checkmark. Otherwise, show the standard button.
+			if (!customPlayList.some((song) => song.id === arrayOfSongs[i].id)) {
+				songContainer.innerHTML += `<button class='addToPlayListBtn'>+ Add to playlist</button>`;
+			} else {
+				songContainer.innerHTML += `<button class="addToPlayListBtn activeButton">Added<span><i class="fa fa-check"></i></span></button>`;
 			}
-			searchResultsContainer.append(songContainer);
 		}
-
-		currentSongField.value = `Track ${currentSongNumber + 1}: ${arrayOfSongs[currentSongNumber].title}`; // show current song
-		removeActiveSongContainerStyling(); // Remove active song styling
-		currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
-		myAudio.src = arrayOfSongs[currentSongNumber].preview; // set audio src to first track
-		myAudio.pause(); // Pause audio
-		setPlayingState(false); // Highlight pause button
+		searchResultsContainer.append(songContainer);
 	}
+
+	currentSongField.value = `Track ${currentSongNumber + 1}: ${arrayOfSongs[currentSongNumber].title}`; // show current song
+	removeActiveSongContainerStyling(); // Remove active song styling
+	currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
+	myAudio.src = arrayOfSongs[currentSongNumber].preview; // set audio src to first track
+	myAudio.pause(); // Pause audio
+	setPlayingState(false); // Highlight pause button
 }
 
 // Play a song with a button click event
@@ -218,25 +222,39 @@ document.addEventListener("click", (event) => {
 });
 
 // Show search songs
-searchPlayListButton.addEventListener("click", () => {
+searchPlayListButton.addEventListener("click", (event) => {
+	if (event.target.classList.contains("activeButton")) {
+		return;
+	}
 	if (cachedSongs.length > 0) {
 		isUserViewingCustomPlayList = false;
 		currentSongNumber = 0;
+		myAudio.pause();
+		setPlayingState(false);
 		changeFormBackgroundToAlbumCover(cachedSongs[0].album.cover_big);
 		printSongListToPage(cachedSongs);
 		setPlaylistButtonState(true);
+		removeActiveSongContainerStyling();
+		// Highlight first song in list
+		currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 	}
-	removeActiveSongContainerStyling();
 });
 
 // Show custom playlist songs
-customPlayListButton.addEventListener("click", () => {
+customPlayListButton.addEventListener("click", (event) => {
+	if (event.target.classList.contains("activeButton")) {
+		return;
+	}
 	if (customPlayList.length > 0) {
 		isUserViewingCustomPlayList = true;
 		currentSongNumber = 0;
+		myAudio.pause();
+		setPlayingState(false);
 		changeFormBackgroundToAlbumCover(customPlayList[0].album.cover_big);
 		printSongListToPage(customPlayList);
 		setPlaylistButtonState(false);
+		removeActiveSongContainerStyling();
+		// Highlight first song in list
+		currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 	}
-	removeActiveSongContainerStyling();
 });
