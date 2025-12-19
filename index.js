@@ -60,7 +60,7 @@ function printSongListToPage(arrayOfSongs) {
 				</p>`;
 			if (isUserViewingCustomPlayList === false) {
 				// If song is already added to playlist, show the checkmark. Otherwise, show the standard button.
-				if (!customPlayList.includes(arrayOfSongs[i])) {
+				if (!customPlayList.some((song) => song.id === arrayOfSongs[i].id)) {
 					songContainer.innerHTML += `<button class='addToPlayListBtn'>+ Add to playlist</button>`;
 				} else {
 					songContainer.innerHTML += `<button class="addToPlayListBtn activeButton">Added<span><i class="fa fa-check"></i></span></button>`;
@@ -206,7 +206,7 @@ document.addEventListener("click", (event) => {
 		const indexOfButtonClicked = [...allButtonsOnPage].indexOf(event.target);
 
 		// Push selected song to custom playlist array if song hasn't been added already
-		if (!customPlayList.includes(cachedSongs[indexOfButtonClicked])) {
+		if (!customPlayList.some((song) => song.id === cachedSongs[indexOfButtonClicked].id)) {
 			customPlayList.push(cachedSongs[indexOfButtonClicked]);
 		}
 		event.target.innerText = `Added`;
