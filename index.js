@@ -134,7 +134,7 @@ document.addEventListener("keydown", selectAndPlayClickedSong);
 
 function selectAndPlayClickedSong(event) {
 	// If songs haven't been fetched, do not continue...
-	if (!cachedSongs && !customPlayList) {
+	if (!cachedSongs.length && !customPlayList.length) {
 		return;
 	}
 	// If user is clicking "Add to playlist" button, don't play the song...
