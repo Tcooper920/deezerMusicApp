@@ -1,9 +1,7 @@
 const myAudio = new Audio();
 let currentSongNumber = 0;
-let arrayOfAllDisplayedSongs = [];
 let cachedSongs = [];
 let customPlayList = [];
-let artistName = "";
 let isUserViewingCustomPlayList = false;
 const formBackgroundImage = document.getElementsByClassName("formsWrapper")[0];
 const searchButton = document.getElementById("searchButton");
@@ -18,14 +16,14 @@ const customPlayListButton = document.getElementById("viewCustomPlayListBtn");
 
 // Search for an artist with a button click event and print song list to page
 searchButton.addEventListener("click", async () => {
-	artistName = document.getElementById("artistName").value.trim(); // Trim user input
-	if (artistName === "") {
+	const artistNameInput = document.getElementById("artistName").value.trim(); // Trim user input
+	if (artistNameInput === "") {
 		return;
 	}
 	isUserViewingCustomPlayList = false;
 	currentSongNumber = 0;
-	document.getElementById("artistName").value = artistName; // Show trimmed artist name in text field
-	const result = await fetch(`getData.php?q=${encodeURIComponent(artistName)}`);
+	document.getElementById("artistName").value = artistNameInput; // Show trimmed artist name in text field
+	const result = await fetch(`getData.php?q=${encodeURIComponent(artistNameInput)}`);
 	const apiDataReturned = await result.json();
 	const searchResultsContainer = document.getElementById("searchResultsContainer");
 	cachedSongs = apiDataReturned.data ?? []; // store locally
@@ -153,7 +151,7 @@ function selectAndPlayClickedSong(event) {
 		event.target.closest(".songContainer") &&
 		(event.type === "click" || (event.type === "keydown" && event.key === "Enter"))
 	) {
-		arrayOfAllDisplayedSongs = [...document.getElementsByClassName("songContainer")];
+		const arrayOfAllDisplayedSongs = [...document.getElementsByClassName("songContainer")];
 		const indexOfClickedSong = arrayOfAllDisplayedSongs.indexOf(event.target.closest(".songContainer"));
 		currentSongNumber = indexOfClickedSong;
 		playSongAtIndex(currentSongNumber);
