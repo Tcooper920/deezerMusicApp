@@ -85,30 +85,17 @@ playButton.addEventListener("click", () => {
 
 // Go to next song with a button click event
 nextButton.addEventListener("click", () => {
-	if (!currentSongContainer.length) {
-		return;
-	}
-
-	const playlistType = isUserViewingCustomPlayList ? customPlayList : cachedSongs;
-
-	currentSongNumber = currentSongNumber < playlistType.length - 1 ? currentSongNumber + 1 : 0;
-
-	playSongAtIndex(currentSongNumber);
-	setPlayingState(true);
+	playNextSong();
 });
+
+// Automatically go to the next song when current song ends
+myAudio.onended = () => {
+	playNextSong();
+};
 
 // Go back to previous song with a button click event
 previousButton.addEventListener("click", () => {
-	if (!currentSongContainer.length) {
-		return;
-	}
-
-	const playlistType = isUserViewingCustomPlayList ? customPlayList : cachedSongs;
-
-	currentSongNumber = currentSongNumber > 0 ? currentSongNumber - 1 : playlistType.length - 1;
-
-	playSongAtIndex(currentSongNumber);
-	setPlayingState(true);
+	playPreviousSong();
 });
 
 // Pause song with a button click event
@@ -119,29 +106,27 @@ pauseButton.addEventListener("click", () => {
 	}
 });
 
-// Automatically go to the next song when current song ends
-myAudio.onended = () => {
-	// If songs haven't been fetched, do not continue...
-	if (!cachedSongs && !customPlayList) {
+// Play next song
+function playNextSong() {
+	if (!currentSongContainer.length) {
 		return;
 	}
-	if (isUserViewingCustomPlayList === false) {
-		if (currentSongNumber !== cachedSongs.length - 1) {
-			currentSongNumber += 1;
-		} else {
-			currentSongNumber = 0;
-		}
-	}
-	if (isUserViewingCustomPlayList === true) {
-		if (currentSongNumber !== customPlayList.length - 1) {
-			currentSongNumber += 1;
-		} else {
-			currentSongNumber = 0;
-		}
-	}
+	const playlistType = isUserViewingCustomPlayList ? customPlayList : cachedSongs;
+	currentSongNumber = currentSongNumber < playlistType.length - 1 ? currentSongNumber + 1 : 0;
 	playSongAtIndex(currentSongNumber);
 	setPlayingState(true);
-};
+}
+
+// Play previous song
+function playPreviousSong() {
+	if (!currentSongContainer.length) {
+		return;
+	}
+	const playlistType = isUserViewingCustomPlayList ? customPlayList : cachedSongs;
+	currentSongNumber = currentSongNumber > 0 ? currentSongNumber - 1 : playlistType.length - 1;
+	playSongAtIndex(currentSongNumber);
+	setPlayingState(true);
+}
 
 // Play song when user clicks an album song thumbnail
 document.addEventListener("click", selectAndPlayClickedSong);
