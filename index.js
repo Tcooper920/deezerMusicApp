@@ -25,7 +25,11 @@ searchButton.addEventListener("click", async () => {
 	const result = await fetch(`getData.php?q=${encodeURIComponent(artistName)}`);
 	const apiDataReturned = await result.json();
 	const searchResultsContainer = document.getElementById("searchResultsContainer");
-	cachedSongs = apiDataReturned.data; // store locally
+	cachedSongs = apiDataReturned.data ?? []; // store locally
+
+	if (cachedSongs.length === 0) {
+		return;
+	}
 
 	changeFormBackgroundToAlbumCover(cachedSongs[0].album.cover_big);
 
