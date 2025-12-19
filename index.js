@@ -4,6 +4,7 @@ let arrayOfAllDisplayedSongs = [];
 let cachedSongs = [];
 let customPlayList = [];
 let artistName = "";
+let isUserViewingCustomPlayList = false;
 const formBackgroundImage = document.getElementsByClassName("formsWrapper")[0];
 const searchButton = document.getElementById("searchButton");
 const currentSongField = document.getElementById("currentSongField");
@@ -14,7 +15,6 @@ const nextButton = document.getElementById("nextButton");
 const previousButton = document.getElementById("previousButton");
 const searchPlayListButton = document.getElementById("viewSearchPlayListBtn");
 const customPlayListButton = document.getElementById("viewCustomPlayListBtn");
-let isUserViewingCustomPlayList = false;
 
 // Search for an artist with a button click event and print song list to page
 searchButton.addEventListener("click", async () => {
@@ -226,18 +226,7 @@ searchPlayListButton.addEventListener("click", (event) => {
 	if (event.target.classList.contains("activeButton")) {
 		return;
 	}
-	if (cachedSongs.length > 0) {
-		isUserViewingCustomPlayList = false;
-		currentSongNumber = 0;
-		myAudio.pause();
-		setPlayingState(false);
-		changeFormBackgroundToAlbumCover(cachedSongs[0].album.cover_big);
-		printSongListToPage(cachedSongs);
-		setPlaylistButtonState(true);
-		removeActiveSongContainerStyling();
-		// Highlight first song in list
-		currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
-	}
+	loadPlaylist(cachedSongs, "searchPlaylist");
 });
 
 // Show custom playlist songs
@@ -245,16 +234,31 @@ customPlayListButton.addEventListener("click", (event) => {
 	if (event.target.classList.contains("activeButton")) {
 		return;
 	}
-	if (customPlayList.length > 0) {
-		isUserViewingCustomPlayList = true;
-		currentSongNumber = 0;
-		myAudio.pause();
-		setPlayingState(false);
-		changeFormBackgroundToAlbumCover(customPlayList[0].album.cover_big);
-		printSongListToPage(customPlayList);
-		setPlaylistButtonState(false);
-		removeActiveSongContainerStyling();
-		// Highlight first song in list
-		currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
-	}
+	loadPlaylist(customPlayList, "customPlaylist");
 });
+
+// Helper function to load the selected playlist (Search result playlist or user's custom playlist)
+function loadPlaylist(songs, playlistType) {
+	if (!songs.length) {
+		return;
+	}
+
+	if (playlistType === "searchPlaylist") {
+		setPlaylistButtonState(true);
+		isUserViewingCustomPlayList = false;
+	} else {
+		setPlaylistButtonState(false);
+		isUserViewingCustomPlayList = true;
+	}
+
+	currentSongNumber = 0;
+
+	myAudio.pause();
+	setPlayingState(false);
+
+	printSongListToPage(songs);
+	changeFormBackgroundToAlbumCover(songs[0].album.cover_big);
+
+	removeActiveSongContainerStyling();
+	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
+}
