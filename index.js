@@ -176,25 +176,17 @@ function removeActiveSongContainerStyling() {
 
 // Helper function to select song, display song name, and play song
 function playSongAtIndex(currentSongNumber) {
-	if (!currentSongField.value) {
+	const playlist = isUserViewingCustomPlayList ? customPlayList : cachedSongs;
+	if (!playlist[currentSongNumber]) {
 		return;
 	}
-	if (isUserViewingCustomPlayList === false) {
-		currentSongField.value = `Track ${currentSongNumber + 1}: ${cachedSongs[currentSongNumber].title}`; // show current song
-		removeActiveSongContainerStyling(); // Remove active song styling
-		currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
-		myAudio.src = cachedSongs[currentSongNumber].preview; // set audio src to first track
-		myAudio.play(); // Play audio
-		changeFormBackgroundToAlbumCover(cachedSongs[currentSongNumber].album.cover_big);
-	}
-	if (isUserViewingCustomPlayList === true) {
-		currentSongField.value = `Track ${currentSongNumber + 1}: ${customPlayList[currentSongNumber].title}`; // show current song
-		removeActiveSongContainerStyling(); // Remove active song styling
-		currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
-		myAudio.src = customPlayList[currentSongNumber].preview; // set audio src to first track
-		myAudio.play(); // Play audio
-		changeFormBackgroundToAlbumCover(customPlayList[currentSongNumber].album.cover_big);
-	}
+
+	currentSongField.value = `Track ${currentSongNumber + 1}: ${playlist[currentSongNumber].title}`; // show current song
+	removeActiveSongContainerStyling(); // Remove active song styling
+	currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
+	myAudio.src = playlist[currentSongNumber].preview; // set audio src to first track
+	myAudio.play(); // Play audio
+	changeFormBackgroundToAlbumCover(playlist[currentSongNumber].album.cover_big);
 }
 
 // Change form background to album cover for current song that is playing
