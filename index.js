@@ -48,27 +48,32 @@ function printSongListToPage(arrayOfSongs) {
 	searchResultsContainer.innerText = "";
 
 	for (let i = 0; i < arrayOfSongs.length; i++) {
+		const song = arrayOfSongs[i];
 		const songContainer = document.createElement("DIV");
 		songContainer.setAttribute("tabindex", 0);
 		songContainer.classList.add("songContainer");
-		const albumImage = `<img class="albumCover" src="${arrayOfSongs[i].album.cover_big}"/>`;
+		const albumImage = `<img class="albumCover" src="${song.album.cover_big}"/>`;
+		let addOrAddedToPlayListButton = "";
 
-		songContainer.innerHTML = `
-				${albumImage}
-				<p>
-					<strong class='trackNumber'>Track: ${i + 1}</strong><br>
-					<strong class='songTitle'>${arrayOfSongs[i].title}</strong><br>
-					<span>Album: ${arrayOfSongs[i].album.title}</span><br>
-					<span>By: ${arrayOfSongs[i].artist.name}</span>
-				</p>`;
 		if (isUserViewingCustomPlayList === false) {
 			// If song is already added to playlist, show the checkmark. Otherwise, show the standard button.
-			if (!customPlayList.some((song) => song.id === arrayOfSongs[i].id)) {
-				songContainer.innerHTML += `<button class='addToPlayListBtn'>+ Add to playlist</button>`;
+			if (!customPlayList.some((playListSong) => playListSong.id === song.id)) {
+				addOrAddedToPlayListButton = `<button class="addToPlayListBtn">+ Add to playlist</button>`;
 			} else {
-				songContainer.innerHTML += `<button class="addToPlayListBtn activeButton">Added<span><i class="fa fa-check"></i></span></button>`;
+				addOrAddedToPlayListButton = `<button class="addToPlayListBtn activeButton">Added<span><i class="fa fa-check"></i></span></button>`;
 			}
 		}
+
+		songContainer.innerHTML = `
+			${albumImage}
+			<p>
+				<strong class='trackNumber'>Track: ${i + 1}</strong><br>
+				<strong class='songTitle'>${song.title}</strong><br>
+				<span>Album: ${song.album.title}</span><br>
+				<span>By: ${song.artist.name}</span>
+			</p>
+			${addOrAddedToPlayListButton}`;
+
 		searchResultsContainer.append(songContainer);
 	}
 
