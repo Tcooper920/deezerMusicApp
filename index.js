@@ -90,19 +90,13 @@ playButton.addEventListener("click", () => {
 });
 
 // Go to next song with a button click event
-nextButton.addEventListener("click", () => {
-	playNextSong();
-});
-
-// Automatically go to the next song when current song ends
-myAudio.onended = () => {
-	playNextSong();
-};
+nextButton.addEventListener("click", playNextSong);
 
 // Go back to previous song with a button click event
-previousButton.addEventListener("click", () => {
-	playPreviousSong();
-});
+previousButton.addEventListener("click", playPreviousSong);
+
+// Automatically go to the next song when current song ends
+myAudio.onended = playNextSong;
 
 // Pause song with a button click event
 pauseButton.addEventListener("click", () => {
