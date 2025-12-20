@@ -1,18 +1,22 @@
+import { getDomSelectors } from "./includes/domSelectors.js";
 const myAudio = new Audio();
-let currentSongNumber = 0;
 let cachedSongs = [];
 let customPlayList = [];
+let currentSongNumber = 0;
 let isUserViewingCustomPlayList = false;
-const formBackgroundImage = document.getElementsByClassName("formsWrapper")[0];
-const searchButton = document.getElementById("searchButton");
-const currentSongField = document.getElementById("currentSongField");
-const currentSongContainer = document.getElementsByClassName("songContainer");
-const playButton = document.getElementById("playButton");
-const pauseButton = document.getElementById("pauseButton");
-const nextButton = document.getElementById("nextButton");
-const previousButton = document.getElementById("previousButton");
-const searchPlayListButton = document.getElementById("viewSearchPlayListBtn");
-const customPlayListButton = document.getElementById("viewCustomPlayListBtn");
+// Imported DOM selectors
+const {
+	formBackgroundImage,
+	searchButton,
+	currentSongField,
+	currentSongContainer,
+	playButton,
+	pauseButton,
+	nextButton,
+	previousButton,
+	searchPlayListButton,
+	customPlayListButton,
+} = getDomSelectors();
 
 // Search for an artist with a button click event and print song list to page
 searchButton.addEventListener("click", async () => {
