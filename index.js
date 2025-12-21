@@ -41,11 +41,8 @@ searchButton.addEventListener("click", async () => {
 
 	// Display album cover, album name, and song
 	printSongListToPage(cachedSongs);
-	removeActiveSongContainerStyling();
+	highlightCurrentSong();
 	setPlaylistButtonState(true);
-
-	// Highlight first song in list
-	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 });
 
 // Print list of songs to page
@@ -83,8 +80,7 @@ function printSongListToPage(arrayOfSongs) {
 	}
 
 	currentSongField.value = `Track ${currentSongNumber + 1}: ${arrayOfSongs[currentSongNumber].title}`; // show current song
-	removeActiveSongContainerStyling(); // Remove active song styling
-	currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
+	highlightCurrentSong();
 	myAudio.src = arrayOfSongs[currentSongNumber].preview; // set audio src to first track
 	myAudio.pause(); // Pause audio
 	setPlayingState(false); // Highlight pause button
@@ -176,14 +172,6 @@ function setPlaylistButtonState(isActive) {
 	customPlayListButton.classList.toggle("activeButton", !isActive);
 }
 
-// Remove active song styling
-function removeActiveSongContainerStyling() {
-	let currentSongContainerArray = [...currentSongContainer];
-	currentSongContainerArray.forEach((song) => {
-		song.classList.remove("activeSongContainer");
-	});
-}
-
 // Helper function to select song, display song name, and play song
 function playSongAtIndex(currentSongNumber) {
 	const playlist = getCurrentPlaylist();
@@ -192,8 +180,7 @@ function playSongAtIndex(currentSongNumber) {
 	}
 
 	currentSongField.value = `Track ${currentSongNumber + 1}: ${playlist[currentSongNumber].title}`; // show current song
-	removeActiveSongContainerStyling(); // Remove active song styling
-	currentSongContainer[currentSongNumber].classList.add("activeSongContainer"); // Highlight active song
+	highlightCurrentSong();
 	myAudio.src = playlist[currentSongNumber].preview; // set audio src to first track
 	myAudio.play(); // Play audio
 	changeFormBackgroundToAlbumCover(playlist[currentSongNumber].album.cover_big);
@@ -266,6 +253,19 @@ function loadPlaylist(songs, playlistType) {
 	printSongListToPage(songs);
 	changeFormBackgroundToAlbumCover(songs[0].album.cover_big);
 
+	highlightCurrentSong();
+}
+
+// Helper function to remove active song styling
+function removeActiveSongContainerStyling() {
+	let currentSongContainerArray = [...currentSongContainer];
+	currentSongContainerArray.forEach((song) => {
+		song.classList.remove("activeSongContainer");
+	});
+}
+
+// Helper function to highlight current song
+function highlightCurrentSong() {
 	removeActiveSongContainerStyling();
 	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 }
