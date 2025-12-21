@@ -4,6 +4,7 @@ let cachedSongs = [];
 let customPlayList = [];
 let currentSongNumber = 0;
 let isUserViewingCustomPlayList = false;
+
 // Imported DOM selectors
 const {
 	formBackgroundImage,
@@ -120,7 +121,7 @@ function playNextSong() {
 	if (!currentSongContainer.length) {
 		return;
 	}
-	const playlistType = isUserViewingCustomPlayList ? customPlayList : cachedSongs;
+	const playlistType = getCurrentPlaylist();
 	currentSongNumber = currentSongNumber < playlistType.length - 1 ? currentSongNumber + 1 : 0;
 	playSongAtIndex(currentSongNumber);
 	setPlayingState(true);
@@ -131,7 +132,7 @@ function playPreviousSong() {
 	if (!currentSongContainer.length) {
 		return;
 	}
-	const playlistType = isUserViewingCustomPlayList ? customPlayList : cachedSongs;
+	const playlistType = getCurrentPlaylist();
 	currentSongNumber = currentSongNumber > 0 ? currentSongNumber - 1 : playlistType.length - 1;
 	playSongAtIndex(currentSongNumber);
 	setPlayingState(true);
@@ -185,7 +186,7 @@ function removeActiveSongContainerStyling() {
 
 // Helper function to select song, display song name, and play song
 function playSongAtIndex(currentSongNumber) {
-	const playlist = isUserViewingCustomPlayList ? customPlayList : cachedSongs;
+	const playlist = getCurrentPlaylist();
 	if (!playlist[currentSongNumber]) {
 		return;
 	}
@@ -196,6 +197,11 @@ function playSongAtIndex(currentSongNumber) {
 	myAudio.src = playlist[currentSongNumber].preview; // set audio src to first track
 	myAudio.play(); // Play audio
 	changeFormBackgroundToAlbumCover(playlist[currentSongNumber].album.cover_big);
+}
+
+// Helper function to check current playlist
+function getCurrentPlaylist() {
+	return isUserViewingCustomPlayList ? customPlayList : cachedSongs;
 }
 
 // Change form background to album cover for current song that is playing
