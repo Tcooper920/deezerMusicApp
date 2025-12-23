@@ -60,7 +60,7 @@ function printSongListToPage(arrayOfSongs) {
 		if (isUserViewingCustomPlayList === false) {
 			// If song is already added to playlist, show the checkmark. Otherwise, show the standard button.
 			if (!customPlayList.some((playListSong) => playListSong.id === song.id)) {
-				addOrAddedToPlayListButton = `<button class="addToPlayListBtn">+ Add to playlist</button>`;
+				addOrAddedToPlayListButton = `<button class="addToPlayListBtn" data-song-id="${song.id}">+ Add to playlist</button>`;
 			} else {
 				addOrAddedToPlayListButton = `<button class="addToPlayListBtn activeButton">Added<span><i class="fa fa-check"></i></span></button>`;
 			}
@@ -200,12 +200,14 @@ function changeFormBackgroundToAlbumCover(thisAlbumCover) {
 // Adding songs to a custom playlist
 document.addEventListener("click", (event) => {
 	if (event.target.classList.contains("addToPlayListBtn")) {
-		const allButtonsOnPage = document.querySelectorAll(".addToPlayListBtn");
-		const indexOfButtonClicked = [...allButtonsOnPage].indexOf(event.target);
+		const idOfSongAdded = Number(event.target.dataset.songId); // Gets id from data attribute
 
 		// Push selected song to custom playlist array if song hasn't been added already
-		if (!customPlayList.some((song) => song.id === cachedSongs[indexOfButtonClicked].id)) {
-			customPlayList.push(cachedSongs[indexOfButtonClicked]);
+		if (!customPlayList.some((thisSong) => thisSong.id === idOfSongAdded)) {
+			const songToAdd = cachedSongs.find((song) => song.id === idOfSongAdded);
+			if (songToAdd) {
+				customPlayList.push(songToAdd);
+			}
 		}
 		event.target.innerText = `Added`;
 		event.target.classList.add("activeButton");
