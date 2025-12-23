@@ -62,7 +62,7 @@ function printSongListToPage(arrayOfSongs) {
 			if (!customPlayList.some((playListSong) => playListSong.id === song.id)) {
 				addOrAddedToPlayListButton = `<button class="addToPlayListBtn" data-song-id="${song.id}">+ Add to playlist</button>`;
 			} else {
-				addOrAddedToPlayListButton = `<button class="addToPlayListBtn activeButton">Added<span><i class="fa fa-check"></i></span></button>`;
+				addOrAddedToPlayListButton = `<button class="addToPlayListBtn activeButton added">Added<span><i class="fa fa-check"></i></span></button>`;
 			}
 		}
 
@@ -199,6 +199,7 @@ function changeFormBackgroundToAlbumCover(thisAlbumCover) {
 
 // Adding songs to a custom playlist
 document.addEventListener("click", (event) => {
+	if (event.target.classList.contains("added")) return; // Return if already added song
 	if (event.target.classList.contains("addToPlayListBtn")) {
 		const idOfSongAdded = Number(event.target.dataset.songId); // Gets id from data attribute
 
