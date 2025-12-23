@@ -10,5 +10,6 @@ export function getDomSelectors() {
 		previousButton: document.getElementById("previousButton"),
 		searchPlayListButton: document.getElementById("viewSearchPlayListBtn"),
 		customPlayListButton: document.getElementById("viewCustomPlayListBtn"),
+		searchResultsContainer: document.getElementById("searchResultsContainer"),
 	};
 }

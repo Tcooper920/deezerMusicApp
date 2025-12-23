@@ -17,6 +17,7 @@ const {
 	previousButton,
 	searchPlayListButton,
 	customPlayListButton,
+	searchResultsContainer,
 } = getDomSelectors();
 
 // Search for an artist with a button click event and print song list to page
@@ -30,7 +31,6 @@ searchButton.addEventListener("click", async () => {
 	document.getElementById("artistName").value = artistNameInput; // Show trimmed artist name in text field
 	const result = await fetch(`getData.php?q=${encodeURIComponent(artistNameInput)}`);
 	const apiDataReturned = await result.json();
-	const searchResultsContainer = document.getElementById("searchResultsContainer");
 	cachedSongs = apiDataReturned.data ?? []; // store locally
 
 	if (cachedSongs.length === 0) {
