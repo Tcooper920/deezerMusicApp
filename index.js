@@ -1,10 +1,4 @@
 import { getDomSelectors } from "./includes/domSelectors.js";
-const myAudio = new Audio();
-let cachedSongs = [];
-let customPlayList = [];
-let currentSongNumber = 0;
-let isUserViewingCustomPlayList = false;
-
 // Imported DOM selectors
 const {
 	formBackgroundImage,
@@ -19,6 +13,12 @@ const {
 	customPlayListButton,
 	searchResultsContainer,
 } = getDomSelectors();
+
+const myAudio = new Audio();
+let cachedSongs = [];
+let customPlayList = [];
+let currentSongNumber = 0;
+let isUserViewingCustomPlayList = false;
 
 // Search for an artist with a button click event and print song list to page
 searchButton.addEventListener("click", async () => {
