@@ -259,16 +259,12 @@ function loadPlaylist(songs, playlistType) {
 	highlightCurrentSong();
 }
 
-// Helper function to remove active song styling
-function removeActiveSongContainerStyling() {
+// Function to highlight current song
+function highlightCurrentSong() {
 	let currentSongContainerArray = [...currentSongContainer];
+
 	currentSongContainerArray.forEach((song) => {
 		song.classList.remove("activeSongContainer");
 	});
-}
-
-// Helper function to highlight current song
-function highlightCurrentSong() {
-	removeActiveSongContainerStyling();
 	currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
 }
