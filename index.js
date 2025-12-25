@@ -60,10 +60,12 @@ function printSongListToPage(arrayOfSongs) {
 		if (isUserViewingCustomPlayList === false) {
 			// If song is already added to playlist, show the checkmark. Otherwise, show the standard button.
 			if (!customPlayList.some((playListSong) => playListSong.id === song.id)) {
-				addOrAddedToPlayListButton = `<button class="addToPlayListBtn" data-song-id="${song.id}">+ Add to playlist</button>`;
+				addOrAddedToPlayListButton = `<button class="addToPlayListBtn standardButton" data-song-id="${song.id}">+ Add to playlist</button>`;
 			} else {
-				addOrAddedToPlayListButton = `<button class="addToPlayListBtn activeButton added">Added<span><i class="fa fa-check"></i></span></button>`;
+				addOrAddedToPlayListButton = `<button class="addToPlayListBtn standardButton activeButton added">Added<span><i class="fa fa-check"></i></span></button>`;
 			}
+		} else {
+			addOrAddedToPlayListButton = `<button class="removeFromCustomPlayList standardButton" data-song-id="${song.id}">Remove</button>`;
 		}
 
 		songContainer.innerHTML = `
@@ -215,6 +217,30 @@ document.addEventListener("click", (event) => {
 		const checkMarkIcon = document.createElement("span");
 		checkMarkIcon.innerHTML = `<i class="fa fa-check"></i>`;
 		event.target.append(checkMarkIcon);
+	}
+});
+
+// Removing songs from a custom playlist
+document.addEventListener("click", (event) => {
+	if (event.target.classList.contains("removeFromCustomPlayList")) {
+		const idOfSongRemoved = Number(event.target.dataset.songId); // Gets id from data attribute
+
+		// Remove selected song from custom playlist array
+		if (customPlayList.some((thisSong) => thisSong.id === idOfSongRemoved)) {
+			const songToRemove = customPlayList.find((song) => song.id === idOfSongRemoved);
+			if (songToRemove && customPlayList.length > 1) {
+				customPlayList = customPlayList.filter((song) => song.id !== songToRemove.id);
+			}
+			if (songToRemove && customPlayList.length == 1) {
+				customPlayList = customPlayList.filter((song) => song.id !== songToRemove.id);
+			}
+			if (customPlayList.length > 0) {
+				loadPlaylist(customPlayList, "customPlaylist"); // Print updated custom playlist array to page
+			}
+			if (customPlayList < 1) {
+				loadPlaylist(cachedSongs, "searchPlaylist"); // Print search playlist array to page
+			}
+		}
 	}
 });
 
