@@ -225,22 +225,18 @@ document.addEventListener("click", (event) => {
 	if (event.target.classList.contains("removeFromCustomPlayList")) {
 		const idOfSongRemoved = Number(event.target.dataset.songId); // Gets id from data attribute
 
-		// Remove selected song from custom playlist array
-		if (customPlayList.some((thisSong) => thisSong.id === idOfSongRemoved)) {
-			const songToRemove = customPlayList.find((song) => song.id === idOfSongRemoved);
-			if (songToRemove && customPlayList.length > 1) {
-				customPlayList = customPlayList.filter((song) => song.id !== songToRemove.id);
-			}
-			if (songToRemove && customPlayList.length == 1) {
-				customPlayList = customPlayList.filter((song) => song.id !== songToRemove.id);
-			}
-			if (customPlayList.length > 0) {
-				loadPlaylist(customPlayList, "customPlaylist"); // Print updated custom playlist array to page
-			}
-			if (customPlayList < 1) {
-				loadPlaylist(cachedSongs, "searchPlaylist"); // Print search playlist array to page
-			}
+		// Check if song to delete exists in customPlayList
+		if (!customPlayList.some((thisSong) => thisSong.id === idOfSongRemoved)) {
+			return;
 		}
+
+		const songToRemove = customPlayList.find((song) => song.id === idOfSongRemoved);
+
+		customPlayList = customPlayList.filter((song) => song.id !== songToRemove.id);
+
+		customPlayList.length > 0 // If more than one song in custom playlist...
+			? loadPlaylist(customPlayList, "customPlaylist") // Print updated custom playlist array to page
+			: loadPlaylist(cachedSongs, "searchPlaylist"); // Else print search playlist array to page
 	}
 });
 
