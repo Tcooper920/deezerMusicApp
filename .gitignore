@@ -18,3 +18,7 @@ _notes/*
 dwsync.xml
 
 .vscode
+
+node_modules/
+
+.env
