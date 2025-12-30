@@ -221,6 +221,8 @@ input {
 .buttonContainer {
 	padding-top: 24rem;
 	padding-bottom: 5rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
 	display: flex;
 	max-width: 36rem;
 	margin: 0 auto;
