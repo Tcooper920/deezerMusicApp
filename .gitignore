@@ -2,7 +2,7 @@
 .DS_store
 
 # ignore config files with API keys
-config.php
+.env
 
 # ignore video folder with files typically exceeding 100MB (too large for gitHub)
 videos/*
@@ -21,4 +21,3 @@ dwsync.xml
 
 node_modules/
 
-.env
