@@ -1,6 +1,9 @@
 <?php
 
-require("config.php"); // Include API keys
+// Parse .env config file
+$env = parse_ini_file('../../.env', TRUE);
+
+$myKey = $env['API_KEY'];
 
 $artist_name = $_GET['q'] ?? '';
 
