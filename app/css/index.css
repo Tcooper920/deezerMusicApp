@@ -4,6 +4,17 @@
 	font-family: "Varela Round", sans-serif;
 }
 
+/* global color variables */
+:root {
+	--main-text-color: #616161;
+	--song-container-hover-text-color: #0d0d0d;
+	--form-field-text: #6d7f9e;
+	--form-field-color: rgb(232, 240, 254);
+	--primary-color: #58a593;
+	--primary-active-button-color: #306c5e;
+	--delete-color: rgb(255, 59, 59);
+}
+
 p {
 	margin-bottom: 0;
 }
@@ -13,6 +24,10 @@ input {
 	-webkit-appearance: none;
 	-moz-appearance: none;
 	appearance: none;
+}
+
+.searchResultsPlaceholderText {
+	color: var(--main-text-color);
 }
 
 /* fontawesome icon class for audio buttons */
@@ -27,18 +42,18 @@ input {
 /* placeholder text styling */
 ::placeholder {
 	/* Chrome, Firefox, Opera, Safari 10.1+ */
-	color: rgb(109, 127, 158);
+	color: var(--form-field-text);
 	opacity: 1; /* Firefox */
 }
 
 :-ms-input-placeholder {
 	/* Internet Explorer 10-11 */
-	color: rgb(109, 127, 158);
+	color: var(--form-field-text);
 }
 
 ::-ms-input-placeholder {
 	/* Microsoft Edge */
-	color: rgb(109, 127, 158);
+	color: var(--form-field-text);
 }
 
 .formsWrapper {
@@ -108,8 +123,8 @@ input {
 	width: fit-content;
 	padding: 0.25rem 0.5rem 0.2rem 0.5rem;
 	margin-top: 1rem;
-	color: #58a593;
-	border: 0.15rem solid #58a593;
+	color: var(--primary-color);
+	border: 0.15rem solid var(--primary-color);
 	background-color: white;
 	cursor: pointer;
 	border-radius: 5px 5px 5px 5px;
@@ -118,45 +133,45 @@ input {
 }
 
 .addToPlayListBtn:hover {
-	background-color: #58a593;
+	background-color: var(--primary-color);
 	color: white;
 }
 
 .addToPlayListBtn:active {
-	background-color: #306c5e;
-	border-color: #306c5e;
+	background-color: var(--primary-active-button-color);
+	border-color: var(--primary-active-button-color);
 	color: white;
 }
 
 .removeFromCustomPlayList {
-	color: rgb(255, 59, 59);
-	border-color: rgb(255, 59, 59);
+	color: var(--delete-color);
+	border-color: var(--delete-color);
 }
 
 .removeFromCustomPlayList:hover {
-	background-color: rgb(255, 59, 59);
-	border-color: rgb(255, 59, 59);
+	background-color: var(--delete-color);
+	border-color: var(--delete-color);
 	color: white;
 }
 
 .secondary-button {
-	color: #58a593;
-	border: 0.15rem solid #58a593;
+	color: var(--primary-color);
+	border: 0.15rem solid var(--primary-color);
 }
 
 .secondary-button:hover {
-	background-color: #58a593;
+	background-color: var(--primary-color);
 	color: white;
 }
 
 /* this class is added with js for active buttons (play/stop) */
 .activeButton {
-	background-color: #58a593;
+	background-color: var(--primary-color);
 	color: white;
 }
 
 #artistName {
-	color: rgb(109, 127, 158);
+	color: var(--form-field-text);
 	flex: 3;
 	font-size: 1rem;
 	padding-left: 1rem;
@@ -167,7 +182,7 @@ input {
 	margin-right: 0;
 	margin-bottom: 0.5rem;
 	border: 0;
-	background-color: rgb(232, 240, 254);
+	background-color: var(--form-field-color);
 	border-radius: 5px 0px 0px 5px;
 	-moz-border-radius: 5px 0px 0px 5px;
 	-webkit-border-radius: 5px 0px 0px 5px;
@@ -189,7 +204,7 @@ input {
 
 #currentSongField {
 	flex: 1;
-	color: rgb(109, 127, 158);
+	color: var(--form-field-text);
 	font-size: 1rem;
 	padding-left: 1rem;
 	padding-top: 0.5rem;
@@ -199,7 +214,7 @@ input {
 	margin-right: 0.25rem;
 	margin-bottom: 0.5rem;
 	border: 0;
-	background-color: rgb(232, 240, 254);
+	background-color: var(--form-field-color);
 	border-radius: 5px 5px 5px 5px;
 	-moz-border-radius: 5px 5px 5px 5px;
 	-webkit-border-radius: 5px 5px 5px 5px;
@@ -208,14 +223,6 @@ input {
 
 #audioControlContainer {
 	display: flex;
-}
-
-#previousButton:active {
-	background-color: #2579bb;
-}
-
-#nextButton:active {
-	background-color: #2579bb;
 }
 
 .buttonContainer {
@@ -247,7 +254,7 @@ input {
 .songContainer {
 	text-align: left;
 	font-family: Helvetica;
-	color: #616161;
+	color: var(--main-text-color);
 	font-size: 0.8rem;
 	padding: 1.5rem;
 	width: 15rem;
@@ -257,7 +264,7 @@ input {
 }
 
 .songContainer:hover {
-	color: black;
+	color: var(--song-container-hover-text-color);
 	background-color: #e6e6e6;
 	border-radius: 5px;
 	cursor: pointer;
@@ -275,15 +282,15 @@ input {
 }
 
 .activeSongContainer {
-	color: #58a593;
-	outline: 0.2rem solid #58a593;
+	color: var(--primary-color);
+	outline: 0.2rem solid var(--primary-color);
 	border-radius: 5px;
 	position: relative;
 	z-index: 1;
 }
 
 .activeSongContainer:hover {
-	color: #58a593;
+	color: var(--primary-color);
 	background-color: white;
 }
 
