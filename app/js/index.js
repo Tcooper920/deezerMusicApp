@@ -188,7 +188,7 @@ function setPlaylistButtonState(isActive) {
 }
 
 // Helper function to select song, display song name, and play song
-function playSongAtIndex(currentSongNumber) {
+async function playSongAtIndex(currentSongNumber) {
     const playlist = getCurrentPlaylist();
 
     if (!playlist[currentSongNumber]) {
@@ -197,8 +197,13 @@ function playSongAtIndex(currentSongNumber) {
 
     currentSongField.value = `Track ${currentSongNumber + 1}: ${playlist[currentSongNumber].title}`; // show current song
     highlightCurrentSong();
-    myAudio.src = playlist[currentSongNumber].preview; // set audio src to first track
-    myAudio.play(); // Play audio
+    // If song isn't set, pause and load the next one before using the asynchronous play() function
+    if (myAudio.src !== playlist[currentSongNumber].preview) {
+        myAudio.pause();
+        myAudio.src = playlist[currentSongNumber].preview; // set audio src
+        myAudio.load();
+    }
+    await myAudio.play(); // Play audio
     changeFormBackgroundToAlbumCover(playlist[currentSongNumber].album.cover_big);
 }
 
