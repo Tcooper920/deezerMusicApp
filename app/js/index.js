@@ -37,14 +37,22 @@ searchButton.addEventListener("click", async () => {
     if (cachedSongs.length === 0) {
         return;
     }
-	
+
     changeFormBackgroundToAlbumCover(cachedSongs[0].album.cover_big);
 
     // Display album cover, album name, and song
     printSongListToPage(cachedSongs);
     highlightCurrentSong();
     setPlaylistButtonState(true);
+    setSearchResultsAndCustomPlayListButtonsToActive();
 });
+
+function setSearchResultsAndCustomPlayListButtonsToActive() {
+    const numberOfDisabledButtons = [...document.getElementsByClassName("disable-button")];
+    numberOfDisabledButtons.forEach(disabledButton => {
+        disabledButton.classList.remove("disable-button");
+    });
+}
 
 // Print list of songs to page
 function printSongListToPage(arrayOfSongs) {
