@@ -164,6 +164,14 @@ input {
 	color: white;
 }
 
+.disable-button, .disable-button:hover {
+	color: var(--primary-color);
+	background-color: white;
+	border: 0.15rem solid var(--primary-color);
+	opacity: .50;
+	cursor: default;
+}
+
 /* this class is added with js for active buttons (play/stop) */
 .activeButton {
 	background-color: var(--primary-color);
