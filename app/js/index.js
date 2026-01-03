@@ -4,7 +4,7 @@ const {
     formBackgroundImage,
     searchButton,
     currentSongField,
-    currentSongContainer,
+    songContainer,
     playButton,
     pauseButton,
     nextButton,
@@ -48,8 +48,8 @@ searchButton.addEventListener("click", async () => {
 });
 
 function setSearchResultsAndCustomPlayListButtonsToActive() {
-    const numberOfDisabledButtons = [...document.getElementsByClassName("disable-button")];
-    numberOfDisabledButtons.forEach(disabledButton => {
+    const numberOfDisabledButtons = document.getElementsByClassName("disable-button");
+    [...numberOfDisabledButtons].forEach(disabledButton => {
         disabledButton.classList.remove("disable-button");
     });
 }
@@ -103,7 +103,7 @@ function printSongListToPage(arrayOfSongs) {
 // Play a song with a button click event
 playButton.addEventListener("click", () => {
     // If songs haven't been fetched, do not continue...
-    if (currentSongContainer.length !== 0) {
+    if (songContainer.length !== 0) {
         playSongAtIndex(currentSongNumber);
         setPlayingState(true);
     }
@@ -120,7 +120,7 @@ myAudio.onended = playNextSong;
 
 // Pause song with a button click event
 pauseButton.addEventListener("click", () => {
-    if (currentSongContainer.length !== 0) {
+    if (songContainer.length !== 0) {
         myAudio.pause();
         setPlayingState(false);
     }
@@ -128,7 +128,7 @@ pauseButton.addEventListener("click", () => {
 
 // Play next song
 function playNextSong() {
-    if (!currentSongContainer.length) {
+    if (!songContainer.length) {
         return;
     }
 
@@ -140,7 +140,7 @@ function playNextSong() {
 
 // Play previous song
 function playPreviousSong() {
-    if (!currentSongContainer.length) {
+    if (!songContainer.length) {
         return;
     }
 
@@ -174,12 +174,12 @@ function selectAndPlayClickedSong(event) {
         event.target.closest(".songContainer") &&
 		(event.type === "click" || (event.type === "keydown" && event.key === "Enter"))
     ) {
-        const arrayOfAllDisplayedSongs = [...document.getElementsByClassName("songContainer")];
-        const indexOfClickedSong = arrayOfAllDisplayedSongs.indexOf(event.target.closest(".songContainer"));
+        const allDisplayedSongs = document.getElementsByClassName("songContainer");
+        const indexOfClickedSong = [...allDisplayedSongs].indexOf(event.target.closest(".songContainer"));
         currentSongNumber = indexOfClickedSong;
         playSongAtIndex(currentSongNumber);
         setPlayingState(true);
-        arrayOfAllDisplayedSongs[indexOfClickedSong].classList.add("activeSongContainer");
+        allDisplayedSongs[indexOfClickedSong].classList.add("activeSongContainer");
     }
 }
 
@@ -311,11 +311,11 @@ function loadPlaylist(songs, playlistType) {
 
 // Function to highlight current song
 function highlightCurrentSong() {
-    let currentSongContainerArray = [...currentSongContainer];
+    let listOfSongs = songContainer;
 
-    currentSongContainerArray.forEach((song) => {
+    [...listOfSongs].forEach((song) => {
         song.classList.remove("activeSongContainer");
     });
 	
-    currentSongContainer[currentSongNumber].classList.add("activeSongContainer");
+    songContainer[currentSongNumber].classList.add("activeSongContainer");
 }
