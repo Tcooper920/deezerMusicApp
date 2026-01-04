@@ -171,10 +171,6 @@ function selectAndPlayClickedSong(event) {
         return;
     }
 
-    if (event.type === "keydown" && event.key !== "Enter") {
-        return;
-    }
-
     // Prevent "ghost playbacks" from firing if wrong key or element is clicked
     if (
         !event.target.closest(".songContainer") ||
