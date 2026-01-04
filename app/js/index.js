@@ -159,6 +159,18 @@ function selectAndPlayClickedSong(event) {
         return;
     }
 
+    if (event.type === "keydown" && event.key !== "Enter") {
+        return;
+    }
+
+    // Prevent "ghost playbacks" from firing if wrong key or element is clicked
+    if (
+        !event.target.closest(".songContainer") ||
+        event.type === "keydown" && event.key !== "Enter"
+    ) {
+        return;
+    }
+
     // If user is clicking "Add to playlist" or "Remove from playlist" button, don't play the song
     if (
         event.target.classList.contains("addToPlayListBtn") || 
@@ -177,7 +189,6 @@ function selectAndPlayClickedSong(event) {
         currentSongNumber = indexOfClickedSong;
         playSongAtIndex(currentSongNumber);
         setPlayingState(true);
-        allDisplayedSongs[indexOfClickedSong].classList.add("activeSongContainer");
     }
 }
 
@@ -209,7 +220,13 @@ async function playSongAtIndex(currentSongNumber) {
         myAudio.src = playlist[currentSongNumber].preview; // set audio src
         myAudio.load();
     }
-    await myAudio.play(); // Play audio
+    if (myAudio.paused) {
+        await myAudio.play();
+        setPlayingState(true);
+    } else {
+        await myAudio.pause();
+        setPlayingState(false);
+    }
     changeFormBackgroundToAlbumCover(playlist[currentSongNumber].album.cover_big);
 }
 
