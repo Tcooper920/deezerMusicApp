@@ -4,7 +4,6 @@ const {
     formBackgroundImage,
     searchButton,
     currentSongField,
-    songContainer,
     playButton,
     pauseButton,
     nextButton,
@@ -12,6 +11,7 @@ const {
     searchPlayListButton,
     customPlayListButton,
     searchResultsContainer,
+    errorMessages,
 } = getDomSelectors();
 
 const myAudio = new Audio();
@@ -100,6 +100,13 @@ function printSongListToPage(arrayOfSongs) {
     setPlayingState(false); // Highlight pause button
 }
 
+// Get number of songs printed to page
+function numberOfSongsDisplayedOnPage() {
+    const numberOfSongsDisplayed = document.getElementsByClassName("songContainer");
+    
+    return numberOfSongsDisplayed;
+}
+
 // Buttons for play, pause, previous, and next song...
 playButton.addEventListener("click", playSong);
 pauseButton.addEventListener("click", pauseSong);
@@ -111,7 +118,8 @@ myAudio.onended = playNextSong;
 
 // Play song
 function playSong() {
-    if (songContainer.length !== 0) {
+    let numberOfSongs = numberOfSongsDisplayedOnPage();
+    if (numberOfSongs.length !== 0) {
         playSongAtIndex(currentSongNumber);
         setPlayingState(true);
     }
@@ -119,7 +127,8 @@ function playSong() {
 
 // Pause song
 function pauseSong() {
-    if (songContainer.length !== 0) {
+    let numberOfSongs = numberOfSongsDisplayedOnPage();
+    if (numberOfSongs.length !== 0) {
         myAudio.pause();
         setPlayingState(false);
     }
@@ -127,7 +136,8 @@ function pauseSong() {
 
 // Play next song
 function playNextSong() {
-    if (!songContainer.length) {
+    let numberOfSongs = numberOfSongsDisplayedOnPage();
+    if (!numberOfSongs.length) {
         return;
     }
 
@@ -139,7 +149,9 @@ function playNextSong() {
 
 // Play previous song
 function playPreviousSong() {
-    if (!songContainer.length) {
+    let numberOfSongs = numberOfSongsDisplayedOnPage();
+
+    if (!numberOfSongs.length) {
         return;
     }
 
@@ -221,8 +233,14 @@ async function playSongAtIndex(currentSongNumber) {
         myAudio.load();
     }
     if (myAudio.paused) {
-        await myAudio.play();
-        setPlayingState(true);
+        try {
+            await myAudio.play();
+            setPlayingState(true);
+        } catch (err) {
+            if (err.name !== "AbortError") {
+                errorMessages.innerText = `An unexpected error occurred while playing the song. Please try again.`;
+            }
+        }
     } else {
         await myAudio.pause();
         setPlayingState(false);
@@ -326,11 +344,13 @@ function loadPlaylist(songs, playlistType) {
 
 // Function to highlight current song
 function highlightCurrentSong() {
-    let listOfSongs = songContainer;
+    let listOfSongs = numberOfSongsDisplayedOnPage();
 
     [...listOfSongs].forEach((song) => {
         song.classList.remove("activeSongContainer");
     });
 	
-    songContainer[currentSongNumber].classList.add("activeSongContainer");
+    if (listOfSongs[currentSongNumber]) {
+        listOfSongs[currentSongNumber].classList.add("activeSongContainer");
+    }
 }
