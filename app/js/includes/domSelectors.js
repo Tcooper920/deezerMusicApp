@@ -3,7 +3,6 @@ export function getDomSelectors() {
         formBackgroundImage: document.getElementsByClassName("formsWrapper")[0],
         searchButton: document.getElementById("searchButton"),
         currentSongField: document.getElementById("currentSongField"),
-        songContainer: document.getElementsByClassName("songContainer"),
         playButton: document.getElementById("playButton"),
         pauseButton: document.getElementById("pauseButton"),
         nextButton: document.getElementById("nextButton"),
@@ -11,5 +10,6 @@ export function getDomSelectors() {
         searchPlayListButton: document.getElementById("viewSearchPlayListBtn"),
         customPlayListButton: document.getElementById("viewCustomPlayListBtn"),
         searchResultsContainer: document.getElementById("searchResultsContainer"),
+        errorMessages: document.getElementsByClassName("errorMessages")[0],
     };
 }
