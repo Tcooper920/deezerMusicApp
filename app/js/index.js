@@ -100,31 +100,30 @@ function printSongListToPage(arrayOfSongs) {
     setPlayingState(false); // Highlight pause button
 }
 
-// Play a song with a button click event
-playButton.addEventListener("click", () => {
-    // If songs haven't been fetched, do not continue...
-    if (songContainer.length !== 0) {
-        playSongAtIndex(currentSongNumber);
-        setPlayingState(true);
-    }
-});
-
-// Go to next song with a button click event
+// Buttons for play, pause, previous, and next song...
+playButton.addEventListener("click", playSong);
+pauseButton.addEventListener("click", pauseSong);
 nextButton.addEventListener("click", playNextSong);
-
-// Go back to previous song with a button click event
 previousButton.addEventListener("click", playPreviousSong);
 
 // Automatically go to the next song when current song ends
 myAudio.onended = playNextSong;
 
-// Pause song with a button click event
-pauseButton.addEventListener("click", () => {
+// Play song
+function playSong() {
+    if (songContainer.length !== 0) {
+        playSongAtIndex(currentSongNumber);
+        setPlayingState(true);
+    }
+}
+
+// Pause song
+function pauseSong() {
     if (songContainer.length !== 0) {
         myAudio.pause();
         setPlayingState(false);
     }
-});
+}
 
 // Play next song
 function playNextSong() {
@@ -160,13 +159,12 @@ function selectAndPlayClickedSong(event) {
         return;
     }
 
-    // If user is clicking "Add to playlist" button, don't play the song...
-    if (event.target.classList.contains("addToPlayListBtn")) {
-        return;
-    }
-
-    // If user is clicking "Remove from playlist" button, don't play the song...
-    if (event.target.classList.contains("removeFromCustomPlayList")) {
+    // If user is clicking "Add to playlist" or "Remove from playlist" button, don't play the song
+    if (
+        event.target.classList.contains("addToPlayListBtn") || 
+        event.target.classList.contains("removeFromCustomPlayList") ||
+        event.target.classList.contains("fa-check")
+    ) {
         return;
     }
 
