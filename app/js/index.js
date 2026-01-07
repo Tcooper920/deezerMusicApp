@@ -72,7 +72,7 @@ function printSongListToPage(arrayOfSongs) {
             if (!customPlayList.some((playListSong) => playListSong.id === song.id)) {
                 const addToPlaylistButton = document.createElement("button");
                 addToPlaylistButton.classList.add("addToPlayListBtn", "standardButton");
-                addToPlaylistButton.songId = song.id;
+                addToPlaylistButton.dataset.songId = song.id;
                 addToPlaylistButton.innerText = "+ Add to playlist";
                 addOrAddedToPlayListButton = addToPlaylistButton;
 
@@ -92,8 +92,9 @@ function printSongListToPage(arrayOfSongs) {
 				<strong class='songTitle'>${song.title}</strong><br>
 				<span>Album: ${song.album.title}</span><br>
 				<span>By: ${song.artist.name}</span>
-			</p>
-			${addOrAddedToPlayListButton}`;
+			</p>`;
+
+        songContainer.appendChild(addOrAddedToPlayListButton); 
         
         fragment.append(songContainer);
     }
