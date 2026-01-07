@@ -57,6 +57,7 @@ function setSearchResultsAndCustomPlayListButtonsToActive() {
 // Print list of songs to page
 function printSongListToPage(arrayOfSongs) {
     searchResultsContainer.innerText = "";
+    const fragment = new DocumentFragment();
 
     for (let i = 0; i < arrayOfSongs.length; i++) {
         const song = arrayOfSongs[i];
@@ -69,8 +70,12 @@ function printSongListToPage(arrayOfSongs) {
         if (isUserViewingCustomPlayList === false) {
             // If song is already added to playlist, show the checkmark. Otherwise, show the standard button.
             if (!customPlayList.some((playListSong) => playListSong.id === song.id)) {
-                addOrAddedToPlayListButton = `
-				<button class="addToPlayListBtn standardButton" data-song-id="${song.id}">+ Add to playlist</button>`;
+                const addToPlaylistButton = document.createElement("button");
+                addToPlaylistButton.classList.add("addToPlayListBtn", "standardButton");
+                addToPlaylistButton.songId = song.id;
+                addToPlaylistButton.innerText = "+ Add to playlist";
+                addOrAddedToPlayListButton = addToPlaylistButton;
+
             } else {
                 addOrAddedToPlayListButton = `
 				<button class="addToPlayListBtn standardButton activeButton added">Added<span><i class="fa fa-check"></i></span></button>`;
@@ -89,9 +94,10 @@ function printSongListToPage(arrayOfSongs) {
 				<span>By: ${song.artist.name}</span>
 			</p>
 			${addOrAddedToPlayListButton}`;
-
-        searchResultsContainer.append(songContainer);
+        
+        fragment.append(songContainer);
     }
+    searchResultsContainer.append(fragment);
 
     currentSongField.value = `Track ${currentSongNumber + 1}: ${arrayOfSongs[currentSongNumber].title}`; // show current song
     highlightCurrentSong();
