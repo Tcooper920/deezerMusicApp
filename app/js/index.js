@@ -65,7 +65,7 @@ function printSongListToPage(arrayOfSongs) {
         songContainer.setAttribute("tabindex", 0);
         songContainer.classList.add("songContainer");
         const albumImage = `<img class="albumCover" src="${song.album.cover_big}"/>`;
-        let addOrAddedToPlayListButton = "";
+        let buttonType = "";
 
         if (isUserViewingCustomPlayList === false) {
             // If song is already added to playlist, show the checkmark. Otherwise, show the standard button.
@@ -74,15 +74,32 @@ function printSongListToPage(arrayOfSongs) {
                 addToPlaylistButton.classList.add("addToPlayListBtn", "standardButton");
                 addToPlaylistButton.dataset.songId = song.id;
                 addToPlaylistButton.innerText = "+ Add to playlist";
-                addOrAddedToPlayListButton = addToPlaylistButton;
+                buttonType = addToPlaylistButton;
 
             } else {
-                addOrAddedToPlayListButton = `
+                buttonType = `
 				<button class="addToPlayListBtn standardButton activeButton added">Added<span><i class="fa fa-check"></i></span></button>`;
+
+                const addedButton = document.createElement("button");
+                addedButton.classList.add("addToPlayListBtn", "standardButton", "activeButton", "added");
+                addedButton.innerText = "Added";
+                const spanTag = document.createElement("span");
+                const checkMarkIcon = document.createElement("i");
+                checkMarkIcon.classList.add("fa", "fa-check");
+                spanTag.append(checkMarkIcon);
+                addedButton.append(spanTag);
+                buttonType = addedButton;
             }
         } else {
-			  addOrAddedToPlayListButton = `
+			  buttonType = `
 			  <button class="removeFromCustomPlayList standardButton" data-song-id="${song.id}">Remove</button>`;
+
+            const removeButton = document.createElement("button");
+            removeButton.classList.add("removeFromCustomPlayList", "standardButton");
+            removeButton.dataset.songId = song.id;
+            removeButton.innerText = "Remove";
+            buttonType = removeButton;
+
         }
 
         songContainer.innerHTML = `
@@ -94,7 +111,7 @@ function printSongListToPage(arrayOfSongs) {
 				<span>By: ${song.artist.name}</span>
 			</p>`;
 
-        songContainer.appendChild(addOrAddedToPlayListButton); 
+        songContainer.append(buttonType); // Append "Add" or "Remove" buttons to song containers
         
         fragment.append(songContainer);
     }
