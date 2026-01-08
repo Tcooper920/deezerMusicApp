@@ -278,6 +278,10 @@ input {
 	cursor: pointer;
 }
 
+.songContainer p > * {
+    display: block;
+}
+
 .trackNumber {
 	display: inline-block;
 	margin-bottom: 0.2rem;

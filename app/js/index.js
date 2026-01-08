@@ -57,47 +57,94 @@ function setSearchResultsAndCustomPlayListButtonsToActive() {
 // Print list of songs to page
 function printSongListToPage(arrayOfSongs) {
     searchResultsContainer.innerText = "";
+    const fragment = new DocumentFragment();
 
     for (let i = 0; i < arrayOfSongs.length; i++) {
         const song = arrayOfSongs[i];
-        const songContainer = document.createElement("DIV");
+        const songContainer = document.createElement("div");
         songContainer.setAttribute("tabindex", 0);
         songContainer.classList.add("songContainer");
-        const albumImage = `<img class="albumCover" src="${song.album.cover_big}"/>`;
-        let addOrAddedToPlayListButton = "";
+        let thisSongDescription;
+        let thisButton;
 
         if (isUserViewingCustomPlayList === false) {
             // If song is already added to playlist, show the checkmark. Otherwise, show the standard button.
             if (!customPlayList.some((playListSong) => playListSong.id === song.id)) {
-                addOrAddedToPlayListButton = `
-				<button class="addToPlayListBtn standardButton" data-song-id="${song.id}">+ Add to playlist</button>`;
+                thisButton = constructButton("addButton", song.id);
             } else {
-                addOrAddedToPlayListButton = `
-				<button class="addToPlayListBtn standardButton activeButton added">Added<span><i class="fa fa-check"></i></span></button>`;
+                thisButton = constructButton("addedButton", song.id);
             }
         } else {
-			  addOrAddedToPlayListButton = `
-			  <button class="removeFromCustomPlayList standardButton" data-song-id="${song.id}">Remove</button>`;
+            thisButton = constructButton("removeButton", song.id);
         }
 
-        songContainer.innerHTML = `
-			${albumImage}
-			<p>
-				<strong class='trackNumber'>Track: ${i + 1}</strong><br>
-				<strong class='songTitle'>${song.title}</strong><br>
-				<span>Album: ${song.album.title}</span><br>
-				<span>By: ${song.artist.name}</span>
-			</p>
-			${addOrAddedToPlayListButton}`;
+        thisSongDescription = constructAlbumDescription(song.album.cover_big, i + 1, song.title, song.album.title, song.artist.name);
 
-        searchResultsContainer.append(songContainer);
+        songContainer.append(thisSongDescription, thisButton); // Append "Add", "Added", or "Remove" buttons to song containers
+        
+        fragment.append(songContainer);
     }
+    searchResultsContainer.append(fragment);
 
-    currentSongField.value = `Track ${currentSongNumber + 1}: ${arrayOfSongs[currentSongNumber].title}`; // show current song
+    currentSongField.value = `Track ${currentSongNumber + 1}: ${arrayOfSongs[currentSongNumber].title}`; 
     highlightCurrentSong();
     myAudio.src = arrayOfSongs[currentSongNumber].preview; // set audio src to first track
-    myAudio.pause(); // Pause audio
-    setPlayingState(false); // Highlight pause button
+    myAudio.pause(); 
+    setPlayingState(false);
+}
+
+// Helper function to add album descriptions to each album block on the page
+function constructAlbumDescription(albumImage, trackNumber, songTitle, albumTitle, artistName) {
+    const descriptionContainer = document.createElement("p");
+    // Album image...
+    const thisAlbumImage = document.createElement("img");
+    thisAlbumImage.setAttribute("src", albumImage);
+    thisAlbumImage.setAttribute("alt", albumTitle);
+    thisAlbumImage.classList.add("albumCover");
+    // Track number...
+    const thisTrackNumber = document.createElement("strong");
+    thisTrackNumber.classList.add("trackNumber");
+    thisTrackNumber.append(`Track: ${trackNumber}`);
+    // Song title...
+    const thisSongTitle = document.createElement("strong");
+    thisSongTitle.classList.add("songTitle");
+    thisSongTitle.append(songTitle);
+    // Album title...
+    const thisAlbumTitle = document.createElement("span");
+    thisAlbumTitle.append(`Album: ${albumTitle}`);
+    // Artist name...
+    const thisArtistName = document.createElement("span");
+    thisArtistName.append(`By: ${artistName}`);
+    // Append all song info to parent container...
+    descriptionContainer.append(thisAlbumImage, thisTrackNumber, thisSongTitle, thisAlbumTitle, thisArtistName);
+
+    return descriptionContainer;
+}
+
+// Helper function to construct buttons ("Add to playlist", "Added", and "Removed")
+function constructButton(buttonType, songId) {
+    const newButton = document.createElement("button");
+    if (buttonType === "addButton") {
+        newButton.classList.add("addToPlayListBtn", "standardButton");
+        newButton.dataset.songId = songId;
+        newButton.innerText = "+ Add to playlist";
+    }
+    if (buttonType === "addedButton") {
+        newButton.classList.add("addToPlayListBtn", "standardButton", "activeButton", "added");
+        newButton.innerText = "Added";
+        const spanTag = document.createElement("span");
+        const checkMarkIcon = document.createElement("i");
+        checkMarkIcon.classList.add("fa", "fa-check");
+        spanTag.append(checkMarkIcon);
+        newButton.append(spanTag);
+    }
+    if (buttonType === "removeButton") {
+        newButton.classList.add("removeFromCustomPlayList", "standardButton");
+        newButton.dataset.songId = songId;
+        newButton.innerText = "Remove";
+    }
+
+    return newButton;
 }
 
 // Get number of songs printed to page
