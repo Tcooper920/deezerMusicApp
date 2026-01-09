@@ -57,7 +57,7 @@ function setSearchResultsAndCustomPlayListButtonsToActive() {
 // Print list of songs to page
 function printSongListToPage(arrayOfSongs) {
     searchResultsContainer.innerText = "";
-    const fragment = new DocumentFragment();
+    const fragment = document.createDocumentFragment();
 
     for (let i = 0; i < arrayOfSongs.length; i++) {
         const song = arrayOfSongs[i];
