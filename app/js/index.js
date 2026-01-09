@@ -68,7 +68,7 @@ function printSongListToPage(arrayOfSongs) {
         let thisButton;
 
         if (isUserViewingCustomPlayList === false) {
-            // If song is already added to playlist, show the checkmark. Otherwise, show the standard button.
+            // If song is already added to playlist, show the "Added" button. Otherwise, show the "Add" button.
             if (!customPlayList.some((playListSong) => playListSong.id === song.id)) {
                 thisButton = constructButton("addButton", song.id);
             } else {
@@ -93,7 +93,7 @@ function printSongListToPage(arrayOfSongs) {
     setPlayingState(false);
 }
 
-// Helper function to add album descriptions to each album block on the page
+// Helper function to add album descriptions to each album block/card on the page
 function constructAlbumDescription(albumImage, trackNumber, songTitle, albumTitle, artistName) {
     const descriptionContainer = document.createElement("p");
     // Album image...
@@ -132,11 +132,7 @@ function constructButton(buttonType, songId) {
     if (buttonType === "addedButton") {
         newButton.classList.add("addToPlayListBtn", "standardButton", "activeButton", "added");
         newButton.innerText = "Added";
-        const spanTag = document.createElement("span");
-        const checkMarkIcon = document.createElement("i");
-        checkMarkIcon.classList.add("fa", "fa-check");
-        spanTag.append(checkMarkIcon);
-        newButton.append(spanTag);
+        newButton.append(constructCheckmarkIcon());
     }
     if (buttonType === "removeButton") {
         newButton.classList.add("removeFromCustomPlayList", "standardButton");
@@ -145,6 +141,16 @@ function constructButton(buttonType, songId) {
     }
 
     return newButton;
+}
+
+// Helper function to create checkmark icon in buttons
+function constructCheckmarkIcon() {
+    const spanTag = document.createElement("span");
+    const checkMarkIcon = document.createElement("i");
+    checkMarkIcon.classList.add("fa", "fa-check");
+    spanTag.append(checkMarkIcon);
+
+    return spanTag;
 }
 
 // Get number of songs printed to page
@@ -321,9 +327,7 @@ document.addEventListener("click", (event) => {
 
         event.target.innerText = `Added`;
         event.target.classList.add("activeButton");
-        const checkMarkIcon = document.createElement("span");
-        checkMarkIcon.innerHTML = `<i class="fa fa-check"></i>`;
-        event.target.append(checkMarkIcon);
+        event.target.append(constructCheckmarkIcon());
     }
 });
 
