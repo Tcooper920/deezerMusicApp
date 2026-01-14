@@ -115,7 +115,35 @@ input {
 
 #viewSearchPlayListBtn,
 #viewCustomPlayListBtn {
+	color: var(--main-text-color);
 	font-size: 1rem;
+	margin: 0;
+    border: 0;
+	border-bottom: .24rem solid lightgrey;
+	background-color: white;
+	padding-bottom: 1rem;
+	border-radius: 0;
+}
+
+#viewSearchPlayListBtn.activeButton,
+#viewCustomPlayListBtn.activeButton {
+	font-weight: bold;
+	color: var(--primary-color);
+	padding-bottom: .79rem;
+	border-bottom: .45rem solid var(--primary-color);
+}
+
+#viewSearchPlayListBtn:hover, 
+#viewCustomPlayListBtn:hover {
+	color: var(--primary-color);
+}
+
+.disable-button, 
+#viewSearchPlayListBtn.disable-button:hover, 
+#viewCustomPlayListBtn.disable-button:hover {
+	color: var(--main-text-color) ;
+	opacity: .50;
+	cursor: default;
 }
 
 .addToPlayListBtn,
@@ -162,14 +190,6 @@ input {
 .secondary-button:hover {
 	background-color: var(--primary-color);
 	color: white;
-}
-
-.disable-button, .disable-button:hover {
-	color: var(--primary-color);
-	background-color: white;
-	border: 0.15rem solid var(--primary-color);
-	opacity: .50;
-	cursor: default;
 }
 
 /* this class is added with js for active buttons (play/stop) */
