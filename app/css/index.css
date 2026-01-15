@@ -119,7 +119,7 @@ input {
 	font-size: 1rem;
 	margin: 0;
     border: 0;
-	border-bottom: .24rem solid lightgrey;
+	border-bottom: .15rem solid lightgrey;
 	background-color: white;
 	padding-bottom: 1rem;
 	border-radius: 0;
@@ -129,7 +129,7 @@ input {
 #viewCustomPlayListBtn.activeButton {
 	font-weight: bold;
 	color: var(--primary-color);
-	padding-bottom: .79rem;
+	padding-bottom: .70rem;
 	border-bottom: .45rem solid var(--primary-color);
 }
 
@@ -138,9 +138,9 @@ input {
 	color: var(--primary-color);
 }
 
-.disable-button, 
-#viewSearchPlayListBtn.disable-button:hover, 
-#viewCustomPlayListBtn.disable-button:hover {
+.disable-tab, 
+#viewSearchPlayListBtn.disable-tab:hover, 
+#viewCustomPlayListBtn.disable-tab:hover {
 	color: var(--main-text-color) ;
 	opacity: .50;
 	cursor: default;

@@ -1,7 +1,8 @@
 <DOCTYPE! html>
 	<html>
+
 		<head>
-			<title></title>
+			<title>Music player</title>
 			<meta charset="UTF-8" />
 			<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 			<link href="https://fonts.googleapis.com/css2?family=Varela+Round&display=swap" rel="stylesheet" />
@@ -10,6 +11,7 @@
 			<!-- fontawesome icons-->
 			<link rel="stylesheet" type="text/css" href="css/index.css" />
 		</head>
+
 		<body>
 			<div class="formsWrapper">
 				<div class="form searchForm">
@@ -23,54 +25,36 @@
 				<div class="form jukeboxForm">
 					<!--jukebox-->
 					<div class="textFieldContainer">
-						<input
-							id="currentSongField"
-							type="text"
-							placeholder="Play a Song"
-							readonly
-							aria-label="Currently playing song"
-							aria-live="polite"
-						/>
+						<input id="currentSongField" type="text" placeholder="Play a Song" readonly
+							aria-label="Currently playing song" aria-live="polite" />
 					</div>
 					<div id="audioControlContainer">
-						<input
-							class="button secondary-button fa-input"
-							id="previousButton"
-							type="button"
-							value="&#xf04a;"
-							aria-label="Previous song"
-						/>
-						<input
-							class="button secondary-button fa-input"
-							id="pauseButton"
-							type="button"
-							value="&#xf04c;"
-							aria-label="Pause song"
-						/>
-						<input
-							class="button secondary-button fa-input"
-							id="playButton"
-							type="button"
-							value="&#xf04b;"
-							aria-label="Play song"
-						/>
-						<input
-							class="button secondary-button fa-input"
-							id="nextButton"
-							type="button"
-							value="&#xf04e;"
-							aria-label="Next song"
-						/>
+						<input class="button secondary-button fa-input" id="previousButton" type="button"
+							value="&#xf04a;" aria-label="Previous song" />
+						<input class="button secondary-button fa-input" id="pauseButton" type="button" value="&#xf04c;"
+							aria-label="Pause song" />
+						<input class="button secondary-button fa-input" id="playButton" type="button" value="&#xf04b;"
+							aria-label="Play song" />
+						<input class="button secondary-button fa-input" id="nextButton" type="button" value="&#xf04e;"
+							aria-label="Next song" />
 					</div>
 				</div>
 			</div>
-			<div class="buttonContainer">
-				<button id="viewSearchPlayListBtn" class="button disable-button">Search results</button>
-				<button id="viewCustomPlayListBtn" class="button disable-button">Custom playlist</button>
+			<div class="buttonContainer tabList" role="tablist" aria-orientation="horizontal">
+				<button role="tab" aria-controls="searchResultsContainer" aria-selected="false" tabindex="-1"
+					id="viewSearchPlayListBtn" class="button disable-tab">
+					Search results
+				</button>
+				<button role="tab" aria-controls="searchResultsContainer" aria-selected="false" tabindex="-1"
+					id="viewCustomPlayListBtn" class="button disable-tab">
+					Custom playlist
+				</button>
 			</div>
-			<div id="searchResultsContainer"><p class="searchResultsPlaceholderText errorMessages">Search for an artist above.</p></div>
+			<div role="tabpanel" aria-labelledby="viewSearchPlayListBtn" id="searchResultsContainer">
+				<p class="searchResultsPlaceholderText errorMessages">Search for an artist above.</p>
+			</div>
 
 			<script type="module" src="js/index.js"></script>
 		</body>
-	</html>
 
+	</html>
