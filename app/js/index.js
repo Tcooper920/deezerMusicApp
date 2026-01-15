@@ -43,14 +43,14 @@ searchButton.addEventListener("click", async () => {
     // Display album cover, album name, and song
     printSongListToPage(cachedSongs);
     highlightCurrentSong();
-    setPlaylistButtonState(true);
+    setPlaylistTabState(true);
     setSearchResultsAndCustomPlayListButtonsToActive();
 });
 
 function setSearchResultsAndCustomPlayListButtonsToActive() {
-    const numberOfDisabledButtons = document.getElementsByClassName("disable-button");
+    const numberOfDisabledButtons = document.getElementsByClassName("disable-tab");
     [...numberOfDisabledButtons].forEach(disabledButton => {
-        disabledButton.classList.remove("disable-button");
+        disabledButton.classList.remove("disable-tab");
     });
 }
 
@@ -259,11 +259,45 @@ function setPlayingState(isPlaying) {
     pauseButton.classList.toggle("activeButton", !isPlaying);
 }
 
-// Helper function to set "Search results" and "Custom playlist" button styling
-function setPlaylistButtonState(isActive) {
+// Helper function to set "Search results" and "Custom playlist" tab (button) styling and accessibility attributes
+function setPlaylistTabState(isActive) {
+    // searchPlayListButton
     searchPlayListButton.classList.toggle("activeButton", isActive);
+    searchPlayListButton.setAttribute("aria-selected", isActive);
+    searchPlayListButton.setAttribute("tabindex", isActive ? "0" : "-1");
+    // customPlayListButton
     customPlayListButton.classList.toggle("activeButton", !isActive);
+    customPlayListButton.setAttribute("aria-selected", !isActive);
+    customPlayListButton.setAttribute("tabindex", !isActive ? "0" : "-1");
+    // Update search results container
+    searchResultsContainer.setAttribute("aria-labelledby", isActive ? "viewSearchPlayListBtn" : "viewCustomPlayListBtn");
 }
+
+// Function to add arrow key accessibility to tabs (buttons)
+function handleArrowKeys(event) {
+    const leftArrowKey = "ArrowLeft";
+    const rightArrowKey = "ArrowRight";
+
+    if (event.key !== leftArrowKey && event.key !== rightArrowKey) {
+        return;
+    }
+
+    event.preventDefault();
+
+    if (event.target === searchPlayListButton && customPlayList.length > 0) {
+        setPlaylistTabState(false);
+        customPlayListButton.focus();
+        loadPlaylist(customPlayList, "customPlaylist");
+    } else if (event.target === customPlayListButton) {
+        setPlaylistTabState(true);
+        searchPlayListButton.focus();
+        loadPlaylist(cachedSongs, "searchPlaylist");
+    }
+}
+
+// Listen for arrow key presses
+searchPlayListButton.addEventListener("keydown", handleArrowKeys);
+customPlayListButton.addEventListener("keydown", handleArrowKeys);
 
 // Helper function to select song, display song name, and play song
 async function playSongAtIndex(currentSongNumber) {
@@ -374,10 +408,10 @@ function loadPlaylist(songs, playlistType) {
     }
 
     if (playlistType === "searchPlaylist") {
-        setPlaylistButtonState(true);
+        setPlaylistTabState(true);
         isUserViewingCustomPlayList = false;
     } else {
-        setPlaylistButtonState(false);
+        setPlaylistTabState(false);
         isUserViewingCustomPlayList = true;
     }
 
