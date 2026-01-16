@@ -259,19 +259,19 @@ function setPlayingState(isPlaying) {
     pauseButton.classList.toggle("activeButton", !isPlaying);
 }
 
-// Helper function to set "Search results" and "Custom playlist" tab (button) styling and accessibility attributes
+// Function to set "Search results" and "Custom playlist" tab (button) styling and accessibility attributes
 function setPlaylistTabState(isActive) {
-    // searchPlayListButton
-    searchPlayListButton.classList.toggle("activeButton", isActive);
-    searchPlayListButton.setAttribute("aria-selected", isActive);
-    searchPlayListButton.setAttribute("tabindex", isActive ? "0" : "-1");
-    // customPlayListButton
-    customPlayListButton.classList.toggle("activeButton", !isActive);
-    customPlayListButton.setAttribute("aria-selected", !isActive);
-    customPlayListButton.setAttribute("tabindex", !isActive ? "0" : "-1");
-    // Update search results container
+    setTabAttributes(searchPlayListButton, isActive);
+    setTabAttributes(customPlayListButton, !isActive);
     searchResultsContainer.setAttribute("aria-labelledby", isActive ? "viewSearchPlayListBtn" : "viewCustomPlayListBtn");
 }
+
+// Helper function for setPlaylistTabState() to specify the tab being edited
+function setTabAttributes(tabName, isActive) {
+    tabName.classList.toggle("activeButton", isActive);
+    tabName.setAttribute("aria-selected", isActive);
+    tabName.setAttribute("tabindex", isActive ? "0" : "-1");
+} 
 
 // Function to add arrow key accessibility to tabs (buttons)
 function handleArrowKeys(event) {
