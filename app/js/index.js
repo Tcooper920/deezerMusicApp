@@ -24,6 +24,7 @@ let lastPlayedSongIndex = null;
 // Search for an artist with a button click event and print song list to page
 searchButton.addEventListener("click", async () => {
     const artistNameInput = document.getElementById("artistName").value.trim(); // Trim user input
+    
     if (artistNameInput === "") {
         return;
     }
@@ -33,7 +34,15 @@ searchButton.addEventListener("click", async () => {
     document.getElementById("artistName").value = artistNameInput; // Show trimmed artist name in text field
     const result = await fetch(`php/getData.php?q=${encodeURIComponent(artistNameInput)}`);
     const apiDataReturned = await result.json();
-    cachedSongs = apiDataReturned.data ?? []; // store locally
+
+    // If error code 400...
+    if (!result.ok) {
+        errorMessages.innerText = apiDataReturned.error ?? "Unknown error. Please try again.";
+
+        return;
+    }
+
+    cachedSongs = apiDataReturned.data ?? []; 
 
     if (cachedSongs.length === 0) {
         return;
