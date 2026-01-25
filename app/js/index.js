@@ -238,9 +238,7 @@ function selectAndPlayClickedSong(event) {
 
     // If user is clicking "Add to playlist" or "Remove from playlist" button, don't play the song
     if (
-        event.target.classList.contains("addToPlayListBtn") || 
-        event.target.classList.contains("removeFromCustomPlayList") ||
-        event.target.classList.contains("fa-check")
+        event.target.closest(".addToPlayListBtn")
     ) {
         return;
     }
