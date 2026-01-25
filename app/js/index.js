@@ -19,6 +19,7 @@ let cachedSongs = [];
 let customPlayList = [];
 let currentSongNumber = 0;
 let isUserViewingCustomPlayList = false;
+let lastPlayedSongIndex = null;
 
 // Search for an artist with a button click event and print song list to page
 searchButton.addEventListener("click", async () => {
@@ -171,6 +172,9 @@ myAudio.onended = playNextSong;
 
 // Play song
 function playSong() {
+    if (!myAudio.paused) {
+        return;
+    }
     let numberOfSongs = numberOfSongsDisplayedOnPage();
     if (numberOfSongs.length !== 0) {
         playSongAtIndex(currentSongNumber);
@@ -307,27 +311,48 @@ async function playSongAtIndex(currentSongNumber) {
         return;
     }
 
-    currentSongField.value = `Track ${currentSongNumber + 1}: ${playlist[currentSongNumber].title}`; // show current song
+    const isSameSong = lastPlayedSongIndex === currentSongNumber; // Returns true or false
+
+    currentSongField.value = `Track ${currentSongNumber + 1}: ${playlist[currentSongNumber].title}`; // Show current song
     highlightCurrentSong();
+
+    // If same song is clicked...
+    if (isSameSong) {
+        if (myAudio.paused) {
+            try {
+                await myAudio.play();
+                setPlayingState(true);
+                lastPlayedSongIndex = currentSongNumber;
+            } catch (err) {
+                if (err.name !== "AbortError") {
+                    errorMessages.innerText = `An unexpected error occurred while playing the song. Please try again.`;
+                }
+            }
+        } else {
+            await myAudio.pause();
+            setPlayingState(false);
+        }
+
+        return;
+    }
+
     // If song isn't set, pause and load the next one before using the asynchronous play() function
     if (myAudio.src !== playlist[currentSongNumber].preview) {
         myAudio.pause();
-        myAudio.src = playlist[currentSongNumber].preview; // set audio src
+        myAudio.src = playlist[currentSongNumber].preview; // Set audio src
         myAudio.load();
     }
-    if (myAudio.paused) {
-        try {
-            await myAudio.play();
-            setPlayingState(true);
-        } catch (err) {
-            if (err.name !== "AbortError") {
-                errorMessages.innerText = `An unexpected error occurred while playing the song. Please try again.`;
-            }
+
+    try {
+        await myAudio.play();
+        setPlayingState(true);
+        lastPlayedSongIndex = currentSongNumber;
+    } catch (err) {
+        if (err.name !== "AbortError") {
+            errorMessages.innerText = `An unexpected error occurred while playing the song. Please try again.`;
         }
-    } else {
-        await myAudio.pause();
-        setPlayingState(false);
     }
+    
     changeFormBackgroundToAlbumCover(playlist[currentSongNumber].album.cover_big);
 }
 
