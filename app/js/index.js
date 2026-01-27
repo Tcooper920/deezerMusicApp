@@ -237,17 +237,20 @@ function selectAndPlayClickedSong(event) {
         return;
     }
 
-    // Prevent "ghost playbacks" from firing if wrong key or element is clicked
-    if (
-        !event.target.closest(".songContainer") ||
-        event.type === "keydown" && event.key !== "Enter"
-    ) {
+    // Ignore anything that isn't a song container selection
+    if (!event.target.closest(".songContainer")) {
+        return;
+    }
+
+    // Prevent "ghost playbacks" from firing if wrong key is pressed
+    if (event.type === "keydown" && event.key !== "Enter") {
         return;
     }
 
     // If user is clicking "Add to playlist" or "Remove from playlist" button, don't play the song
     if (
-        event.target.closest(".addToPlayListBtn")
+        event.target.closest(".addToPlayListBtn") ||
+        event.target.closest(".removeFromCustomPlayList")
     ) {
         return;
     }
@@ -447,6 +450,7 @@ function loadPlaylist(songs, playlistType) {
         isUserViewingCustomPlayList = true;
     }
 
+    lastPlayedSongIndex = null;
     currentSongNumber = 0;
     myAudio.pause();
     setPlayingState(false);
