@@ -11,5 +11,6 @@ export function getDomSelectors() {
         customPlayListButton: document.getElementById("viewCustomPlayListBtn"),
         searchResultsContainer: document.getElementById("searchResultsContainer"),
         errorMessages: document.getElementsByClassName("errorMessages")[0],
+        hideAlbumCoversButton: document.getElementById("hideAlbumCoversBtn"),
     };
 }
