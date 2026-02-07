@@ -28,6 +28,7 @@ input {
 
 .searchResultsPlaceholderText {
 	color: var(--main-text-color);
+	text-align: center;
 }
 
 /* fontawesome icon class for audio buttons */
@@ -98,11 +99,14 @@ input {
 	flex: 1;
 	margin: 0.25rem;
 	padding: 0.5rem;
+	padding-left: 1rem;
+    padding-right: 1rem;
 	border: 0;
 	background-color: white;
 	color: white;
 	font-weight: bold;
-	font-size: 0.8rem;
+	font-size: 0.9rem;
+	text-align: center;
 	cursor: pointer;
 	border-radius: 5px 5px 5px 5px;
 	-moz-border-radius: 5px 5px 5px 5px;
@@ -254,12 +258,36 @@ input {
 
 .buttonContainer {
 	padding-top: 24rem;
-	padding-bottom: 5rem;
+	padding-bottom: 4rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
 	display: flex;
 	max-width: 36rem;
 	margin: 0 auto;
+}
+
+.show-hide-button-container {
+	padding-bottom: 2rem;
+	padding-left: 1rem;
+	padding-right: 1rem;
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+} 
+
+/* Toggle class to show/hide element */
+.hide {
+	display: none;
+}
+
+/* .hide-album-covers class is toggled to show/hide album covers */
+.hide-album-covers img {
+	display: none;
+}
+
+.hide-album-covers > div {
+	margin: 1rem;
+	border-left: 1px solid var(--form-field-text);
 }
 
 /* dynamically generated content styling (albums section) **********************************************************/
@@ -269,7 +297,10 @@ input {
 	padding-bottom: 5rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
-	text-align: center;
+	text-align: left;
+	display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(16rem, 15rem));
+	justify-content: center;
 }
 
 .albumCover {
@@ -284,7 +315,6 @@ input {
 	color: var(--main-text-color);
 	font-size: 0.8rem;
 	padding: 1.5rem;
-	width: 15rem;
 	display: inline-flex;
 	flex-direction: column;
 	animation: fadeIn .3s linear;

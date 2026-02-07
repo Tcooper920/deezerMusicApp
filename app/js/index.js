@@ -12,6 +12,7 @@ const {
     customPlayListButton,
     searchResultsContainer,
     errorMessages,
+    hideAlbumCoversButton,
 } = getDomSelectors();
 
 const myAudio = new Audio();
@@ -49,6 +50,8 @@ searchButton.addEventListener("click", async () => {
     }
 
     changeFormBackgroundToAlbumCover(cachedSongs[0].album.cover_big);
+
+    hideAlbumCoversButton.classList.remove("hide");
 
     // Display album cover, album name, and song
     printSongListToPage(cachedSongs);
