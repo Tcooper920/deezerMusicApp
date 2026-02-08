@@ -21,6 +21,7 @@ let customPlayList = [];
 let currentSongNumber = 0;
 let isUserViewingCustomPlayList = false;
 let lastPlayedSongIndex = null;
+let showAlbumCovers = true;
 
 // Search for an artist with a button click event and print song list to page
 searchButton.addEventListener("click", async () => {
@@ -474,3 +475,16 @@ function highlightCurrentSong() {
         listOfSongs[currentSongNumber].classList.add("activeSongContainer");
     }
 }
+
+// Function to toggle show/hide album covers
+hideAlbumCoversButton.addEventListener("click", () => {
+    showAlbumCovers = !showAlbumCovers;
+
+    if (showAlbumCovers) {
+        hideAlbumCoversButton.value = "Hide album covers";
+    } else {
+        hideAlbumCoversButton.value = "Show album covers";
+    }
+
+    searchResultsContainer.classList.toggle("hide-album-covers");
+});
