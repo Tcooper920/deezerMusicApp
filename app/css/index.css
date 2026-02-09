@@ -13,6 +13,7 @@
 	--primary-color: #58a593;
 	--primary-active-button-color: #306c5e;
 	--delete-color: rgb(255, 59, 59);
+	--lightgray-color: rgb(211, 211, 211);
 }
 
 p {
@@ -281,13 +282,17 @@ input {
 }
 
 /* .hide-album-covers class is toggled to show/hide album covers */
-.hide-album-covers img {
+#searchResultsContainer.hide-album-covers img {
 	display: none;
 }
 
 .hide-album-covers > div {
 	margin: 1rem;
-	border-left: 1px solid var(--form-field-text);
+	border-left: 1px solid var(--lightgray-color);
+}
+
+.hide-album-covers .activeSongContainer {
+	border-left: 1px solid white;
 }
 
 /* dynamically generated content styling (albums section) **********************************************************/
@@ -345,6 +350,7 @@ input {
 .activeSongContainer {
 	color: var(--primary-color);
 	outline: 0.2rem solid var(--primary-color);
+	border-left: 0px;
 	border-radius: 5px;
 	position: relative;
 	z-index: 1;
