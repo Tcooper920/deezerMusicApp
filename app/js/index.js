@@ -476,14 +476,36 @@ function highlightCurrentSong() {
     }
 }
 
+// Helper function to build "show/hide album covers" buttons for toggle
+function buildShowHideAlbumCoversButtons(showOrHideEyeIcon) {
+    const buttonIcon = 
+        showOrHideEyeIcon === "hide"
+            ? "bi-eye-slash-fill"
+            : "bi-eye-fill";
+
+    const buttonText = 
+        showOrHideEyeIcon === "hide"
+            ? "Hide album covers"
+            : "Show album covers";
+
+    const hideAlbumCoversButtonFragment = document.createDocumentFragment();
+    const slashEyeIcon = document.createElement("i");
+    slashEyeIcon.classList.add("bi", buttonIcon, "eye-icon");
+    const hideAlbumCoversButtonText = document.createElement("span");
+    hideAlbumCoversButtonText.innerText = buttonText;
+    hideAlbumCoversButtonFragment.append(slashEyeIcon, hideAlbumCoversButtonText);
+
+    return hideAlbumCoversButtonFragment;
+}
+
 // Function to toggle show/hide album covers
 hideAlbumCoversButton.addEventListener("click", () => {
     showAlbumCovers = !showAlbumCovers;
 
     if (showAlbumCovers) {
-        hideAlbumCoversButton.value = "Hide album covers";
+        hideAlbumCoversButton.replaceChildren(buildShowHideAlbumCoversButtons("hide"));
     } else {
-        hideAlbumCoversButton.value = "Show album covers";
+        hideAlbumCoversButton.replaceChildren(buildShowHideAlbumCoversButtons("show"));
     }
 
     searchResultsContainer.classList.toggle("hide-album-covers");

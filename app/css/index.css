@@ -277,8 +277,17 @@ input {
 } 
 
 /* Toggle class to show/hide element */
-.hide {
+.hide, #hideAlbumCoversBtn.hide {
 	display: none;
+}
+
+#hideAlbumCoversBtn {
+	display: flex;
+    align-items: center;
+}
+
+.eye-icon {
+	padding-right: .5rem;
 }
 
 /* .hide-album-covers class is toggled to show/hide album covers */
