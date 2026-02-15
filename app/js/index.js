@@ -477,22 +477,17 @@ function highlightCurrentSong() {
 }
 
 // Helper function to build "show/hide album covers" buttons for toggle
-function buildShowHideAlbumCoversButtons(showOrHideEyeIcon) {
-    const buttonIcon = 
-        showOrHideEyeIcon === "hide"
-            ? "bi-eye-slash-fill"
-            : "bi-eye-fill";
-
-    const buttonText = 
-        showOrHideEyeIcon === "hide"
-            ? "Hide album covers"
-            : "Show album covers";
+function buildShowHideAlbumCoversButtons(showOrHideAlbumCovers) {
+    const buttonState = {
+        buttonIcon: showOrHideAlbumCovers ? "bi-eye-slash-fill" : "bi-eye-fill",
+        buttonText: showOrHideAlbumCovers ? "Hide album covers" : "Show album covers",
+    };
 
     const hideAlbumCoversButtonFragment = document.createDocumentFragment();
     const slashEyeIcon = document.createElement("i");
-    slashEyeIcon.classList.add("bi", buttonIcon, "eye-icon");
+    slashEyeIcon.classList.add("bi", buttonState.buttonIcon, "eye-icon");
     const hideAlbumCoversButtonText = document.createElement("span");
-    hideAlbumCoversButtonText.innerText = buttonText;
+    hideAlbumCoversButtonText.innerText = buttonState.buttonText;
     hideAlbumCoversButtonFragment.append(slashEyeIcon, hideAlbumCoversButtonText);
 
     return hideAlbumCoversButtonFragment;
@@ -500,13 +495,7 @@ function buildShowHideAlbumCoversButtons(showOrHideEyeIcon) {
 
 // Function to toggle show/hide album covers
 hideAlbumCoversButton.addEventListener("click", () => {
-    showAlbumCovers = !showAlbumCovers;
-
-    if (showAlbumCovers) {
-        hideAlbumCoversButton.replaceChildren(buildShowHideAlbumCoversButtons("hide"));
-    } else {
-        hideAlbumCoversButton.replaceChildren(buildShowHideAlbumCoversButtons("show"));
-    }
-
+    showAlbumCovers = !showAlbumCovers
+    hideAlbumCoversButton.replaceChildren(buildShowHideAlbumCoversButtons(showAlbumCovers));
     searchResultsContainer.classList.toggle("hide-album-covers");
 });
