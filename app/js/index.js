@@ -5,7 +5,6 @@ const {
     searchButton,
     currentSongField,
     playButton,
-    pauseButton,
     nextButton,
     previousButton,
     searchPlayListButton,
@@ -176,7 +175,6 @@ function numberOfSongsDisplayedOnPage() {
 
 // Buttons for play, pause, previous, and next song...
 playButton.addEventListener("click", playSong);
-pauseButton.addEventListener("click", pauseSong);
 nextButton.addEventListener("click", playNextSong);
 previousButton.addEventListener("click", playPreviousSong);
 
@@ -186,6 +184,8 @@ myAudio.onended = playNextSong;
 // Play song
 function playSong() {
     if (!myAudio.paused) {
+        pauseSong();
+
         return;
     }
     let numberOfSongs = numberOfSongsDisplayedOnPage();
@@ -274,7 +274,12 @@ function selectAndPlayClickedSong(event) {
 // Helper function to set play/pause button styling
 function setPlayingState(isPlaying) {
     playButton.classList.toggle("activeButton", isPlaying);
-    pauseButton.classList.toggle("activeButton", !isPlaying);
+
+    if (!isPlaying) {
+        playButton.innerHTML = `<i class="fa fa-play" aria-hidden="true"></i>`;
+    } else {
+        playButton.innerHTML = `<i class="fa fa-pause" aria-hidden="true"></i>`;
+    } 
 }
 
 // Function to set "Search results" and "Custom playlist" tab (button) styling and accessibility attributes

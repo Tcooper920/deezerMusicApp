@@ -4,7 +4,6 @@ export function getDomSelectors() {
         searchButton: document.getElementById("searchButton"),
         currentSongField: document.getElementById("currentSongField"),
         playButton: document.getElementById("playButton"),
-        pauseButton: document.getElementById("pauseButton"),
         nextButton: document.getElementById("nextButton"),
         previousButton: document.getElementById("previousButton"),
         searchPlayListButton: document.getElementById("viewSearchPlayListBtn"),
