@@ -7,6 +7,7 @@ const {
     playButton,
     nextButton,
     previousButton,
+    playOrPauseIcon,
     searchPlayListButton,
     customPlayListButton,
     searchResultsContainer,
@@ -273,13 +274,9 @@ function selectAndPlayClickedSong(event) {
 
 // Helper function to set play/pause button styling
 function setPlayingState(isPlaying) {
-    playButton.classList.toggle("activeButton", isPlaying);
-
-    if (!isPlaying) {
-        playButton.innerHTML = `<i class="fa fa-play" aria-hidden="true"></i>`;
-    } else {
-        playButton.innerHTML = `<i class="fa fa-pause" aria-hidden="true"></i>`;
-    } 
+    playOrPauseIcon.classList.toggle("fa-play", !isPlaying);
+    playOrPauseIcon.classList.toggle("fa-pause", isPlaying);
+    playButton.ariaLabel = isPlaying ? "Pause song" : "Play Song";
 }
 
 // Function to set "Search results" and "Custom playlist" tab (button) styling and accessibility attributes

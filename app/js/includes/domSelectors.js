@@ -6,6 +6,7 @@ export function getDomSelectors() {
         playButton: document.getElementById("playButton"),
         nextButton: document.getElementById("nextButton"),
         previousButton: document.getElementById("previousButton"),
+        playOrPauseIcon: document.getElementsByClassName("fa-play")[0],
         searchPlayListButton: document.getElementById("viewSearchPlayListBtn"),
         customPlayListButton: document.getElementById("viewCustomPlayListBtn"),
         searchResultsContainer: document.getElementById("searchResultsContainer"),
