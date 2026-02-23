@@ -139,17 +139,17 @@ function constructAlbumDescription(albumImage, trackNumber, songTitle, albumTitl
 function constructButton(buttonType, songId) {
     const newButton = document.createElement("button");
     if (buttonType === "addButton") {
-        newButton.classList.add("addToPlayListBtn", "standardButton");
+        newButton.classList.add("addToPlayListBtn", "secondary-button");
         newButton.dataset.songId = songId;
         newButton.innerText = "+ Add to playlist";
     }
     if (buttonType === "addedButton") {
-        newButton.classList.add("addToPlayListBtn", "standardButton", "activeButton", "added");
+        newButton.classList.add("addToPlayListBtn", "activeButton", "added");
         newButton.innerText = "Added";
         newButton.append(constructCheckmarkIcon());
     }
     if (buttonType === "removeButton") {
-        newButton.classList.add("removeFromCustomPlayList", "standardButton");
+        newButton.classList.add("removeFromCustomPlayList");
         newButton.dataset.songId = songId;
         newButton.innerText = "Remove";
     }
