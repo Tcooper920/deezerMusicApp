@@ -96,6 +96,12 @@ input {
 	display: flex;
 }
 
+button {
+	border-radius: 5px 5px 5px 5px;
+	-moz-border-radius: 5px 5px 5px 5px;
+	-webkit-border-radius: 5px 5px 5px 5px;
+}
+
 .button {
 	flex: 1;
 	margin: 0.25rem;
@@ -109,9 +115,27 @@ input {
 	font-size: 0.9rem;
 	text-align: center;
 	cursor: pointer;
-	border-radius: 5px 5px 5px 5px;
-	-moz-border-radius: 5px 5px 5px 5px;
-	-webkit-border-radius: 5px 5px 5px 5px;
+}
+
+.primary-button {
+	background-color: var(--primary-color);
+	color: white;
+}
+
+.primary-button:hover {
+	background-color: var(--primary-active-button-color);
+	transition: background-color .1s linear;
+}
+
+.secondary-button {
+	color: var(--primary-color);
+	border: 0.15rem solid var(--primary-color);
+}
+
+.secondary-button:hover {
+	background-color: var(--primary-color);
+	color: white;
+	transition: background-color .1s linear, color .1s linear;
 }
 
 .songContainer:hover:has(.addToPlayListBtn:hover) {
@@ -136,6 +160,7 @@ input {
 	color: var(--primary-color);
 	padding-bottom: .70rem;
 	border-bottom: .45rem solid var(--primary-color);
+	cursor: default;
 }
 
 #viewSearchPlayListBtn:hover, 
@@ -151,8 +176,8 @@ input {
 	cursor: default;
 }
 
-.addToPlayListBtn,
-.standardButton {
+.addToPlayListBtn {
+	font-size: .85rem;
 	width: fit-content;
 	padding: 0.25rem 0.5rem 0.2rem 0.5rem;
 	margin-top: 1rem;
@@ -160,47 +185,35 @@ input {
 	border: 0.15rem solid var(--primary-color);
 	background-color: white;
 	cursor: pointer;
-	border-radius: 5px 5px 5px 5px;
-	-moz-border-radius: 5px 5px 5px 5px;
-	-webkit-border-radius: 5px 5px 5px 5px;
+}
+
+.addToPlayListBtn.activeButton {
+	background-color: var(--primary-color);
+	color: white;
 }
 
 .addToPlayListBtn:hover {
 	background-color: var(--primary-color);
 	color: white;
-}
-
-.addToPlayListBtn:active {
-	background-color: var(--primary-active-button-color);
-	border-color: var(--primary-active-button-color);
-	color: white;
+	transition: background-color .1s linear, color .1s linear;
 }
 
 .removeFromCustomPlayList {
+	font-size: .85rem;
 	color: var(--delete-color);
-	border-color: var(--delete-color);
+	width: fit-content;
+	padding: 0.25rem 0.5rem 0.2rem 0.5rem;
+	margin-top: 1rem;
+	border: 0.15rem solid var(--delete-color);
+	background-color: white;
+	cursor: pointer;
 }
 
 .removeFromCustomPlayList:hover {
 	background-color: var(--delete-color);
 	border-color: var(--delete-color);
 	color: white;
-}
-
-.secondary-button {
-	color: var(--primary-color);
-	border: 0.15rem solid var(--primary-color);
-}
-
-.secondary-button:hover {
-	background-color: var(--primary-color);
-	color: white;
-}
-
-/* this class is added with js for active buttons (play/stop) */
-.activeButton {
-	background-color: var(--primary-color);
-	color: white;
+	transition: background-color .1s linear, border-color .1s linear, color .1s linear;
 }
 
 #artistName {
@@ -297,7 +310,8 @@ input {
 
 .hide-album-covers > div {
 	margin: 1rem;
-	border-left: 1px solid var(--lightgray-color);
+	-webkit-box-shadow: 0px 0px 11px 0px #ececec;
+    box-shadow: 0px 0px 11px 0px #ececec;
 }
 
 .hide-album-covers .activeSongContainer {
@@ -332,13 +346,14 @@ input {
 	display: inline-flex;
 	flex-direction: column;
 	animation: fadeIn .3s linear;
+	border-radius: 5px;
 }
 
 .songContainer:hover {
 	color: var(--song-container-hover-text-color);
 	background-color: #e6e6e6;
-	border-radius: 5px;
 	cursor: pointer;
+	transition: color .25s linear, background-color .25s linear;
 }
 
 .songContainer p > * {
