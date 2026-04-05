@@ -69,7 +69,7 @@ function setSearchResultsAndCustomPlayListButtonsToActive() {
 }
 
 // Print list of songs to page
-function printSongListToPage(arrayOfSongs) {
+function printSongListToPage(arrayOfSongs, fadeIn = true) {
     searchResultsContainer.innerText = "";
     const fragment = document.createDocumentFragment();
 
@@ -80,6 +80,10 @@ function printSongListToPage(arrayOfSongs) {
         songContainer.classList.add("songContainer");
         let thisSongDescription;
         let thisButton;
+
+        if (fadeIn) {
+            songContainer.classList.add("fadeIn");
+        }
 
         if (isUserViewingCustomPlayList === false) {
             // If song is already added to playlist, show the "Added" button. Otherwise, show the "Add" button.
@@ -170,7 +174,7 @@ function constructCheckmarkIcon() {
 // Get number of songs printed to page
 function numberOfSongsDisplayedOnPage() {
     const numberOfSongsDisplayed = document.getElementsByClassName("songContainer");
-    
+
     return numberOfSongsDisplayed;
 }
 
@@ -307,11 +311,11 @@ function handleArrowKeys(event) {
     if (event.target === searchPlayListButton && customPlayList.length > 0) {
         setPlaylistTabState(false);
         customPlayListButton.focus();
-        loadPlaylist(customPlayList, "customPlaylist");
+        loadPlaylist(customPlayList, "customPlaylist", true);
     } else if (event.target === customPlayListButton) {
         setPlaylistTabState(true);
         searchPlayListButton.focus();
-        loadPlaylist(cachedSongs, "searchPlaylist");
+        loadPlaylist(cachedSongs, "searchPlaylist", true);
     }
 }
 
@@ -419,7 +423,7 @@ document.addEventListener("click", (event) => {
         customPlayList = customPlayList.filter((song) => song.id !== songToRemove.id);
 
         customPlayList.length > 0 // If more than one song in custom playlist...
-            ? loadPlaylist(customPlayList, "customPlaylist") // Print updated custom playlist array to page
+            ? loadPlaylist(customPlayList, "customPlaylist", false) // Print updated custom playlist array to page
             : loadPlaylist(cachedSongs, "searchPlaylist"); // Else print search playlist array to page
     }
 });
@@ -430,7 +434,7 @@ searchPlayListButton.addEventListener("click", (event) => {
         return;
     }
 
-    loadPlaylist(cachedSongs, "searchPlaylist");
+    loadPlaylist(cachedSongs, "searchPlaylist", true);
 });
 
 // Show custom playlist songs
@@ -439,11 +443,11 @@ customPlayListButton.addEventListener("click", (event) => {
         return;
     }
 
-    loadPlaylist(customPlayList, "customPlaylist");
+    loadPlaylist(customPlayList, "customPlaylist", true);
 });
 
 // Helper function to load the selected playlist (Search result playlist or user's custom playlist)
-function loadPlaylist(songs, playlistType) {
+function loadPlaylist(songs, playlistType, fadeIn = true) {
     if (!songs.length) {
         return;
     }
@@ -460,7 +464,7 @@ function loadPlaylist(songs, playlistType) {
     currentSongNumber = 0;
     myAudio.pause();
     setPlayingState(false);
-    printSongListToPage(songs);
+    printSongListToPage(songs, fadeIn);
     changeFormBackgroundToAlbumCover(songs[0].album.cover_big);
     highlightCurrentSong();
 }

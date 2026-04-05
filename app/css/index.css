@@ -362,8 +362,11 @@ button {
 	padding: 2rem;
 	display: inline-flex;
 	flex-direction: column;
-	animation: fadeIn .3s linear;
 	border-radius: 5px;
+}
+
+.fadeIn {
+	animation: fadeIn .3s linear;
 }
 
 .songContainer:hover {
