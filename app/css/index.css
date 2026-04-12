@@ -369,6 +369,11 @@ button {
 	animation: fadeIn .3s linear;
 }
 
+.fadeOut {
+	animation: fadeOut .5s linear;
+}
+
+
 .songContainer:hover {
 	color: var(--song-container-hover-text-color);
 	background-color: #e6e6e6;
@@ -408,6 +413,11 @@ button {
 @keyframes fadeIn {
   0% {opacity: 0;}
   100% {opacity: 1;}
+}
+
+@keyframes fadeOut {
+  0% {opacity: 1;}
+  100% {opacity: 0;}
 }
 
 /* media queries ******************************************************************************************************/
