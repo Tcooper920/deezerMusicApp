@@ -419,12 +419,19 @@ document.addEventListener("click", (event) => {
         if (!customPlayList.some((thisSong) => thisSong.id === idOfSongRemoved)) {
             return;
         }
+        
         const songToRemove = customPlayList.find((song) => song.id === idOfSongRemoved);
         customPlayList = customPlayList.filter((song) => song.id !== songToRemove.id);
 
-        customPlayList.length > 0 // If more than one song in custom playlist...
-            ? loadPlaylist(customPlayList, "customPlaylist", false) // Print updated custom playlist array to page
-            : loadPlaylist(cachedSongs, "searchPlaylist"); // Else print search playlist array to page
+        // Fade out deleted song before removing it from DOM
+        event.target.closest(".songContainer").classList.add("fadeOut");
+
+        // After song fades out, reload playlist with the song removed
+        setTimeout(() => {
+            customPlayList.length > 0 // If more than one song in custom playlist...
+                ? loadPlaylist(customPlayList, "customPlaylist", false) // Print updated custom playlist array to page
+                : loadPlaylist(cachedSongs, "searchPlaylist"); // Else print search playlist array to page
+        }, 500);
     }
 });
 
