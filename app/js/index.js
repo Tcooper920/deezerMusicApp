@@ -8,6 +8,7 @@ const {
     nextButton,
     previousButton,
     playOrPauseIcon,
+    playTimeProgressBar,
     searchPlayListButton,
     customPlayListButton,
     searchResultsContainer,
@@ -512,3 +513,12 @@ hideAlbumCoversButton.addEventListener("click", () => {
     hideAlbumCoversButton.replaceChildren(buildShowHideAlbumCoversButtons(showAlbumCovers));
     searchResultsContainer.classList.toggle("hide-album-covers");
 });
+
+// Return current song play time
+myAudio.addEventListener("timeupdate", calculatePercentOfCurrentSongPlayed);
+
+function calculatePercentOfCurrentSongPlayed() {
+    const percentageOfSongPlayed = ((myAudio.currentTime / myAudio.duration) * 100);
+
+    playTimeProgressBar.style.width = `${percentageOfSongPlayed}%`;
+}

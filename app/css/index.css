@@ -146,6 +146,21 @@ button {
 	background-color: white;
 }
 
+.progressbar-container {
+	background-color: var(--lightgray-color);
+	height: .5rem;
+	margin-top: 1rem;
+	margin-left: -1rem;
+	margin-right: -1rem;
+	margin-bottom: -1rem;
+}
+
+#playtime-progress-bar {
+	height: 1rem;
+	width: 0;
+	background-color: #306c5e;
+}
+
 #viewSearchPlayListBtn,
 #viewCustomPlayListBtn {
 	color: var(--main-text-color);
@@ -250,6 +265,7 @@ button {
 
 .jukeboxForm {
 	margin-top: 2rem;
+	overflow: hidden;
 }
 
 #currentSongField {
