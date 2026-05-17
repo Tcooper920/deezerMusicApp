@@ -305,16 +305,12 @@ button {
 	padding-bottom: 1.5rem;
 	padding-top: 4rem;
 	padding-left: 3rem;
-    padding-right: 3rem;
+    padding-right: 1rem;
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: flex-end;
 	border-top: none;
 } 
-
-.show-hide-button-container > div {
-	width: 100%;
-}
 
 /* Toggle class to show/hide element */
 .hide, #hideAlbumCoversBtn.hide {
