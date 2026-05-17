@@ -475,6 +475,7 @@ function loadPlaylist(songs, playlistType, fadeIn = true) {
     printSongListToPage(songs, fadeIn);
     changeFormBackgroundToAlbumCover(songs[0].album.cover_big);
     highlightCurrentSong();
+    playTimeProgressBar.style.width = `0%`;
 }
 
 // Function to highlight current song
@@ -519,6 +520,5 @@ myAudio.addEventListener("timeupdate", calculatePercentOfCurrentSongPlayed);
 
 function calculatePercentOfCurrentSongPlayed() {
     const percentageOfSongPlayed = ((myAudio.currentTime / myAudio.duration) * 100);
-
     playTimeProgressBar.style.width = `${percentageOfSongPlayed}%`;
 }
