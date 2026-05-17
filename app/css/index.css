@@ -357,7 +357,7 @@ button {
 	padding-right: 1rem;
 	text-align: left;
 	display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(16rem, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(17rem, 1fr));
 	justify-content: center;
 }
 
@@ -396,7 +396,8 @@ button {
 }
 
 .songContainer p > * {
-    display: block;
+    display: flex;
+	flex-direction: column;
 }
 
 .trackNumber {
@@ -475,6 +476,37 @@ button {
 	}
 }
 
+@media (max-width: 654px) {
+	.albumCover {
+		width: 5rem;
+	}
+
+	.songContainer > p {
+    	display: flex;
+	}
+
+	.song-description {
+		margin-left: 1rem;
+	}
+
+	.hide-album-covers .song-description {
+		margin-left: 0;
+	}
+
+	#hideAlbumCoversBtn {
+		display: none;
+	}
+
+	#searchResultsContainer .songContainer {
+		margin-top: 0;
+		border-bottom: 1px solid #d0d0d0;		
+	}
+
+	#searchResultsContainer .activeSongContainer {
+		border-bottom: 0;
+	}
+}
+
 @media (max-width: 500px) {
 	.textFieldContainer {
 		display: block;
@@ -499,3 +531,4 @@ button {
 		-webkit-border-radius: 0px 0px 30px 30px;
 	}
 }
+

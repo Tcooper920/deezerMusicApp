@@ -142,8 +142,15 @@ function constructAlbumDescription(albumImage, trackNumber, songTitle, albumTitl
     // Artist name...
     const thisArtistName = document.createElement("span");
     thisArtistName.append(`By: ${artistName}`);
+    // Album image container...
+    const imgContainer = document.createElement("span");
+    imgContainer.append(thisAlbumImage);
+    // Text container...
+    const textContainer = document.createElement("span");
+    textContainer.classList.add("song-description");
+    textContainer.append(thisTrackNumber, thisSongTitle, thisAlbumTitle, thisArtistName);
     // Append all song info to parent container...
-    descriptionContainer.append(thisAlbumImage, thisTrackNumber, thisSongTitle, thisAlbumTitle, thisArtistName);
+    descriptionContainer.append(imgContainer, textContainer);
 
     return descriptionContainer;
 }
