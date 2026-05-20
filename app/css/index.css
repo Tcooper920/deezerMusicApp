@@ -322,7 +322,7 @@ button {
 }
 
 #hideAlbumCoversBtn {
-	display: flex;
+	display: none;
 	width: 100%;
 	justify-content: center;
     align-items: center;
@@ -467,6 +467,10 @@ button {
 	.song-description {
 		margin-left: 0rem;
 	}
+
+	#hideAlbumCoversBtn {
+		display: flex;
+	}
 }
 
 @media (min-width: 576px) {
@@ -503,16 +507,6 @@ button {
 }
 
 /********************************************************************************************************/
-
-@media (max-width: 654px) {
-	#hideAlbumCoversBtn {
-		display: none;
-	}
-
-	#searchResultsContainer .songContainer {
-		margin-top: 0;
-	}
-}
 
 @media (max-width:639px) {
 	#searchResultsContainer .songContainer {
