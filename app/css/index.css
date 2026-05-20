@@ -81,11 +81,12 @@ input {
 
 .form {
 	background-color: white;
+	filter: none;
 	padding: 1rem;
 	display: flex;
 	flex-direction: column;
 	width: 70%;
-	max-width: 45rem;
+	max-width: 40rem;
 	margin: 0 auto;
 	border: 0;
 	-webkit-box-shadow: 0px 0px 9px 1px #26262680;
@@ -97,7 +98,9 @@ input {
 }
 
 .textFieldContainer {
-	display: flex;
+	display: block;
+	padding-left: 0.25rem;
+	padding-right: 0.25rem;
 }
 
 button {
@@ -145,6 +148,22 @@ button {
 
 .songContainer:hover:has(.addToPlayListBtn:hover) {
 	background-color: white;
+}
+
+.songContainer > p {
+    display: flex;
+}
+
+#searchResultsContainer .songContainer {
+	border-bottom: 1px solid #d0d0d0;		
+}
+
+#searchResultsContainer.hide-album-covers .songContainer {
+	border-bottom: 0;
+}
+
+#searchResultsContainer .activeSongContainer {
+	border-bottom: 0;
 }
 
 .progressbar-container {
@@ -318,7 +337,7 @@ button {
 }
 
 #hideAlbumCoversBtn {
-	display: flex;
+	display: none;
 	width: 100%;
 	justify-content: center;
     align-items: center;
@@ -348,8 +367,6 @@ button {
 	padding-right: 2rem
 }
 
-/* dynamically generated content styling (albums section) **********************************************************/
-
 #searchResultsContainer {
 	background-color: white;
 	padding-bottom: 5rem;
@@ -362,7 +379,7 @@ button {
 }
 
 .albumCover {
-	width: 100%;
+	width: 5rem;
 	border-radius: 5px;
 	margin-bottom: 1rem;
 }
@@ -411,6 +428,14 @@ button {
 	margin-bottom: 1rem;
 }
 
+.song-description {
+	margin-left: 1rem;
+}
+
+.hide-album-covers .song-description {
+	margin-left: 0;
+}
+
 .activeSongContainer {
 	color: var(--primary-color);
 	outline: 0.2rem solid var(--primary-color);
@@ -440,6 +465,30 @@ button {
 @media (min-width: 720px) {
 	.show-hide-button-container {
 		border-top: 1px solid var(--lightgray-color);
+	}
+}
+
+@media (min-width: 640px) {
+	#searchResultsContainer .songContainer {
+		border-bottom: 0;		
+	}
+}
+
+@media (min-width: 655px) {
+	.albumCover {
+		width: 100%;
+	}
+
+	.songContainer > p {
+    	display: block;
+	}
+
+	.song-description {
+		margin-left: 0rem;
+	}
+
+	#hideAlbumCoversBtn {
+		display: flex;
 	}
 }
 
@@ -474,46 +523,15 @@ button {
 	.buttonContainer {
     	padding-top: 24rem;
 	}
-}
 
-@media (max-width: 654px) {
-	.albumCover {
-		width: 5rem;
-	}
-
-	.songContainer > p {
-    	display: flex;
-	}
-
-	.song-description {
-		margin-left: 1rem;
-	}
-
-	.hide-album-covers .song-description {
-		margin-left: 0;
-	}
-
-	#hideAlbumCoversBtn {
-		display: none;
-	}
-
-	#searchResultsContainer .songContainer {
-		margin-top: 0;
-		border-bottom: 1px solid #d0d0d0;		
-	}
-
-	#searchResultsContainer .activeSongContainer {
-		border-bottom: 0;
+	.textFieldContainer {
+		display: flex;
+		padding-left: 0;
+		padding-right: 0;
 	}
 }
 
 @media (max-width: 500px) {
-	.textFieldContainer {
-		display: block;
-		padding-left: 0.25rem;
-		padding-right: 0.25rem;
-	}
-
 	#artistName,
 	#searchButton,
 	#currentSongField {
@@ -521,14 +539,10 @@ button {
 		margin-left: 0;
 		margin-right: 0;
 		border-radius: 5px 5px 5px 5px;
-		-moz-border-radius: 5px 5px 5px 5px;
-		-webkit-border-radius: 5px 5px 5px 5px;
 	}
 
 	.formsWrapper {
 		border-radius: 0px 0px 30px 30px;
-		-moz-border-radius: 0px 0px 30px 30px;
-		-webkit-border-radius: 0px 0px 30px 30px;
 	}
 }
 
