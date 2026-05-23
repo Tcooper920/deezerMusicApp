@@ -1,0 +1,596 @@
+import { getDomSelectors } from "./includes/domSelectors.js";
+// Imported DOM selectors
+const selectors = getDomSelectors();
+
+const dom = {
+	ui: {
+		formBackgroundImage: selectors.formBackgroundImage,
+		currentSongField: selectors.currentSongField,
+		playTimeProgressBar: selectors.playTimeProgressBar,
+		searchResultsContainer: selectors.searchResultsContainer,
+	},
+	playbackControls: {
+		playButton: selectors.playButton,
+		nextButton: selectors.nextButton,
+		previousButton: selectors.previousButton,
+		playOrPauseIcon: selectors.playOrPauseIcon,
+	},
+	viewControls: {
+		searchButton: selectors.searchButton,
+		searchPlayListButton: selectors.searchPlayListButton,
+		customPlayListButton: selectors.customPlayListButton,
+		hideAlbumCoversButton: selectors.hideAlbumCoversButton,
+	},
+	errorMessages: selectors.errorMessages,
+};
+
+interface Song {
+	id: number;
+	title: string;
+	album: {
+		cover_big: string;
+		title: string;
+	};
+	artist: {
+		name: string;
+	};
+	preview: string;
+}
+
+const myAudio = new Audio();
+let cachedSongs: Song[] = [];
+let customPlayList: Song[] = [];
+let currentSongNumber: number = 0;
+let isUserViewingCustomPlayList = false;
+let lastPlayedSongIndex: null | number = null;
+let showAlbumCovers = true;
+
+// Search for an artist with a button click event and print song list to page
+dom.viewControls.searchButton?.addEventListener("click", async () => {
+	const artistNameInput = (document.getElementById("artistName") as HTMLInputElement)?.value.trim(); // Trim user input
+
+	if (artistNameInput === "") {
+		return;
+	}
+
+	isUserViewingCustomPlayList = false;
+	currentSongNumber = 0;
+	(document.getElementById("artistName") as HTMLInputElement).value = artistNameInput; // Show trimmed artist name in text field
+	const result = await fetch(`php/getData.php?q=${encodeURIComponent(artistNameInput)}`);
+	const apiDataReturned = await result.json();
+
+	// If error code 400...
+	if (!result.ok) {
+		(dom.errorMessages as HTMLElement).innerText = apiDataReturned.error ?? "Unknown error. Please try again.";
+
+		return;
+	}
+
+	cachedSongs = apiDataReturned.data ?? [];
+
+	if (cachedSongs.length === 0) {
+		return;
+	}
+
+	changeFormBackgroundToAlbumCover(cachedSongs[0].album.cover_big);
+
+	(dom.viewControls.hideAlbumCoversButton as HTMLElement).classList.remove("hide");
+
+	// Display album cover, album name, and song
+	printSongListToPage(cachedSongs);
+	highlightCurrentSong();
+	setPlaylistTabState(true);
+	setSearchResultsAndCustomPlayListButtonsToActive();
+});
+
+function setSearchResultsAndCustomPlayListButtonsToActive() {
+	const numberOfDisabledButtons = document.getElementsByClassName("disable-tab");
+	[...numberOfDisabledButtons].forEach((disabledButton) => {
+		disabledButton.classList.remove("disable-tab");
+	});
+}
+
+// Print list of songs to page
+function printSongListToPage(arrayOfSongs: Song[], fadeIn = true) {
+	(dom.ui.searchResultsContainer as HTMLInputElement).innerText = "";
+	const fragment = document.createDocumentFragment();
+
+	for (let i = 0; i < arrayOfSongs.length; i++) {
+		const song = arrayOfSongs[i];
+		const songContainer = document.createElement("div");
+		songContainer.setAttribute("tabindex", "0");
+		songContainer.classList.add("songContainer");
+		let thisSongDescription;
+		let thisButton;
+
+		if (fadeIn) {
+			songContainer.classList.add("fadeIn");
+		}
+
+		if (isUserViewingCustomPlayList === false) {
+			// If song is already added to playlist, show the "Added" button. Otherwise, show the "Add" button.
+			if (!customPlayList.some((playListSong) => playListSong.id === song.id)) {
+				thisButton = constructButton("addButton", song.id);
+			} else {
+				thisButton = constructButton("addedButton", song.id);
+			}
+		} else {
+			thisButton = constructButton("removeButton", song.id);
+		}
+
+		thisSongDescription = constructAlbumDescription(
+			song.album.cover_big,
+			i + 1,
+			song.title,
+			song.album.title,
+			song.artist.name,
+		);
+
+		songContainer.append(thisSongDescription, thisButton); // Append "Add", "Added", or "Remove" buttons to song containers
+
+		fragment.append(songContainer);
+	}
+	(dom.ui.searchResultsContainer as HTMLElement).append(fragment);
+
+	(dom.ui.currentSongField as HTMLInputElement).value =
+		`Track ${currentSongNumber + 1}: ${arrayOfSongs[currentSongNumber].title}`;
+	highlightCurrentSong();
+	myAudio.src = arrayOfSongs[currentSongNumber].preview; // set audio src to first track
+	myAudio.pause();
+	setPlayingState(false);
+}
+
+// Helper function to add album descriptions to each album block/card on the page
+function constructAlbumDescription(
+	albumImage: string,
+	trackNumber: number,
+	songTitle: string,
+	albumTitle: string,
+	artistName: string,
+) {
+	const descriptionContainer = document.createElement("p");
+	// Album image...
+	const thisAlbumImage = document.createElement("img");
+	thisAlbumImage.setAttribute("src", albumImage);
+	thisAlbumImage.setAttribute("alt", albumTitle);
+	thisAlbumImage.classList.add("albumCover");
+	// Track number...
+	const thisTrackNumber = document.createElement("strong");
+	thisTrackNumber.classList.add("trackNumber");
+	thisTrackNumber.append(`Track: ${trackNumber}`);
+	// Song title...
+	const thisSongTitle = document.createElement("strong");
+	thisSongTitle.classList.add("songTitle");
+	thisSongTitle.append(songTitle);
+	// Album title...
+	const thisAlbumTitle = document.createElement("span");
+	thisAlbumTitle.append(`Album: ${albumTitle}`);
+	// Artist name...
+	const thisArtistName = document.createElement("span");
+	thisArtistName.append(`By: ${artistName}`);
+	// Album image container...
+	const imgContainer = document.createElement("span");
+	imgContainer.append(thisAlbumImage);
+	// Text container...
+	const textContainer = document.createElement("span");
+	textContainer.classList.add("song-description");
+	textContainer.append(thisTrackNumber, thisSongTitle, thisAlbumTitle, thisArtistName);
+	// Append all song info to parent container...
+	descriptionContainer.append(imgContainer, textContainer);
+
+	return descriptionContainer;
+}
+
+// Helper function to construct buttons ("Add to playlist", "Added", and "Removed")
+function constructButton(buttonType: string, songId: number) {
+	const newButton = document.createElement("button");
+	if (buttonType === "addButton") {
+		newButton.classList.add("addToPlayListBtn", "secondary-button");
+		newButton.dataset.songId = `${songId}`;
+		newButton.innerText = "+ Add to playlist";
+	}
+	if (buttonType === "addedButton") {
+		newButton.classList.add("addToPlayListBtn", "activeButton", "added");
+		newButton.innerText = "Added";
+		newButton.append(constructCheckmarkIcon());
+	}
+	if (buttonType === "removeButton") {
+		newButton.classList.add("removeFromCustomPlayList");
+		newButton.dataset.songId = `${songId}`;
+		newButton.innerText = "Remove";
+	}
+
+	return newButton;
+}
+
+// Helper function to create checkmark icon in buttons
+function constructCheckmarkIcon() {
+	const spanTag = document.createElement("span");
+	const checkMarkIcon = document.createElement("i");
+	checkMarkIcon.classList.add("fa", "fa-check");
+	spanTag.append(checkMarkIcon);
+
+	return spanTag;
+}
+
+// Get number of songs printed to page
+function numberOfSongsDisplayedOnPage() {
+	const numberOfSongsDisplayed = document.getElementsByClassName("songContainer");
+
+	return numberOfSongsDisplayed;
+}
+
+// Buttons for play, pause, previous, and next song...
+dom.playbackControls.playButton?.addEventListener("click", playSong);
+dom.playbackControls.nextButton?.addEventListener("click", playNextSong);
+dom.playbackControls.previousButton?.addEventListener("click", playPreviousSong);
+
+// Automatically go to the next song when current song ends
+myAudio.onended = playNextSong;
+
+// Play song
+function playSong() {
+	if (!myAudio.paused) {
+		pauseSong();
+
+		return;
+	}
+	let numberOfSongs = numberOfSongsDisplayedOnPage();
+	if (numberOfSongs.length !== 0) {
+		playSongAtIndex(currentSongNumber);
+		setPlayingState(true);
+	}
+}
+
+// Pause song
+function pauseSong() {
+	let numberOfSongs = numberOfSongsDisplayedOnPage();
+	if (numberOfSongs.length !== 0) {
+		myAudio.pause();
+		setPlayingState(false);
+	}
+}
+
+// Play next song
+function playNextSong() {
+	let numberOfSongs = numberOfSongsDisplayedOnPage();
+	if (!numberOfSongs.length) {
+		return;
+	}
+
+	const playlistType = getCurrentPlaylist();
+	currentSongNumber = currentSongNumber < playlistType.length - 1 ? currentSongNumber + 1 : 0;
+	playSongAtIndex(currentSongNumber);
+	setPlayingState(true);
+}
+
+// Play previous song
+function playPreviousSong() {
+	let numberOfSongs = numberOfSongsDisplayedOnPage();
+
+	if (!numberOfSongs.length) {
+		return;
+	}
+
+	const playlistType = getCurrentPlaylist();
+	currentSongNumber = currentSongNumber > 0 ? currentSongNumber - 1 : playlistType.length - 1;
+	playSongAtIndex(currentSongNumber);
+	setPlayingState(true);
+}
+
+// Play song when user clicks an album song thumbnail
+document.addEventListener("click", selectAndPlayClickedSong);
+document.addEventListener("keydown", selectAndPlayClickedSong);
+
+function selectAndPlayClickedSong(event: MouseEvent | KeyboardEvent) {
+	// If songs haven't been fetched, do not continue...
+	if (!cachedSongs.length && !customPlayList.length) {
+		return;
+	}
+
+	// Ensure that event.target is a DOM element
+	if (!(event.target instanceof Element)) {
+		return;
+	}
+
+	const songElement = event.target.closest(".songContainer") as HTMLElement | null;
+
+	// Ignore anything that isn't a song container selection
+	if (!songElement) {
+		return;
+	}
+
+	// Prevent "ghost playbacks" from firing if wrong key is pressed
+	if (event instanceof KeyboardEvent && event.key !== "Enter") {
+		return;
+	}
+
+	// If user is clicking "Add to playlist" or "Remove from playlist" button, don't play the song
+	if (
+		event.target.classList.contains("addToPlayListBtn") ||
+		event.target.classList.contains("removeFromCustomPlayList")
+	) {
+		return;
+	}
+
+	const allDisplayedSongs = document.getElementsByClassName("songContainer");
+	const indexOfClickedSong = Array.from(allDisplayedSongs).indexOf(songElement);
+
+	currentSongNumber = indexOfClickedSong;
+	playSongAtIndex(currentSongNumber);
+	setPlayingState(true);
+}
+
+// Helper function to set play/pause button styling
+function setPlayingState(isPlaying: boolean) {
+	dom.playbackControls.playOrPauseIcon.classList.toggle("fa-play", !isPlaying);
+	dom.playbackControls.playOrPauseIcon.classList.toggle("fa-pause", isPlaying);
+	(dom.playbackControls.playButton as HTMLElement).ariaLabel = isPlaying ? "Pause song" : "Play Song";
+}
+
+// Function to set "Search results" and "Custom playlist" tab (button) styling and accessibility attributes
+function setPlaylistTabState(isActive: boolean) {
+	setTabAttributes(dom.viewControls.searchPlayListButton as HTMLElement, isActive);
+	setTabAttributes(dom.viewControls.customPlayListButton as HTMLElement, !isActive);
+	(dom.ui.searchResultsContainer as HTMLElement).setAttribute(
+		"aria-labelledby",
+		isActive ? "viewSearchPlayListBtn" : "viewCustomPlayListBtn",
+	);
+}
+
+// Helper function for setPlaylistTabState() to specify the tab being edited
+function setTabAttributes(tabName: HTMLElement, isActive: boolean) {
+	tabName.classList.toggle("activeButton", isActive);
+	tabName.setAttribute("aria-selected", `${isActive}`);
+	tabName.setAttribute("tabindex", isActive ? "0" : "-1");
+}
+
+// Function to add arrow key accessibility to tabs (buttons)
+function handleArrowKeys(event: KeyboardEvent) {
+	const leftArrowKey = "ArrowLeft";
+	const rightArrowKey = "ArrowRight";
+
+	if (event.key !== leftArrowKey && event.key !== rightArrowKey) {
+		return;
+	}
+
+	event.preventDefault();
+
+	if (event.target === dom.viewControls.searchPlayListButton && customPlayList.length > 0) {
+		setPlaylistTabState(false);
+		(dom.viewControls.customPlayListButton as HTMLElement).focus();
+		loadPlaylist(customPlayList, "customPlaylist", true);
+	} else if (event.target === dom.viewControls.customPlayListButton) {
+		setPlaylistTabState(true);
+		(dom.viewControls.searchPlayListButton as HTMLElement).focus();
+		loadPlaylist(cachedSongs, "searchPlaylist", true);
+	}
+}
+
+// Listen for arrow key presses
+dom.viewControls.searchPlayListButton?.addEventListener("keydown", handleArrowKeys);
+dom.viewControls.customPlayListButton?.addEventListener("keydown", handleArrowKeys);
+
+// Helper function to select song, display song name, and play song
+async function playSongAtIndex(currentSongNumber: number) {
+	const playlist = getCurrentPlaylist();
+
+	if (!playlist[currentSongNumber]) {
+		return;
+	}
+
+	const isSameSong = lastPlayedSongIndex === currentSongNumber; // Returns true or false
+
+	(dom.ui.currentSongField as HTMLInputElement).value =
+		`Track ${currentSongNumber + 1}: ${playlist[currentSongNumber].title}`; // Show current song
+	highlightCurrentSong();
+
+	// If same song is clicked...
+	if (isSameSong) {
+		if (myAudio.paused) {
+			try {
+				await myAudio.play();
+				setPlayingState(true);
+				lastPlayedSongIndex = currentSongNumber;
+			} catch (err: unknown) {
+				if (err instanceof Error && err.name !== "AbortError") {
+					(dom.errorMessages as HTMLElement).innerText =
+						`An unexpected error occurred while playing the song. Please try again.`;
+				}
+			}
+		} else {
+			await myAudio.pause();
+			setPlayingState(false);
+		}
+
+		return;
+	}
+
+	// If song isn't set, pause and load the next one before using the asynchronous play() function
+	if (myAudio.src !== playlist[currentSongNumber].preview) {
+		myAudio.pause();
+		myAudio.src = playlist[currentSongNumber].preview; // Set audio src
+		myAudio.load();
+	}
+
+	try {
+		await myAudio.play();
+		setPlayingState(true);
+		lastPlayedSongIndex = currentSongNumber;
+	} catch (err) {
+		if (err instanceof Error && err.name !== "AbortError") {
+			(dom.errorMessages as HTMLElement).innerText =
+				`An unexpected error occurred while playing the song. Please try again.`;
+		}
+	}
+
+	changeFormBackgroundToAlbumCover(playlist[currentSongNumber].album.cover_big);
+}
+
+// Helper function to check current playlist
+function getCurrentPlaylist() {
+	return isUserViewingCustomPlayList ? customPlayList : cachedSongs;
+}
+
+// Change form background to album cover for current song that is playing
+function changeFormBackgroundToAlbumCover(thisAlbumCover: string) {
+	(dom.ui.formBackgroundImage as HTMLElement).style.backgroundImage = `url("${thisAlbumCover}")`;
+	(dom.ui.formBackgroundImage as HTMLElement).style.backgroundColor = "#6b6b6b";
+}
+
+// Adding songs to a custom playlist
+document.addEventListener("click", (event: MouseEvent | KeyboardEvent) => {
+	// Ensure that event.target is a DOM element
+	if (!(event.target instanceof HTMLElement)) {
+		return;
+	}
+
+	const addedButton = event.target.classList.contains("added");
+
+	if (addedButton) {
+		return;
+	}
+
+	if (event.target.classList.contains("addToPlayListBtn")) {
+		const idOfSongAdded = Number(event.target.dataset.songId); // Gets id from data attribute
+
+		// Push selected song to custom playlist array if song hasn't been added already
+		if (!customPlayList.some((thisSong) => thisSong.id === idOfSongAdded)) {
+			const songToAdd = cachedSongs.find((song) => song.id === idOfSongAdded);
+			if (songToAdd) {
+				customPlayList.push(songToAdd);
+			}
+		}
+
+		event.target.innerText = `Added`;
+		event.target.classList.add("activeButton");
+		event.target.append(constructCheckmarkIcon());
+	}
+});
+
+// Removing songs from a custom playlist
+document.addEventListener("click", (event) => {
+	// Ensure that event.target is a DOM element
+	if (!(event.target instanceof HTMLElement)) {
+		return;
+	}
+
+	if (event.target.classList.contains("removeFromCustomPlayList")) {
+		const idOfSongRemoved = Number(event.target.dataset.songId); // Gets id from data attribute
+
+		// Check if song to delete exists in customPlayList
+		if (!customPlayList.some((thisSong) => thisSong.id === idOfSongRemoved)) {
+			return;
+		}
+
+		const songToRemove = customPlayList.find((song) => song.id === idOfSongRemoved);
+		customPlayList = customPlayList.filter((song) => song.id !== songToRemove?.id);
+
+		// Fade out deleted song before removing it from DOM
+		event.target.closest(".songContainer")?.classList.add("fadeOut");
+
+		// After song fades out, reload playlist with the song removed
+		setTimeout(() => {
+			customPlayList.length > 0 // If more than one song in custom playlist...
+				? loadPlaylist(customPlayList, "customPlaylist", false) // Print updated custom playlist array to page
+				: loadPlaylist(cachedSongs, "searchPlaylist"); // Else print search playlist array to page
+		}, 500);
+	}
+});
+
+// Show search songs
+dom.viewControls.searchPlayListButton?.addEventListener("click", (event) => {
+	// Ensure that event.target is a DOM element
+	if (!(event.target instanceof HTMLElement)) {
+		return;
+	}
+
+	if (event.target.classList.contains("activeButton")) {
+		return;
+	}
+
+	loadPlaylist(cachedSongs, "searchPlaylist", true);
+});
+
+// Show custom playlist songs
+dom.viewControls.customPlayListButton?.addEventListener("click", (event) => {
+	// Ensure that event.target is a DOM element
+	if (!(event.target instanceof HTMLElement)) {
+		return;
+	}
+
+	if (event.target.classList.contains("activeButton")) {
+		return;
+	}
+
+	loadPlaylist(customPlayList, "customPlaylist", true);
+});
+
+// Helper function to load the selected playlist (Search result playlist or user's custom playlist)
+function loadPlaylist(songs: Song[], playlistType: string, fadeIn = true) {
+	if (!songs.length) {
+		return;
+	}
+
+	if (playlistType === "searchPlaylist") {
+		setPlaylistTabState(true);
+		isUserViewingCustomPlayList = false;
+	} else {
+		setPlaylistTabState(false);
+		isUserViewingCustomPlayList = true;
+	}
+
+	lastPlayedSongIndex = null;
+	currentSongNumber = 0;
+	myAudio.pause();
+	setPlayingState(false);
+	printSongListToPage(songs, fadeIn);
+	changeFormBackgroundToAlbumCover(songs[0].album.cover_big);
+	highlightCurrentSong();
+	(dom.ui.playTimeProgressBar as HTMLElement).style.width = `0%`;
+}
+
+// Function to highlight current song
+function highlightCurrentSong() {
+	let listOfSongs = numberOfSongsDisplayedOnPage();
+
+	[...listOfSongs].forEach((song) => {
+		song.classList.remove("activeSongContainer");
+	});
+
+	if (listOfSongs[currentSongNumber]) {
+		listOfSongs[currentSongNumber].classList.add("activeSongContainer");
+	}
+}
+
+// Helper function to build "show/hide album covers" buttons for toggle
+function buildShowHideAlbumCoversButtons(showOrHideAlbumCovers: boolean) {
+	const buttonState = {
+		buttonIcon: showOrHideAlbumCovers ? "bi-eye-slash-fill" : "bi-eye-fill",
+		buttonText: showOrHideAlbumCovers ? "Hide album covers" : "Show album covers",
+	};
+
+	const hideAlbumCoversButtonFragment = document.createDocumentFragment();
+	const slashEyeIcon = document.createElement("i");
+	slashEyeIcon.classList.add("bi", buttonState.buttonIcon, "eye-icon");
+	const hideAlbumCoversButtonText = document.createElement("span");
+	hideAlbumCoversButtonText.innerText = buttonState.buttonText;
+	hideAlbumCoversButtonFragment.append(slashEyeIcon, hideAlbumCoversButtonText);
+
+	return hideAlbumCoversButtonFragment;
+}
+
+// Function to toggle show/hide album covers
+dom.viewControls.hideAlbumCoversButton?.addEventListener("click", () => {
+	showAlbumCovers = !showAlbumCovers;
+	dom.viewControls.hideAlbumCoversButton?.replaceChildren(buildShowHideAlbumCoversButtons(showAlbumCovers));
+	dom.ui.searchResultsContainer?.classList.toggle("hide-album-covers");
+});
+
+// Return current song play time
+myAudio.addEventListener("timeupdate", calculatePercentOfCurrentSongPlayed);
+
+function calculatePercentOfCurrentSongPlayed() {
+	const percentageOfSongPlayed = (myAudio.currentTime / myAudio.duration) * 100;
+	(dom.ui.playTimeProgressBar as HTMLElement).style.width = `${percentageOfSongPlayed}%`;
+}
