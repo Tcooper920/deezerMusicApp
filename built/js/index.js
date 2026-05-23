@@ -105,8 +105,7 @@ function printSongListToPage(arrayOfSongs, fadeIn = true) {
         fragment.append(songContainer);
     }
     dom.ui.searchResultsContainer.append(fragment);
-    dom.ui.currentSongField.value =
-        `Track ${currentSongNumber + 1}: ${arrayOfSongs[currentSongNumber].title}`;
+    dom.ui.currentSongField.value = `Track ${currentSongNumber + 1}: ${arrayOfSongs[currentSongNumber].title}`;
     highlightCurrentSong();
     myAudio.src = arrayOfSongs[currentSongNumber].preview; // set audio src to first track
     myAudio.pause();
@@ -306,8 +305,7 @@ function playSongAtIndex(currentSongNumber) {
             return;
         }
         const isSameSong = lastPlayedSongIndex === currentSongNumber; // Returns true or false
-        dom.ui.currentSongField.value =
-            `Track ${currentSongNumber + 1}: ${playlist[currentSongNumber].title}`; // Show current song
+        dom.ui.currentSongField.value = `Track ${currentSongNumber + 1}: ${playlist[currentSongNumber].title}`; // Show current song
         highlightCurrentSong();
         // If same song is clicked...
         if (isSameSong) {
@@ -319,8 +317,7 @@ function playSongAtIndex(currentSongNumber) {
                 }
                 catch (err) {
                     if (err instanceof Error && err.name !== "AbortError") {
-                        dom.errorMessages.innerText =
-                            `An unexpected error occurred while playing the song. Please try again.`;
+                        dom.errorMessages.innerText = `An unexpected error occurred while playing the song. Please try again.`;
                     }
                 }
             }
@@ -343,8 +340,7 @@ function playSongAtIndex(currentSongNumber) {
         }
         catch (err) {
             if (err instanceof Error && err.name !== "AbortError") {
-                dom.errorMessages.innerText =
-                    `An unexpected error occurred while playing the song. Please try again.`;
+                dom.errorMessages.innerText = `An unexpected error occurred while playing the song. Please try again.`;
             }
         }
         changeFormBackgroundToAlbumCover(playlist[currentSongNumber].album.cover_big);
