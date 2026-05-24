@@ -1,7 +1,6 @@
 import { getDomSelectors } from "./includes/domSelectors.js";
 // Imported DOM selectors
 const selectors = getDomSelectors();
-
 const dom = {
 	ui: {
 		formBackgroundImage: selectors.formBackgroundImage as HTMLElement,
@@ -38,6 +37,8 @@ interface Song {
 	readonly preview: string;
 }
 
+type ButtonType = "addButton" | "addedButton" | "removeButton";
+type PlaylistType = "searchPlaylist" | "customPlaylist";
 const myAudio = new Audio();
 let cachedSongs: Song[] = [];
 let customPlayList: Song[] = [];
@@ -147,7 +148,7 @@ function constructAlbumDescription(
 	songTitle: string,
 	albumTitle: string,
 	artistName: string,
-) {
+): HTMLElement {
 	const descriptionContainer = document.createElement("p");
 	// Album image...
 	const thisAlbumImage = document.createElement("img");
@@ -182,7 +183,7 @@ function constructAlbumDescription(
 }
 
 // Helper function to construct buttons ("Add to playlist", "Added", and "Removed")
-function constructButton(buttonType: string, songId: number) {
+function constructButton(buttonType: ButtonType, songId: number): HTMLButtonElement {
 	const newButton = document.createElement("button");
 	if (buttonType === "addButton") {
 		newButton.classList.add("addToPlayListBtn", "secondary-button");
@@ -204,7 +205,7 @@ function constructButton(buttonType: string, songId: number) {
 }
 
 // Helper function to create checkmark icon in buttons
-function constructCheckmarkIcon() {
+function constructCheckmarkIcon(): HTMLElement {
 	const spanTag = document.createElement("span");
 	const checkMarkIcon = document.createElement("i");
 	checkMarkIcon.classList.add("fa", "fa-check");
@@ -214,7 +215,7 @@ function constructCheckmarkIcon() {
 }
 
 // Get number of songs printed to page
-function numberOfSongsDisplayedOnPage() {
+function numberOfSongsDisplayedOnPage(): HTMLCollectionOf<Element> {
 	const numberOfSongsDisplayed = document.getElementsByClassName("songContainer");
 
 	return numberOfSongsDisplayed;
@@ -425,7 +426,7 @@ async function playSongAtIndex(currentSongNumber: number) {
 }
 
 // Helper function to check current playlist
-function getCurrentPlaylist() {
+function getCurrentPlaylist(): Song[] {
 	return isUserViewingCustomPlayList ? customPlayList : cachedSongs;
 }
 
@@ -524,7 +525,7 @@ dom.viewControls.customPlayListButton?.addEventListener("click", (event) => {
 });
 
 // Helper function to load the selected playlist (Search result playlist or user's custom playlist)
-function loadPlaylist(songs: Song[], playlistType: string, fadeIn = true) {
+function loadPlaylist(songs: Song[], playlistType: PlaylistType, fadeIn = true) {
 	if (!songs.length) {
 		return;
 	}
@@ -561,7 +562,7 @@ function highlightCurrentSong() {
 }
 
 // Helper function to build "show/hide album covers" buttons for toggle
-function buildShowHideAlbumCoversButtons(showOrHideAlbumCovers: boolean) {
+function buildShowHideAlbumCoversButtons(showOrHideAlbumCovers: boolean): DocumentFragment {
 	const buttonState = {
 		buttonIcon: showOrHideAlbumCovers ? "bi-eye-slash-fill" : "bi-eye-fill",
 		buttonText: showOrHideAlbumCovers ? "Hide album covers" : "Show album covers",
