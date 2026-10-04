@@ -17,6 +17,13 @@
 	--darkgray-color: #454545;
 }
 
+h1 {
+	color: var(--song-container-hover-text-color);
+	font-weight: bold;
+    font-size: 1.5rem;
+    margin-bottom: .5rem;
+}
+
 p {
 	margin-bottom: 0;
 }
@@ -97,6 +104,10 @@ input {
 	-webkit-border-radius: 10px 10px 10px 10px;
 }
 
+.form h1 {
+	margin-left: .25rem;
+}
+
 .textFieldContainer {
 	display: block;
 	padding-left: 0.25rem;
@@ -160,6 +171,7 @@ button {
 
 #searchResultsContainer.hide-album-covers .songContainer {
 	border-bottom: 0;
+	border-radius: 5px;
 }
 
 #searchResultsContainer .activeSongContainer {
@@ -312,7 +324,7 @@ button {
 }
 
 .buttonContainer {
-	padding-top: 26rem;
+	padding-top: 28rem;
 	padding-left: 1rem;
 	padding-right: 1rem;
 	display: flex;
@@ -387,13 +399,12 @@ button {
 .songContainer {
 	margin-top: 1rem;
 	text-align: left;
-	font-family: Helvetica;
 	color: var(--main-text-color);
 	font-size: 0.8rem;
 	padding: 2rem;
 	display: inline-flex;
 	flex-direction: column;
-	border-radius: 5px;
+	border-radius: 0;
 }
 
 .fadeIn {
@@ -409,6 +420,7 @@ button {
 	color: var(--song-container-hover-text-color);
 	background-color: #e6e6e6;
 	cursor: pointer;
+	border-radius: 5px;
 	transition: color .25s linear, background-color .25s linear;
 }
 
@@ -443,6 +455,7 @@ button {
 	border-radius: 5px;
 	position: relative;
 	z-index: 1;
+	border-radius: 5px;
 }
 
 .activeSongContainer:hover {
@@ -468,13 +481,10 @@ button {
 	}
 }
 
-@media (min-width: 640px) {
+@media (min-width: 655px) {
 	#searchResultsContainer .songContainer {
 		border-bottom: 0;		
 	}
-}
-
-@media (min-width: 655px) {
 	.albumCover {
 		width: 100%;
 	}
@@ -521,7 +531,7 @@ button {
 
 @media (min-width: 501px) {
 	.buttonContainer {
-    	padding-top: 24rem;
+    	padding-top: 26rem;
 	}
 
 	.textFieldContainer {
